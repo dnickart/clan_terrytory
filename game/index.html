@@ -91,7 +91,7 @@
   </div>
 
   <script>
-    // Вікіпедійні/Commons коти
+    // Зображення котів із Wikimedia Commons
     const cats = [
       {
         name: "Вогнезір",
@@ -148,7 +148,7 @@
     renderCharSelect(sel1, p1, idx => {p1 = idx; renderCharSelect(sel1, p1, arguments.callee);});
     renderCharSelect(sel2, p2, idx => {p2 = idx; renderCharSelect(sel2, p2, arguments.callee);});
 
-    // Заборона вибирати однакових котів для обох
+    // Заборона однакових котів для обох
     sel1.onclick = () => {
       if(p1 === p2) { p2 = (p2+1)%cats.length; renderCharSelect(sel2, p2, idx=>{p2=idx;renderCharSelect(sel2,p2,arguments.callee)});}
     };
@@ -170,9 +170,8 @@
 
     // --- Геймплей ---
     let hp1 = 100, hp2 = 100, pos1 = 70, pos2 = 510, canAttack1 = true, canAttack2 = true, gameOver = false;
-    let aiInterval;
+    let aiInterval, aiDodgeCooldown = 0, aiAttackCooldown = 0;
     function startFight() {
-      // Відобразити котів
       document.getElementById('cat1').style.display = "";
       document.getElementById('cat2').style.display = "";
       document.getElementById('img1').src = cats[p1].img;
@@ -182,20 +181,19 @@
       document.getElementById('hp1').style.width = "100%";
       document.getElementById('hp2').style.width = "100%";
       hp1 = 100; hp2 = 100; pos1 = 70; pos2 = 510; canAttack1 = true; canAttack2 = true; gameOver = false;
+      aiDodgeCooldown = 0; aiAttackCooldown = 0;
       updatePosition();
 
-      // Інструкції
       document.getElementById('controls').innerHTML = mode === "2p"
         ? "Гравець 1: <b>WASD</b> і <b>Пробіл</b> (атака) | Гравець 2: <b>Стрілки</b> і <b>Enter</b> (атака)"
         : "Гравець 1: <b>WASD</b> і <b>Пробіл</b> (атака), ШІ керується автоматично";
 
-      // ШІ або 2 гравці
       if(mode === "1vAI") aiInterval = setInterval(aiMove, 330);
     }
 
     function showHit(x, y) {
       const hit = document.createElement('img');
-      hit.src = 'https://upload.wikimedia.org/wikipedia/commons/8/8e/OOjs_UI_icon_alert-yellow.svg'; // теж із вікі
+      hit.src = 'https://upload.wikimedia.org/wikipedia/commons/8/8e/OOjs_UI_icon_alert-yellow.svg';
       hit.className = 'hit-effect';
       hit.style.left = x + 'px';
       hit.style.top = y + 'px';
@@ -268,14 +266,52 @@
       }
     });
 
-    // --- ШІ ---
+    // --- Розумний ШІ ---
     function aiMove() {
-      if(gameOver) return;
-      // Йде до гравця
-      if (pos2 > pos1 + 120) pos2 -= 10;
-      else if (pos2 < pos1 + 80) pos2 += 10;
-      updatePosition();
-      if (Math.abs(pos1 - pos2) < 120 && Math.random() > 0.4) attack(2);
+      if (gameOver) return;
+      // Зменшуємо кулдауни
+      if (aiDodgeCooldown > 0) aiDodgeCooldown--;
+      if (aiAttackCooldown > 0) aiAttackCooldown--;
+
+      // Якщо мало HP, іноді відступає
+      if (hp2 < 30 && Math.random() < 0.25 && pos2 < 590) {
+        pos2 += 20 + Math.random() * 10;
+        updatePosition();
+        return;
+      }
+
+      // Якщо гравець близько, можливість ухилитись
+      if (Math.abs(pos2 - pos1) < 140 && aiDodgeCooldown === 0 && Math.random() < 0.18) {
+        aiDodge();
+        aiDodgeCooldown = 4 + Math.floor(Math.random() * 4); // Кулдаун на ухилення
+        return;
+      }
+
+      // Рух до гравця, але не завжди
+      if (Math.abs(pos2 - pos1) > 120) {
+        if (Math.random() > 0.15) {
+          pos2 += (pos2 > pos1 ? -10 : 10); // підходить до гравця
+          updatePosition();
+        }
+      } else {
+        // В межах атаки
+        if (aiAttackCooldown === 0 && Math.random() > 0.25) {
+          attack(2);
+          aiAttackCooldown = 3 + Math.floor(Math.random() * 3); // затримка між ударами
+        }
+      }
+    }
+
+    function aiDodge() {
+      // Імітація випадкового стрибка вгору або вниз
+      const cat2 = document.getElementById('cat2');
+      if (Math.random() > 0.5) {
+        cat2.style.top = "85px";
+        setTimeout(() => cat2.style.top = "130px", 180);
+      } else {
+        cat2.style.top = "165px";
+        setTimeout(() => cat2.style.top = "130px", 180);
+      }
     }
   </script>
 </body>
