@@ -13,8 +13,17 @@
     }
     .fight-cat {
       position: absolute; top: 130px; width: 110px; height: 155px;
-      transition: left 0.12s linear, top 0.1s linear; z-index: 2;
+      transition: left 0.12s linear, top 0.1s linear, filter 0.2s;
+      z-index: 2;
       filter: drop-shadow(0 6px 16px #0007);
+      background: none;
+    }
+    .fight-cat.hit { animation: cat-hit 0.18s linear; }
+    @keyframes cat-hit { 0%{transform:scale(1.09);} 100%{transform:scale(1);} }
+    .fight-cat.victory { animation: cat-victory 1.1s infinite alternate; }
+    @keyframes cat-victory {
+      0%{transform:scale(1) rotate(-2deg);}
+      100%{transform:scale(1.14) rotate(2deg);}
     }
     .fight-hp-bar {
       width: 110px; height: 15px; background: #ccc; margin: 8px auto 0 auto;
@@ -56,10 +65,15 @@
     .fight-mode-btn.selected { background: var(--moonlight, #c9d6ea); color: var(--deep-forest, #0a0f1a); border: 2px solid var(--thunderclan, #c84a31);}
     .fight-controls { margin: 8px; }
     .fight-result { font-size: 1.5em; margin: 18px; color: var(--error, #ff6b6b); text-shadow: 1px 2px 8px #fff; }
+    .fight-timer { font-size:1.25em; text-align:center; margin:10px 0; color: var(--windclan, #d8c359);}
     @media (max-width: 800px) {
       .fight-arena, .fight-menu, .fight-ui { width: 99vw; }
     }
   </style>
+  <!-- Звуки -->
+  <audio id="snd-hit" src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b9e7b3d.mp3"></audio>
+  <audio id="snd-win" src="https://cdn.pixabay.com/audio/2022/03/15/audio_1138b5e1f2.mp3"></audio>
+  <audio id="snd-lose" src="https://cdn.pixabay.com/audio/2022/03/15/audio_116e7b1a5b.mp3"></audio>
   <div class="fight-menu" id="fight-menu">
     <h2 id="fight-heading">Файтинг: Коти-Вояки</h2>
     <div class="fight-mode-select">
@@ -75,6 +89,7 @@
     <div style="margin-top:20px; color:var(--moonlight, #c9d6ea);">Управління: <b>WASD</b> і <b>Пробіл</b> — Гравець 1; <b>Стрілки</b> і <b>Enter</b> — Гравець 2</div>
   </div>
   <div class="fight-ui" id="fight-ui" style="display:none">
+    <div class="fight-timer" id="fight-timer"></div>
     <div class="fight-arena" id="fight-arena">
       <div id="fight-cat1" class="fight-cat" style="display:none">
         <div class="fight-hp-bar"><div id="fight-hp1" class="fight-hp" style="width:100%"></div></div>
@@ -128,8 +143,8 @@
     const fightSel2 = document.getElementById('fight-select-p2');
     renderFightCharSelect(fightSel1, fightP1, idx => {fightP1 = idx; renderFightCharSelect(fightSel1, fightP1, arguments.callee);});
     renderFightCharSelect(fightSel2, fightP2, idx => {fightP2 = idx; renderFightCharSelect(fightSel2, fightP2, arguments.callee);});
-    fightSel1.onclick = () => { if(fightP1 === fightP2) { fightP2 = (fightP2+1)%fightCats.length; renderFightCharSelect(fightSel2, fightP2, idx=>{fightP2=idx;renderFightCharSelect(fightSel2,fightP2,arguments.callee)});} };
-    fightSel2.onclick = () => { if(fightP1 === fightP2) { fightP1 = (fightP1+1)%fightCats.length; renderFightCharSelect(fightSel1, fightP1, idx=>{fightP1=idx;renderFightCharSelect(fightSel1,fightP1,arguments.callee)});} };
+    fightSel1.onclick = () => { if(fightP1 === fightP2) { fightP2 = (fightP2+1)%fightCats.length; renderFightCharSelect(fightSel2, fightP2, idx=>{fightP2=idx;renderFightCharSelect(fightSel2,fightP2,arguments.callee);});}};
+    fightSel2.onclick = () => { if(fightP1 === fightP2) { fightP1 = (fightP1+1)%fightCats.length; renderFightCharSelect(fightSel1, fightP1, idx=>{fightP1=idx;renderFightCharSelect(fightSel1,fightP1,arguments.callee);});}};
     document.getElementById('fight-start-btn').onclick = fightStartGame;
     function fightStartGame() {
       if(fightP1 === fightP2) {
@@ -143,6 +158,11 @@
     // Геймплей
     let fightHp1 = 100, fightHp2 = 100, fightPos1 = 70, fightPos2 = 510, fightCanAttack1 = true, fightCanAttack2 = true, fightGameOver = false;
     let fightAiInterval, fightAiDodgeCooldown = 0, fightAiAttackCooldown = 0;
+    let fightTime = 60, fightTimerInterval;
+    function updateTimer() {
+      document.getElementById('fight-timer').innerText = "Час: " + fightTime + " с";
+      if(fightTime === 0) { fightEndGame(fightHp1 > fightHp2 ? 1 : 2); }
+    }
     function fightStartFight() {
       document.getElementById('fight-cat1').style.display = "";
       document.getElementById('fight-cat2').style.display = "";
@@ -152,13 +172,27 @@
       document.getElementById('fight-name2').innerText = fightCats[fightP2].name;
       document.getElementById('fight-hp1').style.width = "100%";
       document.getElementById('fight-hp2').style.width = "100%";
+      document.getElementById('fight-cat1').classList.remove("victory");
+      document.getElementById('fight-cat2').classList.remove("victory");
       fightHp1 = 100; fightHp2 = 100; fightPos1 = 70; fightPos2 = 510; fightCanAttack1 = true; fightCanAttack2 = true; fightGameOver = false;
       fightAiDodgeCooldown = 0; fightAiAttackCooldown = 0;
+      fightTime = 60;
+      updateTimer();
       fightUpdatePosition();
       document.getElementById('fight-controls').innerHTML = fightMode === "2p"
         ? "Гравець 1: <b>WASD</b> і <b>Пробіл</b> (атака) | Гравець 2: <b>Стрілки</b> і <b>Enter</b> (атака)"
         : "Гравець 1: <b>WASD</b> і <b>Пробіл</b> (атака), ШІ керується автоматично";
-      if(fightMode === "1vAI") fightAiInterval = setInterval(fightAiMove, 330);
+      document.getElementById('fight-result').innerText = '';
+      if(fightMode === "1vAI") fightAiInterval = setInterval(fightAiMove, 310);
+      fightTimerInterval = setInterval(()=>{
+        if(fightGameOver) { clearInterval(fightTimerInterval); return; }
+        fightTime--; updateTimer();
+        if(fightTime <= 0) { clearInterval(fightTimerInterval); }
+      }, 1000);
+    }
+    function playSound(id) {
+      let snd = document.getElementById(id);
+      if(snd) { snd.currentTime = 0; snd.play(); }
     }
     function fightShowHit(x, y) {
       const hit = document.createElement('img');
@@ -179,12 +213,17 @@
       if(attacker === 2 && !fightCanAttack2) return;
       if(Math.abs(fightPos1 - fightPos2) < 120) {
         let damage = Math.floor(Math.random() * 14) + 7;
+        playSound('snd-hit');
         if(attacker === 1) {
           fightHp2 -= damage; if(fightHp2 < 0) fightHp2 = 0;
           document.getElementById("fight-hp2").style.width = fightHp2 + "%";
           fightShowHit(fightPos2 + 50, 100);
           document.getElementById("fight-img1").style.filter = "brightness(1.2)";
-          setTimeout(() => document.getElementById("fight-img1").style.filter = "", 150);
+          document.getElementById("fight-cat1").classList.add("hit");
+          setTimeout(() => {
+            document.getElementById("fight-img1").style.filter = "";
+            document.getElementById("fight-cat1").classList.remove("hit");
+          }, 150);
           if (fightHp2 === 0) { fightEndGame(1); }
           fightCanAttack1 = false;
           setTimeout(() => fightCanAttack1 = true, 420);
@@ -193,7 +232,11 @@
           document.getElementById("fight-hp1").style.width = fightHp1 + "%";
           fightShowHit(fightPos1 + 50, 100);
           document.getElementById("fight-img2").style.filter = "brightness(1.2)";
-          setTimeout(() => document.getElementById("fight-img2").style.filter = "", 150);
+          document.getElementById("fight-cat2").classList.add("hit");
+          setTimeout(() => {
+            document.getElementById("fight-img2").style.filter = "";
+            document.getElementById("fight-cat2").classList.remove("hit");
+          }, 150);
           if (fightHp1 === 0) { fightEndGame(2); }
           fightCanAttack2 = false;
           setTimeout(() => fightCanAttack2 = true, 420);
@@ -203,10 +246,18 @@
     function fightEndGame(winner) {
       fightGameOver = true;
       if(fightAiInterval) clearInterval(fightAiInterval);
-      if(winner === 1)
+      clearInterval(fightTimerInterval);
+      document.getElementById('fight-cat1').classList.remove("victory");
+      document.getElementById('fight-cat2').classList.remove("victory");
+      if(winner === 1) {
         document.getElementById('fight-result').innerHTML = fightCats[fightP1].name + " переміг!";
-      else
+        document.getElementById('fight-cat1').classList.add("victory");
+        playSound('snd-win');
+      } else {
         document.getElementById('fight-result').innerHTML = fightCats[fightP2].name + " переміг!";
+        document.getElementById('fight-cat2').classList.add("victory");
+        playSound('snd-lose');
+      }
     }
     document.addEventListener('keydown', function(e) {
       if(fightGameOver || document.getElementById('fight-ui').style.display === "none") return;
@@ -227,30 +278,32 @@
         }
       }
     });
-    // --- Розумний ШІ ---
+    // --- Покращений ШІ ---
     function fightAiMove() {
       if (fightGameOver) return;
       if (fightAiDodgeCooldown > 0) fightAiDodgeCooldown--;
       if (fightAiAttackCooldown > 0) fightAiAttackCooldown--;
-      if (fightHp2 < 30 && Math.random() < 0.25 && fightPos2 < 590) {
-        fightPos2 += 20 + Math.random() * 10;
+      // Краще ухилення при низькому HP
+      if (fightHp2 < 30 && Math.random() < 0.5 && fightPos2 < 590) {
+        fightPos2 += 30 + Math.random() * 20;
         fightUpdatePosition();
         return;
       }
-      if (Math.abs(fightPos2 - fightPos1) < 140 && fightAiDodgeCooldown === 0 && Math.random() < 0.18) {
-        fightAiDodge();
-        fightAiDodgeCooldown = 4 + Math.floor(Math.random() * 4);
-        return;
-      }
+      // Агресивне наближення
       if (Math.abs(fightPos2 - fightPos1) > 120) {
-        if (Math.random() > 0.15) {
-          fightPos2 += (fightPos2 > fightPos1 ? -10 : 10);
-          fightUpdatePosition();
-        }
+        fightPos2 += (fightPos2 > fightPos1 ? -17 : 17) + Math.random() * 4;
+        fightUpdatePosition();
       } else {
-        if (fightAiAttackCooldown === 0 && Math.random() > 0.25) {
+        // Комбо-атаки
+        if (fightAiAttackCooldown === 0 && Math.random() > 0.2) {
           fightAttack(2);
-          fightAiAttackCooldown = 3 + Math.floor(Math.random() * 3);
+          if (Math.random() > 0.7) setTimeout(() => fightAttack(2), 200);
+          fightAiAttackCooldown = 3 + Math.floor(Math.random() * 2);
+        }
+        // Ухилення
+        if (Math.abs(fightPos2 - fightPos1) < 140 && fightAiDodgeCooldown === 0 && Math.random() < 0.18) {
+          fightAiDodge();
+          fightAiDodgeCooldown = 4 + Math.floor(Math.random() * 4);
         }
       }
     }
