@@ -61,16 +61,25 @@
       background: var(--deep-forest, #0a0f1a); color: var(--starclan, #e4e8f0);
       border: 2px solid var(--windclan, #d8c359); border-radius: 7px; cursor:pointer;
       transition: background 0.2s, border 0.2s;
+      user-select: none;
+      touch-action: manipulation;
     }
     .fight-mode-btn.selected { background: var(--moonlight, #c9d6ea); color: var(--deep-forest, #0a0f1a); border: 2px solid var(--thunderclan, #c84a31);}
     .fight-controls { margin: 8px; }
     .fight-result { font-size: 1.5em; margin: 18px; color: var(--error, #ff6b6b); text-shadow: 1px 2px 8px #fff; }
     .fight-timer { font-size:1.25em; text-align:center; margin:10px 0; color: var(--windclan, #d8c359);}
-    @media (max-width: 800px) {
+    #mobile-controls {
+      display: none;
+      justify-content: center;
+      gap: 12px;
+      margin: 20px 0 0 0;
+      flex-wrap: wrap;
+    }
+    @media (pointer:coarse), (max-width:800px) {
       .fight-arena, .fight-menu, .fight-ui { width: 99vw; }
+      #mobile-controls { display: flex !important; }
     }
   </style>
-  <!-- Звуки -->
   <audio id="snd-hit" src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b9e7b3d.mp3"></audio>
   <audio id="snd-win" src="https://cdn.pixabay.com/audio/2022/03/15/audio_1138b5e1f2.mp3"></audio>
   <audio id="snd-lose" src="https://cdn.pixabay.com/audio/2022/03/15/audio_116e7b1a5b.mp3"></audio>
@@ -115,6 +124,13 @@
     <div class="fight-controls" id="fight-controls"></div>
     <div class="fight-result" id="fight-result"></div>
     <button onclick="location.reload()" class="fight-mode-btn">Повернутися до меню</button>
+    <div id="mobile-controls">
+      <button class="fight-mode-btn" id="btn-left">◀️</button>
+      <button class="fight-mode-btn" id="btn-up">🔼</button>
+      <button class="fight-mode-btn" id="btn-down">🔽</button>
+      <button class="fight-mode-btn" id="btn-right">▶️</button>
+      <button class="fight-mode-btn" id="btn-attack">🗡️</button>
+    </div>
   </div>
   <script>
     // Коти (Wikimedia Commons)
@@ -180,7 +196,6 @@
     function fightStartGame() {
       if(fightMode === "campaign") {
         document.getElementById('fight-menu').style.display = "none";
-        // Пригода, базовий шаблон
         document.body.insertAdjacentHTML('beforeend', `
           <div id="campaign-adventure" style="margin:40px auto;max-width:600px;background:#fff9;border-radius:16px;padding:24px 36px;border:3px solid var(--windclan,#d8c359)">
             <h2>Ваша пригода починається!</h2>
@@ -232,6 +247,7 @@
       document.getElementById('fight-menu').style.display = "none";
       document.getElementById('fight-ui').style.display = "block";
       fightStartFight();
+      updateControlsVisibility();
     }
     // Геймплей
     let fightHp1 = 100, fightHp2 = 100, fightPos1 = 70, fightPos2 = 510, fightCanAttack1 = true, fightCanAttack2 = true, fightGameOver = false;
@@ -267,6 +283,7 @@
         fightTime--; updateTimer();
         if(fightTime <= 0) { clearInterval(fightTimerInterval); }
       }, 1000);
+      updateControlsVisibility();
     }
     function playSound(id) {
       let snd = document.getElementById(id);
@@ -336,6 +353,7 @@
         document.getElementById('fight-cat2').classList.add("victory");
         playSound('snd-lose');
       }
+      updateControlsVisibility();
     }
     document.addEventListener('keydown', function(e) {
       if(fightGameOver || document.getElementById('fight-ui').style.display === "none") return;
@@ -361,24 +379,20 @@
       if (fightGameOver) return;
       if (fightAiDodgeCooldown > 0) fightAiDodgeCooldown--;
       if (fightAiAttackCooldown > 0) fightAiAttackCooldown--;
-      // Краще ухилення при низькому HP
       if (fightHp2 < 30 && Math.random() < 0.5 && fightPos2 < 590) {
         fightPos2 += 30 + Math.random() * 20;
         fightUpdatePosition();
         return;
       }
-      // Агресивне наближення
       if (Math.abs(fightPos2 - fightPos1) > 120) {
         fightPos2 += (fightPos2 > fightPos1 ? -17 : 17) + Math.random() * 4;
         fightUpdatePosition();
       } else {
-        // Комбо-атаки
         if (fightAiAttackCooldown === 0 && Math.random() > 0.2) {
           fightAttack(2);
           if (Math.random() > 0.7) setTimeout(() => fightAttack(2), 200);
           fightAiAttackCooldown = 3 + Math.floor(Math.random() * 2);
         }
-        // Ухилення
         if (Math.abs(fightPos2 - fightPos1) < 140 && fightAiDodgeCooldown === 0 && Math.random() < 0.18) {
           fightAiDodge();
           fightAiDodgeCooldown = 4 + Math.floor(Math.random() * 4);
@@ -395,5 +409,29 @@
         setTimeout(() => cat2.style.top = "130px", 180);
       }
     }
+    // --- Сенсорне управління для мобільних ---
+    function isMobile() {
+      return (/Mobi|Android|iPhone|iPad|iPod|Opera Mini|IEMobile/i.test(navigator.userAgent)) || (window.matchMedia && window.matchMedia("(pointer:coarse)").matches);
+    }
+    function updateControlsVisibility() {
+      let show = isMobile() && document.getElementById('fight-ui').style.display !== "none" && !fightGameOver;
+      document.getElementById('mobile-controls').style.display = show ? "flex" : "none";
+    }
+    window.addEventListener('resize', updateControlsVisibility);
+    document.getElementById('btn-left').ontouchstart = function(e){ e.preventDefault(); if(fightGameOver) return; fightPos1 = Math.max(0, fightPos1 - 17); fightUpdatePosition(); }
+    document.getElementById('btn-right').ontouchstart = function(e){ e.preventDefault(); if(fightGameOver) return; fightPos1 = Math.min(590, fightPos1 + 17); fightUpdatePosition(); }
+    document.getElementById('btn-up').ontouchstart = function(e){
+      e.preventDefault();
+      if(fightGameOver) return;
+      document.getElementById('fight-cat1').style.top = "85px";
+      setTimeout(()=>document.getElementById('fight-cat1').style.top="130px",180);
+    }
+    document.getElementById('btn-down').ontouchstart = function(e){
+      e.preventDefault();
+      if(fightGameOver) return;
+      document.getElementById('fight-cat1').style.top = "165px";
+      setTimeout(()=>document.getElementById('fight-cat1').style.top="130px",180);
+    }
+    document.getElementById('btn-attack').ontouchstart = function(e){ e.preventDefault(); if(fightGameOver) return; fightAttack(1); }
   </script>
 </section>
