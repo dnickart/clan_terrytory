@@ -79,6 +79,16 @@
     <div class="fight-mode-select">
       <button class="fight-mode-btn selected" id="fight-mode-1vAI">1 Гравець (проти ШІ)</button>
       <button class="fight-mode-btn" id="fight-mode-2p">2 Гравці (на одному комп’ютері)</button>
+      <button class="fight-mode-btn" id="fight-mode-campaign">Кампанія <span style="font-size:0.85em">(інтерактивна пригода)</span></button>
+    </div>
+    <div id="campaign-info" style="display:none; margin: 18px 0; background: #fff9; border-radius: 10px; padding: 16px; border:2px solid var(--windclan,#d8c359)">
+      <h3>Інтерактивна пригода</h3>
+      <ul style="margin:0 0 8px 16px;">
+        <li><b>Вибір клану:</b> Оберіть свій клан для пригоди</li>
+        <li><b>Важливі рішення:</b> Ваш вибір вплине на результат</li>
+        <li><b>Ексклюзивна нагорода:</b> Отримайте арт "Воїн Зірок"</li>
+      </ul>
+      <i>Ви зможете стати на шлях молодого учня та виконати важливе доручення, яке випробує вашу мудрість та відвагу.</i>
     </div>
     <div style="font-weight:bold">Гравець 1</div>
     <div class="fight-char-select" id="fight-select-p1"></div>
@@ -120,13 +130,34 @@
       fightMode = "1vAI";
       this.classList.add("selected");
       document.getElementById('fight-mode-2p').classList.remove("selected");
+      document.getElementById('fight-mode-campaign').classList.remove("selected");
       document.getElementById('fight-player2-label').innerText = "ШІ";
+      document.getElementById('campaign-info').style.display = "none";
+      document.getElementById('fight-select-p1').style.display = "";
+      document.getElementById('fight-select-p2').style.display = "";
+      document.getElementById('fight-start-btn').innerText = "Почати гру";
     };
     document.getElementById('fight-mode-2p').onclick = function() {
       fightMode = "2p";
       this.classList.add("selected");
       document.getElementById('fight-mode-1vAI').classList.remove("selected");
+      document.getElementById('fight-mode-campaign').classList.remove("selected");
       document.getElementById('fight-player2-label').innerText = "Гравець 2";
+      document.getElementById('campaign-info').style.display = "none";
+      document.getElementById('fight-select-p1').style.display = "";
+      document.getElementById('fight-select-p2').style.display = "";
+      document.getElementById('fight-start-btn').innerText = "Почати гру";
+    };
+    document.getElementById('fight-mode-campaign').onclick = function() {
+      fightMode = "campaign";
+      this.classList.add("selected");
+      document.getElementById('fight-mode-1vAI').classList.remove("selected");
+      document.getElementById('fight-mode-2p').classList.remove("selected");
+      document.getElementById('fight-player2-label').innerText = "";
+      document.getElementById('campaign-info').style.display = "block";
+      document.getElementById('fight-select-p1').style.display = "";
+      document.getElementById('fight-select-p2').style.display = "none";
+      document.getElementById('fight-start-btn').innerText = "Почати пригоду";
     };
     let fightP1 = 0, fightP2 = 1;
     function renderFightCharSelect(target, selectedIdx, cb) {
@@ -143,10 +174,57 @@
     const fightSel2 = document.getElementById('fight-select-p2');
     renderFightCharSelect(fightSel1, fightP1, idx => {fightP1 = idx; renderFightCharSelect(fightSel1, fightP1, arguments.callee);});
     renderFightCharSelect(fightSel2, fightP2, idx => {fightP2 = idx; renderFightCharSelect(fightSel2, fightP2, arguments.callee);});
-    fightSel1.onclick = () => { if(fightP1 === fightP2) { fightP2 = (fightP2+1)%fightCats.length; renderFightCharSelect(fightSel2, fightP2, idx=>{fightP2=idx;renderFightCharSelect(fightSel2,fightP2,arguments.callee);});}};
-    fightSel2.onclick = () => { if(fightP1 === fightP2) { fightP1 = (fightP1+1)%fightCats.length; renderFightCharSelect(fightSel1, fightP1, idx=>{fightP1=idx;renderFightCharSelect(fightSel1,fightP1,arguments.callee);});}};
+    fightSel1.onclick = () => { if(fightP1 === fightP2) { fightP2 = (fightP2+1)%fightCats.length; renderFightCharSelect(fightSel2, fightP2, idx=>{fightP2=idx;renderFightCharSelect(fightSel2,fightP2,arguments.callee);}); }};
+    fightSel2.onclick = () => { if(fightP1 === fightP2) { fightP1 = (fightP1+1)%fightCats.length; renderFightCharSelect(fightSel1, fightP1, idx=>{fightP1=idx;renderFightCharSelect(fightSel1,fightP1,arguments.callee);}); }};
     document.getElementById('fight-start-btn').onclick = fightStartGame;
     function fightStartGame() {
+      if(fightMode === "campaign") {
+        document.getElementById('fight-menu').style.display = "none";
+        // Пригода, базовий шаблон
+        document.body.insertAdjacentHTML('beforeend', `
+          <div id="campaign-adventure" style="margin:40px auto;max-width:600px;background:#fff9;border-radius:16px;padding:24px 36px;border:3px solid var(--windclan,#d8c359)">
+            <h2>Ваша пригода починається!</h2>
+            <p>Вітаємо, юний учню! Оберіть клан, до якого ви належите:</p>
+            <div id="clan-choice" style="display:flex;gap:18px;justify-content:center;margin:18px 0 24px 0;">
+              <button class="fight-mode-btn" onclick="chooseClan('Грозовий клан')">Грозовий клан</button>
+              <button class="fight-mode-btn" onclick="chooseClan('Вітряний клан')">Вітряний клан</button>
+              <button class="fight-mode-btn" onclick="chooseClan('Річковий клан')">Річковий клан</button>
+              <button class="fight-mode-btn" onclick="chooseClan('Тіньовий клан')">Тіньовий клан</button>
+            </div>
+            <div id="adventure-progress"></div>
+          </div>
+        `);
+        window.chooseClan = function(clan) {
+          document.getElementById('clan-choice').style.display = 'none';
+          document.getElementById('adventure-progress').innerHTML = `
+            <p>Ви обрали: <b>${clan}</b>! Ваш наставник дає вам важливе завдання: дістатися до Місячного Каменя та принести звістку для старійшини.</p>
+            <button class="fight-mode-btn" onclick="adventureDecision()">Вирушити у подорож</button>
+          `;
+        };
+        window.adventureDecision = function() {
+          document.getElementById('adventure-progress').innerHTML = `
+            <p>На вашому шляху зустрічається роздоріжжя. Куди підете?</p>
+            <button class="fight-mode-btn" onclick="adventureResult('ліс')">Через ліс</button>
+            <button class="fight-mode-btn" onclick="adventureResult('річка')">Вздовж річки</button>
+          `;
+        };
+        window.adventureResult = function(path) {
+          let text, reward = '';
+          if(path === 'ліс') {
+            text = "Ви сміливо йдете через ліс. Дорога важка, але ви проявили хоробрість!";
+            reward = '<img src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Large_Siamese_cat_tosses_a_mouse.jpg" alt="Воїн Зірок" style="max-width:200px;display:block;margin:18px auto;border-radius:10px;"><br><b>Ексклюзивна нагорода: арт \"Воїн Зірок\"!</b>';
+          } else {
+            text = "Ви обираєте шлях вздовж річки, проявляючи обачність та мудрість!";
+            reward = '<img src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Large_Siamese_cat_tosses_a_mouse.jpg" alt="Воїн Зірок" style="max-width:200px;display:block;margin:18px auto;border-radius:10px;"><br><b>Ексклюзивна нагорода: арт \"Воїн Зірок\"!</b>';
+          }
+          document.getElementById('adventure-progress').innerHTML = `
+            <p>${text}</p>
+            <div style="margin:18px 0;">${reward}</div>
+            <button class="fight-mode-btn" onclick="location.reload()">Повернутися до меню</button>
+          `;
+        };
+        return;
+      }
       if(fightP1 === fightP2) {
         alert("Виберіть різних персонажів!");
         return;
