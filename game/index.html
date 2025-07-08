@@ -5,17 +5,17 @@
   <style>
     body { font-family: Arial, sans-serif; background: #e6e6e6; text-align: center; }
     .arena { margin: 40px auto; width: 600px; height: 300px; background: #fff; border: 3px solid #333; position: relative; }
-    .cat { position: absolute; top: 100px; width: 100px; height: 150px; }
+    .cat { position: absolute; top: 130px; width: 100px; height: 150px; transition: left 0.12s linear; }
     #cat1 { left: 50px; }
     #cat2 { right: 50px; transform: scaleX(-1); }
     .hp-bar { width: 100px; height: 15px; background: #ccc; margin: 10px auto; }
     .hp { height: 100%; background: #4caf50; }
-    button { font-size: 18px; margin: 10px; padding: 8px 16px; }
+    #result { font-size: 1.3em; margin: 16px; color: #c00; }
   </style>
 </head>
 <body>
   <h1>Коти-вояки: Файтинг</h1>
-  <div class="arena">
+  <div class="arena" id="arena">
     <div id="cat1" class="cat">
       <div class="hp-bar"><div id="hp1" class="hp" style="width:100%"></div></div>
       <b id="name1">Вогнезір</b>
@@ -27,28 +27,101 @@
       <img src="https://i.imgur.com/6LwX6ID.png" width="100" />
     </div>
   </div>
-  <button onclick="attack(1)">Вогнезір атакує</button>
-  <button onclick="attack(2)">Буревій атакує</button>
+  <div>Керування: <b>WASD</b> — рух, <b>Пробіл</b> — атака</div>
   <div id="result"></div>
 
   <script>
+    // Параметри
     let hp1 = 100, hp2 = 100;
+    let pos1 = 50;
+    let pos2 = 450;
+    let canAttack = true;
+    let gameOver = false;
 
-    function attack(attacker) {
-      if (hp1 <= 0 || hp2 <= 0) return;
-      let damage = Math.floor(Math.random() * 15) + 5;
-      if (attacker === 1) {
+    const cat1 = document.getElementById('cat1');
+    const cat2 = document.getElementById('cat2');
+    const hp1bar = document.getElementById('hp1');
+    const hp2bar = document.getElementById('hp2');
+    const result = document.getElementById('result');
+
+    // Перемальовка позицій
+    function updatePosition() {
+      cat1.style.left = pos1 + 'px';
+      cat2.style.left = pos2 + 'px';
+    }
+
+    // Атака гравця
+    function playerAttack() {
+      if (gameOver || !canAttack) return;
+      if (Math.abs(pos1 - pos2) < 110) {
+        let damage = Math.floor(Math.random() * 16) + 5;
         hp2 -= damage;
         if (hp2 < 0) hp2 = 0;
-        document.getElementById("hp2").style.width = hp2 + "%";
-        if (hp2 === 0) document.getElementById("result").innerText = "Вогнезір переміг!";
-      } else {
+        hp2bar.style.width = hp2 + "%";
+        if (hp2 === 0) {
+          result.innerText = "Вогнезір переміг!";
+          gameOver = true;
+        }
+      }
+      canAttack = false;
+      setTimeout(() => canAttack = true, 550); // затримка між ударами
+    }
+
+    // Атака ШІ
+    function aiAttack() {
+      if (gameOver) return;
+      if (Math.abs(pos1 - pos2) < 110) {
+        let damage = Math.floor(Math.random() * 13) + 7;
         hp1 -= damage;
         if (hp1 < 0) hp1 = 0;
-        document.getElementById("hp1").style.width = hp1 + "%";
-        if (hp1 === 0) document.getElementById("result").innerText = "Буревій переміг!";
+        hp1bar.style.width = hp1 + "%";
+        if (hp1 === 0) {
+          result.innerText = "Буревій переміг!";
+          gameOver = true;
+        }
       }
     }
+
+    // Рух ШІ
+    function aiMove() {
+      if (gameOver) return;
+      // Йде до гравця, якщо далеко
+      if (pos2 > pos1 + 110) pos2 -= 10;
+      else if (pos2 < pos1 + 80) pos2 += 10;
+      updatePosition();
+      if (Math.abs(pos1 - pos2) < 110) aiAttack();
+    }
+
+    // Керування гравцем
+    document.addEventListener('keydown', function(e) {
+      if (gameOver) return;
+      switch(e.key.toLowerCase()) {
+        case 'a': // вліво
+          pos1 = Math.max(0, pos1 - 15);
+          updatePosition();
+          break;
+        case 'd': // вправо
+          pos1 = Math.min(500, pos1 + 15);
+          updatePosition();
+          break;
+        case 'w': // стрибок (імітація)
+          cat1.style.top = "80px";
+          setTimeout(() => cat1.style.top = "130px", 250);
+          break;
+        case 's': // присісти (імітація)
+          cat1.style.top = "170px";
+          setTimeout(() => cat1.style.top = "130px", 250);
+          break;
+        case ' ': // атака
+          playerAttack();
+          break;
+      }
+    });
+
+    // Ініціалізація
+    updatePosition();
+    // ШІ кожні 350 мс рухається та атакує
+    setInterval(aiMove, 350);
   </script>
 </body>
 </html>
