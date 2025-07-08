@@ -6,7 +6,7 @@
     body { font-family: Arial, sans-serif; background: #b7e0fe; text-align: center; }
     .arena {
       margin: 40px auto; width: 700px; height: 320px;
-      background: url('https://i.imgur.com/hA0wKLe.jpg') center/cover no-repeat;
+      background: url('https://upload.wikimedia.org/wikipedia/commons/5/5e/Meadow_in_summer_002.jpg') center/cover no-repeat;
       border: 4px solid #333; position: relative; box-shadow: 0 8px 32px #0006;
     }
     .cat {
@@ -91,13 +91,28 @@
   </div>
 
   <script>
-    // Персонажі
+    // Вікіпедійні/Commons коти
     const cats = [
-      {name: "Вогнезір", img: "https://i.imgur.com/9Y5m6jS.png"},
-      {name: "Буревій", img: "https://i.imgur.com/6LwX6ID.png"},
-      {name: "Сірозоря", img: "https://i.imgur.com/4KjK1yL.png"},
-      {name: "Листяна Лапа", img: "https://i.imgur.com/Gz7r0hO.png"},
-      {name: "Зоряний Лист", img: "https://i.imgur.com/5VrkP4d.png"}
+      {
+        name: "Вогнезір",
+        img: "https://upload.wikimedia.org/wikipedia/commons/6/69/June_odd-eyed-cat.jpg"
+      },
+      {
+        name: "Буревій",
+        img: "https://upload.wikimedia.org/wikipedia/commons/8/8c/Cat_poster_1.jpg"
+      },
+      {
+        name: "Сірозоря",
+        img: "https://upload.wikimedia.org/wikipedia/commons/0/0b/Cat_poster_2.jpg"
+      },
+      {
+        name: "Листяна Лапа",
+        img: "https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg"
+      },
+      {
+        name: "Зоряний Лист",
+        img: "https://upload.wikimedia.org/wikipedia/commons/1/1e/Large_Siamese_cat_tosses_a_mouse.jpg"
+      }
     ];
 
     // --- Вибір режиму ---
@@ -130,8 +145,8 @@
     }
     const sel1 = document.getElementById('select-p1');
     const sel2 = document.getElementById('select-p2');
-    renderCharSelect(sel1, p1, idx => {p1 = idx; renderCharSelect(sel1, p1, idx=>{p1=idx;renderCharSelect(sel1,p1,arguments.callee)});});
-    renderCharSelect(sel2, p2, idx => {p2 = idx; renderCharSelect(sel2, p2, idx=>{p2=idx;renderCharSelect(sel2,p2,arguments.callee)});});
+    renderCharSelect(sel1, p1, idx => {p1 = idx; renderCharSelect(sel1, p1, arguments.callee);});
+    renderCharSelect(sel2, p2, idx => {p2 = idx; renderCharSelect(sel2, p2, arguments.callee);});
 
     // Заборона вибирати однакових котів для обох
     sel1.onclick = () => {
@@ -180,7 +195,7 @@
 
     function showHit(x, y) {
       const hit = document.createElement('img');
-      hit.src = 'https://i.imgur.com/ZtF1q5i.png';
+      hit.src = 'https://upload.wikimedia.org/wikipedia/commons/8/8e/OOjs_UI_icon_alert-yellow.svg'; // теж із вікі
       hit.className = 'hit-effect';
       hit.style.left = x + 'px';
       hit.style.top = y + 'px';
@@ -262,7 +277,6 @@
       updatePosition();
       if (Math.abs(pos1 - pos2) < 120 && Math.random() > 0.4) attack(2);
     }
-
   </script>
 </body>
 </html>
