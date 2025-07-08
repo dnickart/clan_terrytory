@@ -1,310 +1,261 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Коти-вояки: Файтинг</title>
+<section id="fightgame" class="section" aria-labelledby="fight-heading">
   <style>
-    body { font-family: Arial, sans-serif; background: #b7e0fe; text-align: center; }
-    .arena {
-      margin: 40px auto; width: 700px; height: 320px;
+    .fight-arena {
+      margin: 40px auto;
+      width: 700px;
+      height: 320px;
       background: url('https://upload.wikimedia.org/wikipedia/commons/5/5e/Meadow_in_summer_002.jpg') center/cover no-repeat;
-      border: 4px solid #333; position: relative; box-shadow: 0 8px 32px #0006;
+      border: 4px solid var(--shadowclan, #6e4a8c);
+      position: relative;
+      box-shadow: 0 8px 32px #0006;
+      border-radius: var(--radius-lg, 16px);
+      overflow: hidden;
     }
-    .cat {
+    .fight-cat {
       position: absolute; top: 130px; width: 110px; height: 155px;
       transition: left 0.12s linear, top 0.1s linear; z-index: 2;
+      filter: drop-shadow(0 6px 16px #0007);
     }
-    .hp-bar {
+    .fight-hp-bar {
       width: 110px; height: 15px; background: #ccc; margin: 8px auto 0 auto;
       border-radius: 8px; overflow: hidden; border: 1px solid #333;
+      background: linear-gradient(90deg, var(--deep-forest, #0a0f1a), #ccc);
     }
-    .hp {
-      height: 100%; background: linear-gradient(90deg, #66e244, #19c70b); transition: width 0.2s;
+    .fight-hp {
+      height: 100%; background: linear-gradient(90deg, var(--windclan, #d8c359), var(--starclan, #e4e8f0)); transition: width 0.2s;
     }
-    .cat-name {
+    .fight-cat-name {
       background: #fff8; padding: 2px 8px; border-radius: 7px; margin: 0 0 2px 0;
-      font-weight: bold; color: #333;
+      font-weight: bold; color: var(--deep-forest, #0a0f1a);
+      text-align: center;
     }
-    .hit-effect {
+    .fight-hit-effect {
       position: absolute; width: 60px; height: 60px; pointer-events: none; z-index: 5;
-      animation: hitanim 0.4s forwards;
+      animation: fight-hit 0.4s forwards;
     }
-    @keyframes hitanim {
+    @keyframes fight-hit {
       0% { opacity: 1; transform: scale(1);}
       100% { opacity: 0; transform: scale(1.7);}
     }
-    #result { font-size: 1.5em; margin: 18px; color: #c00; text-shadow: 1px 2px 8px #fff; }
-    .menu, #game-ui { margin: 16px auto; width: 750px; }
-    .char-select, .mode-select {
+    .fight-menu, .fight-ui { margin: 16px auto; width: 700px; }
+    .fight-char-select, .fight-mode-select {
       display: flex; gap: 24px; justify-content: center; margin: 24px 0 16px 0;
     }
-    .char-option {
-      border: 3px solid #888; border-radius: 10px; padding: 6px 10px 0 10px;
+    .fight-char-option {
+      border: 3px solid var(--shadowclan, #6e4a8c); border-radius: 10px; padding: 6px 10px 0 10px;
       background: #fff6; cursor: pointer; transition: border 0.2s, transform 0.2s;
+      min-width: 80px;
     }
-    .char-option.selected { border: 3px solid #1a5; transform: scale(1.07);}
-    .mode-btn {
+    .fight-char-option.selected { border: 3px solid var(--thunderclan, #c84a31); transform: scale(1.07);}
+    .fight-mode-btn {
       font-size: 1.1em; padding: 10px 25px; margin: 0 12px;
-      background: #fff; border: 2px solid #337; border-radius: 7px; cursor:pointer;
+      background: var(--deep-forest, #0a0f1a); color: var(--starclan, #e4e8f0);
+      border: 2px solid var(--windclan, #d8c359); border-radius: 7px; cursor:pointer;
       transition: background 0.2s, border 0.2s;
     }
-    .mode-btn.selected { background: #c4e9ff; border: 2px solid #0a7; }
-    #controls { margin: 8px; }
+    .fight-mode-btn.selected { background: var(--moonlight, #c9d6ea); color: var(--deep-forest, #0a0f1a); border: 2px solid var(--thunderclan, #c84a31);}
+    .fight-controls { margin: 8px; }
+    .fight-result { font-size: 1.5em; margin: 18px; color: var(--error, #ff6b6b); text-shadow: 1px 2px 8px #fff; }
     @media (max-width: 800px) {
-      .arena, .menu, #game-ui { width: 99vw; }
+      .fight-arena, .fight-menu, .fight-ui { width: 99vw; }
     }
   </style>
-</head>
-<body>
-  <h1>Коти-вояки: Файтинг</h1>
-  <div id="menu" class="menu">
-    <h2>Вибір режиму</h2>
-    <div class="mode-select">
-      <button class="mode-btn selected" id="mode-1vAI">1 Гравець (проти ШІ)</button>
-      <button class="mode-btn" id="mode-2p">2 Гравці (на одному комп’ютері)</button>
+  <div class="fight-menu" id="fight-menu">
+    <h2 id="fight-heading">Файтинг: Коти-Вояки</h2>
+    <div class="fight-mode-select">
+      <button class="fight-mode-btn selected" id="fight-mode-1vAI">1 Гравець (проти ШІ)</button>
+      <button class="fight-mode-btn" id="fight-mode-2p">2 Гравці (на одному комп’ютері)</button>
     </div>
-    <h2>Вибір персонажів</h2>
     <div style="font-weight:bold">Гравець 1</div>
-    <div class="char-select" id="select-p1"></div>
-    <div id="player2-label" style="font-weight:bold">Гравець 2 / ШІ</div>
-    <div class="char-select" id="select-p2"></div>
+    <div class="fight-char-select" id="fight-select-p1"></div>
+    <div id="fight-player2-label" style="font-weight:bold">Гравець 2 / ШІ</div>
+    <div class="fight-char-select" id="fight-select-p2"></div>
     <br>
-    <button id="start-btn" class="mode-btn" style="font-size:1.2em; background:#b7e0fe;">Почати гру</button>
-    <div style="margin-top:20px; color:#666;">Управління: <b>WASD</b> і <b>Пробіл</b> — Гравець 1; <b>Стрілки</b> і <b>Enter</b> — Гравець 2</div>
+    <button id="fight-start-btn" class="fight-mode-btn" style="font-size:1.2em; background:var(--windclan, #d8c359); color:var(--deep-forest, #0a0f1a);">Почати гру</button>
+    <div style="margin-top:20px; color:var(--moonlight, #c9d6ea);">Управління: <b>WASD</b> і <b>Пробіл</b> — Гравець 1; <b>Стрілки</b> і <b>Enter</b> — Гравець 2</div>
   </div>
-
-  <div id="game-ui" style="display:none">
-    <div class="arena" id="arena">
-      <div id="cat1" class="cat" style="display:none">
-        <div class="hp-bar"><div id="hp1" class="hp" style="width:100%"></div></div>
-        <div class="cat-name" id="name1"></div>
-        <img id="img1" src="" width="110" draggable="false" />
+  <div class="fight-ui" id="fight-ui" style="display:none">
+    <div class="fight-arena" id="fight-arena">
+      <div id="fight-cat1" class="fight-cat" style="display:none">
+        <div class="fight-hp-bar"><div id="fight-hp1" class="fight-hp" style="width:100%"></div></div>
+        <div class="fight-cat-name" id="fight-name1"></div>
+        <img id="fight-img1" src="" width="110" draggable="false" />
       </div>
-      <div id="cat2" class="cat" style="display:none">
-        <div class="hp-bar"><div id="hp2" class="hp" style="width:100%"></div></div>
-        <div class="cat-name" id="name2"></div>
-        <img id="img2" src="" width="110" draggable="false" />
+      <div id="fight-cat2" class="fight-cat" style="display:none">
+        <div class="fight-hp-bar"><div id="fight-hp2" class="fight-hp" style="width:100%"></div></div>
+        <div class="fight-cat-name" id="fight-name2"></div>
+        <img id="fight-img2" src="" width="110" draggable="false" />
       </div>
     </div>
-    <div id="controls"></div>
-    <div id="result"></div>
-    <button onclick="location.reload()" class="mode-btn">Повернутися до меню</button>
+    <div class="fight-controls" id="fight-controls"></div>
+    <div class="fight-result" id="fight-result"></div>
+    <button onclick="location.reload()" class="fight-mode-btn">Повернутися до меню</button>
   </div>
-
   <script>
-    // Зображення котів із Wikimedia Commons
-    const cats = [
-      {
-        name: "Вогнезір",
-        img: "https://upload.wikimedia.org/wikipedia/commons/6/69/June_odd-eyed-cat.jpg"
-      },
-      {
-        name: "Буревій",
-        img: "https://upload.wikimedia.org/wikipedia/commons/8/8c/Cat_poster_1.jpg"
-      },
-      {
-        name: "Сірозоря",
-        img: "https://upload.wikimedia.org/wikipedia/commons/0/0b/Cat_poster_2.jpg"
-      },
-      {
-        name: "Листяна Лапа",
-        img: "https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg"
-      },
-      {
-        name: "Зоряний Лист",
-        img: "https://upload.wikimedia.org/wikipedia/commons/1/1e/Large_Siamese_cat_tosses_a_mouse.jpg"
-      }
+    // Коти (Wikimedia Commons)
+    const fightCats = [
+      {name: "Вогнезір", img: "https://upload.wikimedia.org/wikipedia/commons/6/69/June_odd-eyed-cat.jpg"},
+      {name: "Буревій", img: "https://upload.wikimedia.org/wikipedia/commons/8/8c/Cat_poster_1.jpg"},
+      {name: "Сірозоря", img: "https://upload.wikimedia.org/wikipedia/commons/0/0b/Cat_poster_2.jpg"},
+      {name: "Листяна Лапа", img: "https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg"},
+      {name: "Зоряний Лист", img: "https://upload.wikimedia.org/wikipedia/commons/1/1e/Large_Siamese_cat_tosses_a_mouse.jpg"}
     ];
-
-    // --- Вибір режиму ---
-    let mode = "1vAI"; // modes: 1vAI, 2p
-
-    document.getElementById('mode-1vAI').onclick = function() {
-      mode = "1vAI";
+    let fightMode = "1vAI";
+    document.getElementById('fight-mode-1vAI').onclick = function() {
+      fightMode = "1vAI";
       this.classList.add("selected");
-      document.getElementById('mode-2p').classList.remove("selected");
-      document.getElementById('player2-label').innerText = "ШІ";
+      document.getElementById('fight-mode-2p').classList.remove("selected");
+      document.getElementById('fight-player2-label').innerText = "ШІ";
     };
-    document.getElementById('mode-2p').onclick = function() {
-      mode = "2p";
+    document.getElementById('fight-mode-2p').onclick = function() {
+      fightMode = "2p";
       this.classList.add("selected");
-      document.getElementById('mode-1vAI').classList.remove("selected");
-      document.getElementById('player2-label').innerText = "Гравець 2";
+      document.getElementById('fight-mode-1vAI').classList.remove("selected");
+      document.getElementById('fight-player2-label').innerText = "Гравець 2";
     };
-
-    // --- Вибір персонажів ---
-    let p1 = 0, p2 = 1;
-    function renderCharSelect(target, selectedIdx, cb) {
+    let fightP1 = 0, fightP2 = 1;
+    function renderFightCharSelect(target, selectedIdx, cb) {
       target.innerHTML = "";
-      cats.forEach((cat, idx) => {
+      fightCats.forEach((cat, idx) => {
         let el = document.createElement('div');
-        el.className = "char-option" + (selectedIdx === idx ? " selected" : "");
+        el.className = "fight-char-option" + (selectedIdx === idx ? " selected" : "");
         el.innerHTML = `<img src="${cat.img}" width="64"><br>${cat.name}`;
         el.onclick = () => cb(idx);
         target.appendChild(el);
       });
     }
-    const sel1 = document.getElementById('select-p1');
-    const sel2 = document.getElementById('select-p2');
-    renderCharSelect(sel1, p1, idx => {p1 = idx; renderCharSelect(sel1, p1, arguments.callee);});
-    renderCharSelect(sel2, p2, idx => {p2 = idx; renderCharSelect(sel2, p2, arguments.callee);});
-
-    // Заборона однакових котів для обох
-    sel1.onclick = () => {
-      if(p1 === p2) { p2 = (p2+1)%cats.length; renderCharSelect(sel2, p2, idx=>{p2=idx;renderCharSelect(sel2,p2,arguments.callee)});}
-    };
-    sel2.onclick = () => {
-      if(p1 === p2) { p1 = (p1+1)%cats.length; renderCharSelect(sel1, p1, idx=>{p1=idx;renderCharSelect(sel1,p1,arguments.callee)});}
-    };
-
-    // --- Почати гру ---
-    document.getElementById('start-btn').onclick = startGame;
-    function startGame() {
-      if(p1 === p2) {
+    const fightSel1 = document.getElementById('fight-select-p1');
+    const fightSel2 = document.getElementById('fight-select-p2');
+    renderFightCharSelect(fightSel1, fightP1, idx => {fightP1 = idx; renderFightCharSelect(fightSel1, fightP1, arguments.callee);});
+    renderFightCharSelect(fightSel2, fightP2, idx => {fightP2 = idx; renderFightCharSelect(fightSel2, fightP2, arguments.callee);});
+    fightSel1.onclick = () => { if(fightP1 === fightP2) { fightP2 = (fightP2+1)%fightCats.length; renderFightCharSelect(fightSel2, fightP2, idx=>{fightP2=idx;renderFightCharSelect(fightSel2,fightP2,arguments.callee)});} };
+    fightSel2.onclick = () => { if(fightP1 === fightP2) { fightP1 = (fightP1+1)%fightCats.length; renderFightCharSelect(fightSel1, fightP1, idx=>{fightP1=idx;renderFightCharSelect(fightSel1,fightP1,arguments.callee)});} };
+    document.getElementById('fight-start-btn').onclick = fightStartGame;
+    function fightStartGame() {
+      if(fightP1 === fightP2) {
         alert("Виберіть різних персонажів!");
         return;
       }
-      document.getElementById('menu').style.display = "none";
-      document.getElementById('game-ui').style.display = "block";
-      startFight();
+      document.getElementById('fight-menu').style.display = "none";
+      document.getElementById('fight-ui').style.display = "block";
+      fightStartFight();
     }
-
-    // --- Геймплей ---
-    let hp1 = 100, hp2 = 100, pos1 = 70, pos2 = 510, canAttack1 = true, canAttack2 = true, gameOver = false;
-    let aiInterval, aiDodgeCooldown = 0, aiAttackCooldown = 0;
-    function startFight() {
-      document.getElementById('cat1').style.display = "";
-      document.getElementById('cat2').style.display = "";
-      document.getElementById('img1').src = cats[p1].img;
-      document.getElementById('img2').src = cats[p2].img;
-      document.getElementById('name1').innerText = cats[p1].name;
-      document.getElementById('name2').innerText = cats[p2].name;
-      document.getElementById('hp1').style.width = "100%";
-      document.getElementById('hp2').style.width = "100%";
-      hp1 = 100; hp2 = 100; pos1 = 70; pos2 = 510; canAttack1 = true; canAttack2 = true; gameOver = false;
-      aiDodgeCooldown = 0; aiAttackCooldown = 0;
-      updatePosition();
-
-      document.getElementById('controls').innerHTML = mode === "2p"
+    // Геймплей
+    let fightHp1 = 100, fightHp2 = 100, fightPos1 = 70, fightPos2 = 510, fightCanAttack1 = true, fightCanAttack2 = true, fightGameOver = false;
+    let fightAiInterval, fightAiDodgeCooldown = 0, fightAiAttackCooldown = 0;
+    function fightStartFight() {
+      document.getElementById('fight-cat1').style.display = "";
+      document.getElementById('fight-cat2').style.display = "";
+      document.getElementById('fight-img1').src = fightCats[fightP1].img;
+      document.getElementById('fight-img2').src = fightCats[fightP2].img;
+      document.getElementById('fight-name1').innerText = fightCats[fightP1].name;
+      document.getElementById('fight-name2').innerText = fightCats[fightP2].name;
+      document.getElementById('fight-hp1').style.width = "100%";
+      document.getElementById('fight-hp2').style.width = "100%";
+      fightHp1 = 100; fightHp2 = 100; fightPos1 = 70; fightPos2 = 510; fightCanAttack1 = true; fightCanAttack2 = true; fightGameOver = false;
+      fightAiDodgeCooldown = 0; fightAiAttackCooldown = 0;
+      fightUpdatePosition();
+      document.getElementById('fight-controls').innerHTML = fightMode === "2p"
         ? "Гравець 1: <b>WASD</b> і <b>Пробіл</b> (атака) | Гравець 2: <b>Стрілки</b> і <b>Enter</b> (атака)"
         : "Гравець 1: <b>WASD</b> і <b>Пробіл</b> (атака), ШІ керується автоматично";
-
-      if(mode === "1vAI") aiInterval = setInterval(aiMove, 330);
+      if(fightMode === "1vAI") fightAiInterval = setInterval(fightAiMove, 330);
     }
-
-    function showHit(x, y) {
+    function fightShowHit(x, y) {
       const hit = document.createElement('img');
       hit.src = 'https://upload.wikimedia.org/wikipedia/commons/8/8e/OOjs_UI_icon_alert-yellow.svg';
-      hit.className = 'hit-effect';
+      hit.className = 'fight-hit-effect';
       hit.style.left = x + 'px';
       hit.style.top = y + 'px';
-      document.getElementById('arena').appendChild(hit);
+      document.getElementById('fight-arena').appendChild(hit);
       setTimeout(() => hit.remove(), 400);
     }
-
-    function updatePosition() {
-      document.getElementById('cat1').style.left = pos1 + 'px';
-      document.getElementById('cat2').style.left = pos2 + 'px';
+    function fightUpdatePosition() {
+      document.getElementById('fight-cat1').style.left = fightPos1 + 'px';
+      document.getElementById('fight-cat2').style.left = fightPos2 + 'px';
     }
-
-    function attack(attacker) {
-      if(gameOver) return;
-      if(attacker === 1 && !canAttack1) return;
-      if(attacker === 2 && !canAttack2) return;
-      if(Math.abs(pos1 - pos2) < 120) {
+    function fightAttack(attacker) {
+      if(fightGameOver) return;
+      if(attacker === 1 && !fightCanAttack1) return;
+      if(attacker === 2 && !fightCanAttack2) return;
+      if(Math.abs(fightPos1 - fightPos2) < 120) {
         let damage = Math.floor(Math.random() * 14) + 7;
         if(attacker === 1) {
-          hp2 -= damage; if(hp2 < 0) hp2 = 0;
-          document.getElementById("hp2").style.width = hp2 + "%";
-          showHit(pos2 + 50, 100);
-          document.getElementById("img1").style.filter = "brightness(1.2)";
-          setTimeout(() => document.getElementById("img1").style.filter = "", 150);
-          if (hp2 === 0) { endGame(1); }
-          canAttack1 = false;
-          setTimeout(() => canAttack1 = true, 420);
+          fightHp2 -= damage; if(fightHp2 < 0) fightHp2 = 0;
+          document.getElementById("fight-hp2").style.width = fightHp2 + "%";
+          fightShowHit(fightPos2 + 50, 100);
+          document.getElementById("fight-img1").style.filter = "brightness(1.2)";
+          setTimeout(() => document.getElementById("fight-img1").style.filter = "", 150);
+          if (fightHp2 === 0) { fightEndGame(1); }
+          fightCanAttack1 = false;
+          setTimeout(() => fightCanAttack1 = true, 420);
         } else {
-          hp1 -= damage; if(hp1 < 0) hp1 = 0;
-          document.getElementById("hp1").style.width = hp1 + "%";
-          showHit(pos1 + 50, 100);
-          document.getElementById("img2").style.filter = "brightness(1.2)";
-          setTimeout(() => document.getElementById("img2").style.filter = "", 150);
-          if (hp1 === 0) { endGame(2); }
-          canAttack2 = false;
-          setTimeout(() => canAttack2 = true, 420);
+          fightHp1 -= damage; if(fightHp1 < 0) fightHp1 = 0;
+          document.getElementById("fight-hp1").style.width = fightHp1 + "%";
+          fightShowHit(fightPos1 + 50, 100);
+          document.getElementById("fight-img2").style.filter = "brightness(1.2)";
+          setTimeout(() => document.getElementById("fight-img2").style.filter = "", 150);
+          if (fightHp1 === 0) { fightEndGame(2); }
+          fightCanAttack2 = false;
+          setTimeout(() => fightCanAttack2 = true, 420);
         }
       }
     }
-
-    function endGame(winner) {
-      gameOver = true;
-      if(aiInterval) clearInterval(aiInterval);
+    function fightEndGame(winner) {
+      fightGameOver = true;
+      if(fightAiInterval) clearInterval(fightAiInterval);
       if(winner === 1)
-        document.getElementById('result').innerHTML = cats[p1].name + " переміг!";
+        document.getElementById('fight-result').innerHTML = fightCats[fightP1].name + " переміг!";
       else
-        document.getElementById('result').innerHTML = cats[p2].name + " переміг!";
+        document.getElementById('fight-result').innerHTML = fightCats[fightP2].name + " переміг!";
     }
-
-    // --- Керування ---
     document.addEventListener('keydown', function(e) {
-      if(gameOver || document.getElementById('game-ui').style.display === "none") return;
-      // Гравець 1: WASD + пробіл
+      if(fightGameOver || document.getElementById('fight-ui').style.display === "none") return;
       switch(e.key.toLowerCase()) {
-        case 'a': pos1 = Math.max(0, pos1 - 17); updatePosition(); break;
-        case 'd': pos1 = Math.min(590, pos1 + 17); updatePosition(); break;
-        case 'w': document.getElementById('cat1').style.top = "85px"; setTimeout(()=>document.getElementById('cat1').style.top="130px",180); break;
-        case 's': document.getElementById('cat1').style.top = "165px"; setTimeout(()=>document.getElementById('cat1').style.top="130px",180); break;
-        case ' ': attack(1); break;
+        case 'a': fightPos1 = Math.max(0, fightPos1 - 17); fightUpdatePosition(); break;
+        case 'd': fightPos1 = Math.min(590, fightPos1 + 17); fightUpdatePosition(); break;
+        case 'w': document.getElementById('fight-cat1').style.top = "85px"; setTimeout(()=>document.getElementById('fight-cat1').style.top="130px",180); break;
+        case 's': document.getElementById('fight-cat1').style.top = "165px"; setTimeout(()=>document.getElementById('fight-cat1').style.top="130px",180); break;
+        case ' ': fightAttack(1); break;
       }
-      // Гравець 2: Стрілки + Enter (лише у 2p)
-      if(mode === "2p") {
+      if(fightMode === "2p") {
         switch(e.key) {
-          case "ArrowLeft": pos2 = Math.max(0, pos2 - 17); updatePosition(); break;
-          case "ArrowRight": pos2 = Math.min(590, pos2 + 17); updatePosition(); break;
-          case "ArrowUp": document.getElementById('cat2').style.top = "85px"; setTimeout(()=>document.getElementById('cat2').style.top="130px",180); break;
-          case "ArrowDown": document.getElementById('cat2').style.top = "165px"; setTimeout(()=>document.getElementById('cat2').style.top="130px",180); break;
-          case "Enter": attack(2); break;
+          case "ArrowLeft": fightPos2 = Math.max(0, fightPos2 - 17); fightUpdatePosition(); break;
+          case "ArrowRight": fightPos2 = Math.min(590, fightPos2 + 17); fightUpdatePosition(); break;
+          case "ArrowUp": document.getElementById('fight-cat2').style.top = "85px"; setTimeout(()=>document.getElementById('fight-cat2').style.top="130px",180); break;
+          case "ArrowDown": document.getElementById('fight-cat2').style.top = "165px"; setTimeout(()=>document.getElementById('fight-cat2').style.top="130px",180); break;
+          case "Enter": fightAttack(2); break;
         }
       }
     });
-
     // --- Розумний ШІ ---
-    function aiMove() {
-      if (gameOver) return;
-      // Зменшуємо кулдауни
-      if (aiDodgeCooldown > 0) aiDodgeCooldown--;
-      if (aiAttackCooldown > 0) aiAttackCooldown--;
-
-      // Якщо мало HP, іноді відступає
-      if (hp2 < 30 && Math.random() < 0.25 && pos2 < 590) {
-        pos2 += 20 + Math.random() * 10;
-        updatePosition();
+    function fightAiMove() {
+      if (fightGameOver) return;
+      if (fightAiDodgeCooldown > 0) fightAiDodgeCooldown--;
+      if (fightAiAttackCooldown > 0) fightAiAttackCooldown--;
+      if (fightHp2 < 30 && Math.random() < 0.25 && fightPos2 < 590) {
+        fightPos2 += 20 + Math.random() * 10;
+        fightUpdatePosition();
         return;
       }
-
-      // Якщо гравець близько, можливість ухилитись
-      if (Math.abs(pos2 - pos1) < 140 && aiDodgeCooldown === 0 && Math.random() < 0.18) {
-        aiDodge();
-        aiDodgeCooldown = 4 + Math.floor(Math.random() * 4); // Кулдаун на ухилення
+      if (Math.abs(fightPos2 - fightPos1) < 140 && fightAiDodgeCooldown === 0 && Math.random() < 0.18) {
+        fightAiDodge();
+        fightAiDodgeCooldown = 4 + Math.floor(Math.random() * 4);
         return;
       }
-
-      // Рух до гравця, але не завжди
-      if (Math.abs(pos2 - pos1) > 120) {
+      if (Math.abs(fightPos2 - fightPos1) > 120) {
         if (Math.random() > 0.15) {
-          pos2 += (pos2 > pos1 ? -10 : 10); // підходить до гравця
-          updatePosition();
+          fightPos2 += (fightPos2 > fightPos1 ? -10 : 10);
+          fightUpdatePosition();
         }
       } else {
-        // В межах атаки
-        if (aiAttackCooldown === 0 && Math.random() > 0.25) {
-          attack(2);
-          aiAttackCooldown = 3 + Math.floor(Math.random() * 3); // затримка між ударами
+        if (fightAiAttackCooldown === 0 && Math.random() > 0.25) {
+          fightAttack(2);
+          fightAiAttackCooldown = 3 + Math.floor(Math.random() * 3);
         }
       }
     }
-
-    function aiDodge() {
-      // Імітація випадкового стрибка вгору або вниз
-      const cat2 = document.getElementById('cat2');
+    function fightAiDodge() {
+      const cat2 = document.getElementById('fight-cat2');
       if (Math.random() > 0.5) {
         cat2.style.top = "85px";
         setTimeout(() => cat2.style.top = "130px", 180);
@@ -314,5 +265,4 @@
       }
     }
   </script>
-</body>
-</html>
+</section>
