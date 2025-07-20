@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Територія Кланів | Офіційний фан-сайт серії Коти-Вояки</title>
+    <link rel="icon" type="image/png" href="https://yt3.ggpht.com/HVxzKui9vKPJoKRxqqyx6W91v-gmTfPowJkSGdoIMCLpUkHwUKIJrGu2ZMISXEeBySKswbaQxw=s600-c-k-c0x00ffffff-no-rj-rp-mo">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Весь CSS з index.html – див. ваш оригінальний файл */
+        /* ... (весь наведений CSS залишити тут без змін) ... */
+    </style>
+</head>
+<body>
+    <!-- Навігація -->
+    <header>
+        <nav aria-label="Основна навігація">
+            <div class="logo">
+                <i class="fas fa-paw" aria-hidden="true"></i>
+                <div class="logo-text">Територія Кланів</div>
+            </div>
+            <div class="nav-container">
+                <ul class="nav-list" role="menubar">
+                    <li class="nav-item" role="none">
+                        <a href="#home" class="nav-link" role="menuitem">Головна</a>
+                    </li>
+                    <li class="nav-item" role="none">
+                        <a href="#clans" class="nav-link" role="menuitem">Клани</a>
+                    </li>
+                    <li class="nav-item" role="none">
+                        <a href="#characters" class="nav-link" role="menuitem">Персонажі</a>
+                    </li>
+                    <li class="nav-item" role="none">
+                        <a href="#prophecies" class="nav-link" role="menuitem">Пророцтва</a>
+                    </li>
+                    <li class="nav-item" role="none">
+                        <a href="#codex" class="nav-link" role="menuitem">Кодекс Воїна</a>
+                    </li>
+                    <li class="nav-item" role="none">
+                        <a href="#books" class="nav-link" role="menuitem">Книги</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Прогрес-бар -->
+    <div class="progress-container" aria-label="Прогрес доступу до гри">
+        <div class="progress-title">Прогрес до гри:</div>
+        <div class="progress-stars">
+            <div class="star" id="star-clans" aria-label="Клани: не відвідано"></div>
+            <div class="star" id="star-characters" aria-label="Персонажі: не відвідано"></div>
+            <div class="star" id="star-prophecies" aria-label="Пророцтва: не відвідано"></div>
+            <div class="star" id="star-codex" aria-label="Кодекс Воїна: не відвідано"></div>
+            <div class="star" id="star-books" aria-label="Книги: не відвідано"></div>
+        </div>
+    </div>
+
+    <!-- Головний контент -->
+    <main>
+        <!-- Головна сторінка -->
+        <section id="home" class="section" aria-labelledby="home-heading">
+            <h1 class="main-title" id="home-heading">Територія Кланів</h1>
+            <p class="main-subtitle">Вітаємо на території чотирьох кланів. Сміливість, вірність, честь та мудрість чекають на тебе!</p>
+            <button class="explore-btn" aria-label="Перейти до секції кланів">Дослідити Території</button>
+            <!-- Сліди лап -->
+            <div class="paw-print" style="top: 20%; left: 15%; animation-delay: 0s;"></div>
+            <div class="paw-print" style="top: 30%; left: 25%; animation-delay: 0.5s;"></div>
+            <div class="paw-print" style="top: 40%; left: 35%; animation-delay: 1s;"></div>
+        </section>
+
+        <!-- Секція кланів -->
+        <section id="clans" class="section" aria-labelledby="clans-heading">
+            <div class="clan-section">
+                <h2 class="section-title" id="clans-heading">Чотири Клани</h2>
+                <div class="clans-grid">
+                    <article class="clan-card" aria-labelledby="thunderclan-heading">
+                        <div class="clan-banner thunderclan-bg">
+                            <i class="fas fa-fire clan-icon" aria-hidden="true"></i>
+                        </div>
+                        <div class="clan-content">
+                            <h3 class="clan-name thunderclan" id="thunderclan-heading">Громовий Клан</h3>
+                            <p class="clan-leader">Вожак: Блейзззоря</p>
+                            <p class="clan-description">Хоробрі та сильні воїни, що живуть у лісі. Відомі своєю відданістю та мужністю.</p>
+                        </div>
+                    </article>
+                    <article class="clan-card" aria-labelledby="riverclan-heading">
+                        <div class="clan-banner riverclan-bg">
+                            <i class="fas fa-water clan-icon" aria-hidden="true"></i>
+                        </div>
+                        <div class="clan-content">
+                            <h3 class="clan-name riverclan" id="riverclan-heading">Річковий Клан</h3>
+                            <p class="clan-leader">Вожак: Зіркоцап</p>
+                            <p class="clan-description">Майстри плавання та риболовлі. Живуть біля річки, де будують свої табори на островах.</p>
+                        </div>
+                    </article>
+                    <article class="clan-card" aria-labelledby="windclan-heading">
+                        <div class="clan-banner windclan-bg">
+                            <i class="fas fa-wind clan-icon" aria-hidden="true"></i>
+                        </div>
+                        <div class="clan-content">
+                            <h3 class="clan-name windclan" id="windclan-heading">Клан Вітру</h3>
+                            <p class="clan-leader">Вожак: Орлине Перо</p>
+                            <p class="clan-description">Швидкі та витривалі бігуни, що населяють відкриті рівнини. Відомі своєю незалежністю.</p>
+                        </div>
+                    </article>
+                    <article class="clan-card" aria-labelledby="shadowclan-heading">
+                        <div class="clan-banner shadowclan-bg">
+                            <i class="fas fa-moon clan-icon" aria-hidden="true"></i>
+                        </div>
+                        <div class="clan-content">
+                            <h3 class="clan-name shadowclan" id="shadowclan-heading">Клан Тіні</h3>
+                            <p class="clan-leader">Вожак: Тигрохвіст</p>
+                            <p class="clan-description">Таємничі та хитрі мешканці боліт. Відомі своєю рішучістю та вмінням виживати у темряві.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Секція персонажів -->
+        <section id="characters" class="section" aria-labelledby="characters-heading">
+            <div class="placeholder-container">
+                <div class="placeholder-icon">
+                    <i class="fas fa-cat"></i>
+                </div>
+                <h2 class="placeholder-title" id="characters-heading">Воїни Зірок</h2>
+                <p class="placeholder-description">Тут буде представлено усіх ключових персонажів з усіх кланів. Ви зможете дізнатися більше про їхню історію та долю.</p>
+                <div class="placeholder-grid">
+                    <div class="placeholder-item">
+                        <div class="placeholder-item-title">Головні герої</div>
+                        <div class="placeholder-item-content">Блейзззоря, Зіркоцап, Орлине Перо, Тигрохвіст</div>
+                    </div>
+                    <div class="placeholder-item">
+                        <div class="placeholder-item-title">Зоряне Плем'я</div>
+                        <div class="placeholder-item-content">Листопад, Метелик, Сині Зірки</div>
+                    </div>
+                </div>
+                <div class="placeholder-coming-soon">Скоро з’явиться більше!</div>
+            </div>
+        </section>
+
+        <!-- Секція пророцтв, кодексу та книг – аналогічно додаються блоки із заглушками -->
+        <section id="prophecies" class="section" aria-labelledby="prophecies-heading">
+            <div class="placeholder-container">
+                <div class="placeholder-icon">
+                    <i class="fas fa-scroll"></i>
+                </div>
+                <h2 class="placeholder-title" id="prophecies-heading">Пророцтва</h2>
+                <p class="placeholder-description">Тут з’являться великі пророцтва, що впливали на долю кланів.</p>
+                <div class="placeholder-coming-soon">Скоро з’явиться!</div>
+            </div>
+        </section>
+        <section id="codex" class="section" aria-labelledby="codex-heading">
+            <div class="placeholder-container">
+                <div class="placeholder-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h2 class="placeholder-title" id="codex-heading">Кодекс Воїна</h2>
+                <p class="placeholder-description">Основні закони життя котів-воїнів.</p>
+                <div class="placeholder-coming-soon">Скоро з’явиться!</div>
+            </div>
+        </section>
+        <section id="books" class="section" aria-labelledby="books-heading">
+            <div class="placeholder-container">
+                <div class="placeholder-icon">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <h2 class="placeholder-title" id="books-heading">Книги</h2>
+                <p class="placeholder-description">Повний перелік книг серії "Коти-Вояки" та додаткових матеріалів.</p>
+                <div class="placeholder-coming-soon">Скоро з’явиться!</div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Підвал -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">Територія Кланів</div>
+            <div class="social-links">
+                <a class="social-link" href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                <a class="social-link" href="#" aria-label="Discord"><i class="fab fa-discord"></i></a>
+                <a class="social-link" href="#" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
+            </div>
+            <div class="copyright">© 2025 Територія Кланів. Усі права захищено.</div>
+        </div>
+    </footer>
+</body>
+</html>
