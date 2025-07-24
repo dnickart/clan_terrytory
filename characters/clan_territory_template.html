@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta name="description" content="Сторінка персонажів Воїнів Зірок. Інформація про героїв, клани та їхню історію.">
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Воїни Зірок</title>
+  <style>
+    :root { --deep-forest:#0a0f1a; --moonlight:#e4e8f0; --thunderclan:#c84a31; --riverclan:#4a6fa5; --windclan:#d8c359; --shadowclan:#6e4a8c; --starclan:#e4e8f0; --spacing:1rem; --radius:8px; }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Segoe UI',sans-serif;background:var(--deep-forest);color:var(--moonlight);min-height:100vh;overflow-x:hidden;position:relative;}
+    nav{background:rgba(10,15,26,0.9);backdrop-filter:blur(5px);position:fixed;top:0;width:100%;z-index:1000;padding:.5rem 1rem;}
+    .nav-list{display:flex;gap:1rem;list-style:none;}
+    .nav-link{color:var(--moonlight);text-decoration:none;position:relative;transition:color .3s;}
+    .nav-link.active,.nav-link:hover{color:var(--riverclan);}
+    main{padding-top:60px;max-width:1200px;margin:0 auto;padding:0 1rem;}
+    .section-title{font-size:2.5rem;color:var(--starclan);text-align:center;margin:2rem 0 1rem;position:relative;}
+    .section-title::after{content:'';display:block;width:80px;height:4px;background:var(--thunderclan);margin:.5rem auto;}
+    .card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--spacing);}    
+    .card{background:rgba(20,25,36,0.85);border-radius:var(--radius);overflow:hidden;box-shadow:0 4px 10px rgba(0,0,0,0.5);transition:transform .3s;}
+    .card:hover{transform:translateY(-5px);}
+    .card-img{width:100%;height:200px;object-fit:cover;border-top:4px solid transparent;transition:filter .3s;}
+    .card-img:hover{filter:brightness(1.1);}
+    .card-body{padding:1rem;}
+    .card-body h3{margin-bottom:.5rem;color:var(--thunderclan);}
+    .clan-label{font-style:italic;margin-bottom:.5rem;color:var(--riverclan);}
+  </style>
+</head>
+<body>
+  <nav>
+    <ul class="nav-list">
+      <li><a href="#warriors" class="nav-link active">Воїни Зірок</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <h1 class="section-title">Категорія: Персонажі</h1>
+    <div id="cardGrid" class="card-grid"></div>
+  </main>
+
+  <script>
+    // перси з фандому
+    const warriors = [
+      { name: 'Вогнезір', clan: 'Громовий клан', img: 'https://pm1.aminoapps.com/7133/03b15620a734e56167b2d3ec734f27be5d0377c7r1-540-514v2_128.jpg', desc: 'Легендарний провідник...' },
+      { name: 'Срібнолапка', clan: 'Річковий клан', img: 'https://pm1.aminoapps.com/8861/3b9db7549f393f1e944a709bc583d2a0fd09075er1-1080-1079v2_128.jpg', desc: 'Мужня воїтелька...' },
+      { name: 'Орлине Перо', clan: 'Клан Вітру', img: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/fd3fc036-bca9-457f-92db-ab2ed1d002cd/dfsd5bu-1ed751b4-e609-48d1-8b02-8be8a89de66a.jpg/v1/fill/w_1024,h_706,q_75,strp/ww__eagle_feather_by_kat_naps_dfsd5bu-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NzA2IiwicGF0aCI6IlwvZlwvZmQzZmMwMzYtYmNhOS00NTdmLTkyZGItYWIyZWQxZDAwMmNkXC9kZnNkNWJ1LTFlZDc1MWI0LWU2MDktNDhkMS04YjAyLThiZThhODlkZTY2YS5qcGciLCJ3aWR0aCI6Ijw9MTAyNCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.CvR7TPTPignOLhnInczR4alkLA8vcovOEcamAK5a5Lk', desc: 'Швидкий розвідник...' },
+      { name: 'тигрозор', clan: 'Клан Тіні', img: 'https://cdn.catsinfo.com/1666423440568.jpg', desc: 'Майстер маскування...' },
+      { name: 'Сіросмуг', clan: 'громовий клан', img: 'https://pm1.aminoapps.com/6789/c43ba6552e9a567f75940fb58e5342a54b0d4725v2_hq.jpg', desc: 'Він бессмертний...' },
+      { name: 'Орлякошуб', clan: 'Громовий клан', img: 'https://pm1.aminoapps.com/6649/e8b32c5b6c0f6cf927be858368f5a4551d0ee6d1_128.jpg', desc: 'Сміливий вояк, який у дитинстві був викрадений, але став гідним членом клану...' },
+      // ще 9999999999999999999999999999999999999999999999999999999999999999999 котів...
+    ];
+
+    const grid = document.getElementById('cardGrid');
+    warriors.forEach(w => {
+      const card = document.createElement('div');
+      card.className = 'card ' + w.clan.split(' ')[0].toLowerCase() + 'clan';
+      card.innerHTML = `
+        <img src="${w.img}" class="card-img" alt="${w.name}">
+        <div class="card-body">
+          <h3>${w.name}</h3>
+          <div class="clan-label">${w.clan}</div>
+          <p>${w.desc}</p>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  </script>
+</body>
+</html>
