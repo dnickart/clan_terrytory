@@ -868,6 +868,29 @@
                 height: 3px;
             }
         }
+        
+        /* Стилі для посилання на гру */
+        .game-link {
+            margin-top: 20px;
+        }
+        
+        .game-link a {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(45deg, var(--thunderclan), var(--shadowclan));
+            color: white;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .game-link a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, var(--riverclan), var(--windclan));
+        }
     </style>
 </head>
 <body>
@@ -1008,12 +1031,14 @@
                 <div class="placeholder-image">
                     <i class="fas fa-paw" style="font-size: 3rem;"></i>
                     <span style="margin-left: 10px;">Галерея персонажів</span>
-<div class="placeholder-coming-soon">
-  <a href="https://dnickart.github.io/clan_terrytory/characters/" style="text-decoration: none; color: inherit;">
-    Перейти до персонажів
-  </a>
-</div>
-
+                </div>
+                
+                <div class="placeholder-coming-soon">
+                  <a href="https://dnickart.github.io/clan_terrytory/characters/" style="text-decoration: none; color: inherit;">
+                    Перейти до персонажів
+                  </a>
+                </div>
+            </div>
         </section>
         
         <!-- Секція пророцтв -->
@@ -1144,12 +1169,11 @@
                 </div>
                 
                 <div class="placeholder-coming-soon">Гра стане доступною після перегляду всіх розділів</div>
-<div class="game-link">
-  <a href="https://dnickart.github.io/clan_terrytory/game" target="_blank" rel="noopener">
-    гра
-  </a>
-</div>
-
+                <div class="game-link">
+                  <a href="https://dnickart.github.io/clan_terrytory/game" target="_blank" rel="noopener">
+                    Спробувати гру зараз
+                  </a>
+                </div>
             </div>
         </section>
     </main>
