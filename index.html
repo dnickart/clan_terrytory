@@ -546,6 +546,184 @@
             color: rgba(201, 214, 234, 0.9);
         }
         
+        /* Стилі для кнопки вибору клану */
+        .choose-clan-btn {
+            background: linear-gradient(45deg, rgba(200, 74, 49, 0.3), rgba(200, 74, 49, 0.7));
+            color: var(--moonlight);
+            border: 1px solid var(--thunderclan);
+            padding: var(--spacing-sm) var(--spacing-md);
+            margin-top: var(--spacing-md);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-medium);
+            font-weight: bold;
+        }
+        
+        .riverclan .choose-clan-btn {
+            background: linear-gradient(45deg, rgba(74, 111, 165, 0.3), rgba(74, 111, 165, 0.7));
+            border: 1px solid var(--riverclan);
+        }
+        
+        .windclan .choose-clan-btn {
+            background: linear-gradient(45deg, rgba(216, 195, 89, 0.3), rgba(216, 195, 89, 0.7));
+            border: 1px solid var(--windclan);
+            color: var(--deep-forest);
+        }
+        
+        .shadowclan .choose-clan-btn {
+            background: linear-gradient(45deg, rgba(110, 74, 140, 0.3), rgba(110, 74, 140, 0.7));
+            border: 1px solid var(--shadowclan);
+        }
+        
+        .choose-clan-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Секція громадянства */
+        #citizenship {
+            background: 
+                radial-gradient(circle at center, rgba(228, 232, 240, 0.1) 0%, transparent 40%),
+                var(--deep-forest);
+        }
+        
+        .citizenship-container {
+            max-width: 1200px;
+            width: 100%;
+        }
+        
+        .citizenship-header {
+            text-align: center;
+            margin-bottom: var(--spacing-xxl);
+        }
+        
+        .citizenship-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--spacing-xl);
+        }
+        
+        .clan-badge {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .thunderclan-badge { 
+            background: linear-gradient(45deg, var(--thunderclan), #a83c26);
+            color: #fff;
+        }
+        
+        .riverclan-badge { 
+            background: linear-gradient(45deg, var(--riverclan), #3a5a8c);
+            color: #fff;
+        }
+        
+        .windclan-badge { 
+            background: linear-gradient(45deg, var(--windclan), #c0a84a);
+            color: var(--deep-forest);
+        }
+        
+        .shadowclan-badge { 
+            background: linear-gradient(45deg, var(--shadowclan), #5a3f70);
+            color: #fff;
+        }
+        
+        .citizenship-title {
+            font-size: 2rem;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .citizenship-subtitle {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            color: rgba(201, 214, 234, 0.8);
+        }
+        
+        .citizenship-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: var(--spacing-xl);
+            width: 100%;
+        }
+        
+        .citizen-card {
+            background: rgba(20, 25, 36, 0.7);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: transform var(--transition-medium);
+            border: 1px solid rgba(201, 214, 234, 0.1);
+            backdrop-filter: blur(5px);
+        }
+        
+        .citizen-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        
+        .citizen-header {
+            padding: var(--spacing-md);
+            text-align: center;
+            border-bottom: 1px solid rgba(201, 214, 234, 0.1);
+        }
+        
+        .citizen-name {
+            font-size: 1.4rem;
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .citizen-rank {
+            font-size: 1rem;
+            color: var(--windclan);
+            font-weight: bold;
+        }
+        
+        .citizen-body {
+            padding: var(--spacing-md);
+        }
+        
+        .citizen-detail {
+            display: flex;
+            justify-content: space-between;
+            padding: var(--spacing-xs) 0;
+            border-bottom: 1px solid rgba(201, 214, 234, 0.1);
+        }
+        
+        .citizen-label {
+            font-weight: bold;
+            color: rgba(201, 214, 234, 0.7);
+        }
+        
+        .citizen-value {
+            text-align: right;
+            color: var(--moonlight);
+        }
+        
+        .no-clan-message {
+            text-align: center;
+            padding: var(--spacing-xl);
+            background: rgba(20, 25, 36, 0.7);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(201, 214, 234, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .no-clan-icon {
+            font-size: 4rem;
+            color: var(--windclan);
+            margin-bottom: var(--spacing-md);
+            animation: pulse 2s infinite;
+        }
+        
         /* Секція гри */
         #game-section {
             display: none;
@@ -830,6 +1008,10 @@
             .placeholder-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .citizenship-grid {
+                grid-template-columns: 1fr;
+            }
         }
         
         @media (max-width: 480px) {
@@ -910,6 +1092,9 @@
                         <a href="#clans" class="nav-link" role="menuitem">Клани</a>
                     </li>
                     <li class="nav-item" role="none">
+                        <a href="#citizenship" class="nav-link" role="menuitem">Громадянство</a>
+                    </li>
+                    <li class="nav-item" role="none">
                         <a href="#characters" class="nav-link" role="menuitem">Персонажі</a>
                     </li>
                     <li class="nav-item" role="none">
@@ -961,10 +1146,11 @@
                         <div class="clan-banner thunderclan-bg">
                             <i class="fas fa-fire clan-icon" aria-hidden="true"></i>
                         </div>
-                        <div class="clan-content">
-                            <h3 class="clan-name thunderclan" id="thunderclan-heading">Громовий Клан</h3>
-                            <p class="clan-leader">Вожак: Блейзззоря</p>
+                        <div class="clan-content thunderclan">
+                            <h3 class="clan-name" id="thunderclan-heading">Громовий Клан</h3>
+                            <p class="clan-leader">Вожак: Вогнезір</p>
                             <p class="clan-description">Хоробрі та сильні воїни, що живуть у лісі. Відомі своєю відданістю та мужністю. Їхня територія багата на здобич та схованки.</p>
+                            <button class="choose-clan-btn" data-clan="thunderclan">Обрати цей клан</button>
                         </div>
                     </article>
                     
@@ -972,10 +1158,11 @@
                         <div class="clan-banner riverclan-bg">
                             <i class="fas fa-water clan-icon" aria-hidden="true"></i>
                         </div>
-                        <div class="clan-content">
-                            <h3 class="clan-name riverclan" id="riverclan-heading">Річковий Клан</h3>
-                            <p class="clan-leader">Вожак: Зіркоцап</p>
+                        <div class="clan-content riverclan">
+                            <h3 class="clan-name" id="riverclan-heading">Річковий Клан</h3>
+                            <p class="clan-leader">Вожак: Мрячкозірка</p>
                             <p class="clan-description">Майстри плавання та риболовлі. Живуть біля річки, де будують свої табори на островах. Відомі своєю розсудливістю та спритністю.</p>
+                            <button class="choose-clan-btn" data-clan="riverclan">Обрати цей клан</button>
                         </div>
                     </article>
                     
@@ -983,10 +1170,11 @@
                         <div class="clan-banner windclan-bg">
                             <i class="fas fa-wind clan-icon" aria-hidden="true"></i>
                         </div>
-                        <div class="clan-content">
-                            <h3 class="clan-name windclan" id="windclan-heading">Клан Вітру</h3>
-                            <p class="clan-leader">Вожак: Орлине Перо</p>
+                        <div class="clan-content windclan">
+                            <h3 class="clan-name" id="windclan-heading">Клан Вітру</h3>
+                            <p class="clan-leader">Вожак: Однозір</p>
                             <p class="clan-description">Швидкі та витривалі бігуни, що населяють відкриті рівнини. Відомі своєю незалежністю та зв'язком із вітром і травами.</p>
+                            <button class="choose-clan-btn" data-clan="windclan">Обрати цей клан</button>
                         </div>
                     </article>
                     
@@ -994,12 +1182,40 @@
                         <div class="clan-banner shadowclan-bg">
                             <i class="fas fa-moon clan-icon" aria-hidden="true"></i>
                         </div>
-                        <div class="clan-content">
-                            <h3 class="clan-name shadowclan" id="shadowclan-heading">Клан Тіні</h3>
-                            <p class="clan-leader">Вожак: Тигрохвіст</p>
+                        <div class="clan-content shadowclan">
+                            <h3 class="clan-name" id="shadowclan-heading">Клан Тіні</h3>
+                            <p class="clan-leader">Вожак: Чорнозір</p>
                             <p class="clan-description">Таємничі та хитрі мешканці боліт. Відомі своєю рішучістю та вмінням виживати у найсуворіших умовах.</p>
+                            <button class="choose-clan-btn" data-clan="shadowclan">Обрати цей клан</button>
                         </div>
                     </article>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Секція громадянства -->
+        <section id="citizenship" class="section" aria-labelledby="citizenship-heading">
+            <div class="citizenship-container">
+                <div class="citizenship-header">
+                    <h2 class="section-title" id="citizenship-heading">Громадянство клану</h2>
+                    <p class="citizenship-subtitle">Тут ви можете переглянути інформацію про членів вашого клану</p>
+                </div>
+                
+                <div class="citizenship-content">
+                    <div id="clan-badge-container">
+                        <!-- Динамічний бейдж клану -->
+                    </div>
+                    
+                    <div id="citizenship-grid-container">
+                        <!-- Динамічний список громадян -->
+                    </div>
+                    
+                    <div id="no-clan-message" class="no-clan-message" style="display: none;">
+                        <i class="fas fa-paw no-clan-icon"></i>
+                        <h3>Ви ще не обрали клан</h3>
+                        <p>Будь ласка, поверніться до розділу "Клани" та оберіть свій клан, щоб побачити його громадянство.</p>
+                        <button class="explore-btn" style="margin-top: 20px;" onclick="document.getElementById('clans').scrollIntoView({ behavior: 'smooth' })">Обрати клан</button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1016,7 +1232,7 @@
                 <div class="placeholder-grid">
                     <div class="placeholder-item">
                         <div class="placeholder-item-title">Головні герої</div>
-                        <div class="placeholder-item-content">Блейзззоря, Зіркоцап, Орлине Перо, Тигрохвіст</div>
+                        <div class="placeholder-item-content">Вогнезір, Мрячкозірка, Однозір, Чорнозір</div>
                     </div>
                     <div class="placeholder-item">
                         <div class="placeholder-item-title">Зореклан</div>
@@ -1033,13 +1249,6 @@
                     <span style="margin-left: 10px;">Галерея персонажів</span>
                 </div>
                 
-<!--                <div class="placeholder-coming-soon">
-                  <a href="https://dnickart.github.io/clan_terrytory/characters/" style="text-decoration: none; color: inherit;">
-                    Перейти до персонажів
-                  </a>
-                </div>
-                -->
-                <!-- Кнопка переходу до гри -->
                 <div class="game-link">
                   <a href="https://dnickart.github.io/clan_terrytory/characters/" target="_blank" rel="noopener">
                     Перейти до персонажів
@@ -1272,6 +1481,159 @@
         // Обробник кнопки "Дослідити Території"
         document.querySelector('.explore-btn').addEventListener('click', () => {
             document.getElementById('clans').scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        // Оновлені дані про громадян кланів згідно з українською вікіпедією
+        const clanCitizens = {
+            thunderclan: [
+                { name: "Вогнезір", rank: "Вожак", description: "Рудий кіт із полум'яним хутром", gender: "Кіт", age: "48 місяців", mentor: "Невідомо" },
+                { name: "Ожинокіготь", rank: "Заступник", description: "Темно-брунатний смугастий кіт із бурштиновими очима", gender: "Кіт", age: "42 місяці", mentor: "Вогнезір" },
+                { name: "Сойкопер", rank: "Лікар", description: "Світло-сірий смугастий кіт", gender: "Кіт", age: "56 місяців", mentor: "Невідомо" },
+                { name: "Сіросмуг", rank: "Воїн", description: "Довгошерстий сірий кіт", gender: "Кіт", age: "32 місяці", mentor: "Невідомо" },
+                { name: "Піскошторма", rank: "Воїн", description: "Блідо-руда кішка із зеленими очима", gender: "Кішка", age: "28 місяців", mentor: "Невідомо" },
+                { name: "Голуболапка", rank: "Учень", description: "Пухнаста сіра кішка з блідо-зеленими очима", gender: "Кішка", age: "6 місяців", mentor: "Левожар" },
+                { name: "Папоротехмарка", rank: "Королева", description: "Блідо-сіра кішка із зеленими очима", gender: "Кішка", age: "36 місяців", mentor: "Невідомо" },
+                { name: "Мишошубка", rank: "Старейшина", description: "Маленька темно-коричнева кішка", gender: "Кішка", age: "96 місяців", mentor: "Невідомо" }
+            ],
+            riverclan: [
+                { name: "Мрячкозірка", rank: "Вожак", description: "Кішка зі сріблястим хутром і блакитними очима", gender: "Кішка", age: "52 місяці", mentor: "Невідомо" },
+                { name: "Шуваровус", rank: "Заступник", description: "Чорний кіт", gender: "Кіт", age: "45 місяців", mentor: "Мрячкозірка" },
+                { name: "Мільгокрила", rank: "Лікар", description: "Золотиста кішка із поцяткованим хутром", gender: "Кішка", age: "60 місяців", mentor: "Невідомо" },
+                { name: "Сіромрячка", rank: "Воїн", description: "Світло-сіра смугаста кішка", gender: "Кішка", age: "30 місяців", mentor: "Невідомо" },
+                { name: "Пстругострумка", rank: "Воїн", description: "Світло-сіра смугаста кішка", gender: "Кішка", age: "26 місяців", mentor: "Невідомо" },
+                { name: "Мохолапка", rank: "Учень", description: "Коричнево-біла кішка", gender: "Кішка", age: "5 місяців", mentor: "Мілкохвоста" },
+                { name: "Смеркошубка", rank: "Королева", description: "Коричнева смугаста кішка", gender: "Кішка", age: "40 місяців", mentor: "Невідомо" },
+                { name: "Рябоноса", rank: "Старейшина", description: "Ряба сіра кішка", gender: "Кішка", age: "84 місяців", mentor: "Невідомо" }
+            ],
+            windclan: [
+                { name: "Однозір", rank: "Вожак", description: "Брунатний смугастий кіт", gender: "Кіт", age: "48 місяців", mentor: "Невідомо" },
+                { name: "Золоніжка", rank: "Заступник", description: "Сіра кішка", gender: "Кішка", age: "42 місяці", mentor: "Однозір" },
+                { name: "Бориліт", rank: "Лікар", description: "Рябий сірий кіт", gender: "Кіт", age: "55 місяців", mentor: "Невідомо" },
+                { name: "Воронокрил", rank: "Воїн", description: "Темно-сірий кіт", gender: "Кіт", age: "34 місяці", mentor: "Невідомо" },
+                { name: "Білохвістка", rank: "Воїн", description: "Маленька біла кішка", gender: "Кішка", age: "29 місяців", mentor: "Невідомо" },
+                { name: "Вусолап", rank: "Учень", description: "Світло-коричневий кіт", gender: "Кіт", age: "7 місяців", mentor: "Совопух" },
+                { name: "Сонцемітка", rank: "Королева", description: "Черепахова кішка з міткою на лобі", gender: "Кішка", age: "38 місяців", mentor: "Невідомо" },
+                { name: "Павотеніг", rank: "Старейшина", description: "Темно-сірий смугастий кіт", gender: "Кіт", age: "90 місяців", mentor: "Невідомо" }
+            ],
+            shadowclan: [
+                { name: "Чорнозір", rank: "Вожак", description: "Великий білий кіт із чорними лапами", gender: "Кіт", age: "50 місяців", mentor: "Невідомо" },
+                { name: "Горобинокіготь", rank: "Заступник", description: "Рудий кіт", gender: "Кіт", age: "43 місяці", mentor: "Чорнозір" },
+                { name: "Дрібнохмар", rank: "Лікар", description: "Дуже маленький смугастий кіт", gender: "Кіт", age: "58 місяців", mentor: "Невідомо" },
+                { name: "Дубошуб", rank: "Воїн", description: "Маленький коричневий кіт", gender: "Кіт", age: "35 місяців", mentor: "Невідомо" },
+                { name: "Яблукошубка", rank: "Воїн", description: "Ряба коричнева кішка", gender: "Кішка", age: "31 місяць", mentor: "Невідомо" },
+                { name: "Тхоролап", rank: "Учень", description: "Кремово-сірий кіт", gender: "Кіт", age: "6 місяців", mentor: "Дубошуб" },
+                { name: "Вузлошубка", rank: "Королева", description: "Смугаста кішка з довгим хутром", gender: "Кішка", age: "44 місяці", mentor: "Невідомо" },
+                { name: "Кедросерд", rank: "Старейшина", description: "Темно-сірий кіт", gender: "Кіт", age: "100 місяців", mentor: "Невідомо" }
+            ]
+        };
+        
+        // Функція для вибору клану
+        function chooseClan(clanName) {
+            // Зберігаємо вибір клану
+            localStorage.setItem('chosenClan', clanName);
+            
+            // Оновлюємо відображення громадянства
+            displayCitizenship();
+            
+            // Прокручуємо до секції громадянства
+            document.getElementById('citizenship').scrollIntoView({ behavior: 'smooth' });
+            
+            // Повідомлення про успішний вибір
+            alert(`Вітаємо! Ви обрали ${getClanDisplayName(clanName)}!`);
+        }
+        
+        // Функція для отримання відображуваної назви клану
+        function getClanDisplayName(clan) {
+            const clanNames = {
+                thunderclan: "Громовий Клан",
+                riverclan: "Річковий Клан",
+                windclan: "Клан Вітру",
+                shadowclan: "Клан Тіні"
+            };
+            return clanNames[clan] || clan;
+        }
+        
+        // Функція для отримання іконки клану
+        function getClanIcon(clan) {
+            const clanIcons = {
+                thunderclan: "fas fa-fire",
+                riverclan: "fas fa-water",
+                windclan: "fas fa-wind",
+                shadowclan: "fas fa-moon"
+            };
+            return clanIcons[clan] || "fas fa-paw";
+        }
+        
+        // Функція для відображення громадянства
+        function displayCitizenship() {
+            const chosenClan = localStorage.getItem('chosenClan');
+            const badgeContainer = document.getElementById('clan-badge-container');
+            const gridContainer = document.getElementById('citizenship-grid-container');
+            const noClanMessage = document.getElementById('no-clan-message');
+            
+            if (!chosenClan) {
+                badgeContainer.innerHTML = '';
+                gridContainer.innerHTML = '';
+                noClanMessage.style.display = 'block';
+                return;
+            }
+            
+            noClanMessage.style.display = 'none';
+            
+            // Відображаємо бейдж клану
+            badgeContainer.innerHTML = `
+                <div class="clan-badge ${chosenClan}-badge">
+                    <i class="${getClanIcon(chosenClan)}"></i>
+                </div>
+                <h2 class="citizenship-title">${getClanDisplayName(chosenClan)}</h2>
+                <p class="citizenship-subtitle">Список членів клану</p>
+            `;
+            
+            // Відображаємо громадян клану
+            const citizens = clanCitizens[chosenClan] || [];
+            let gridHTML = '<div class="citizenship-grid">';
+            
+            citizens.forEach(citizen => {
+                gridHTML += `
+                    <div class="citizen-card">
+                        <div class="citizen-header">
+                            <h3 class="citizen-name">${citizen.name}</h3>
+                            <p class="citizen-rank">${citizen.rank}</p>
+                        </div>
+                        <div class="citizen-body">
+                            <div class="citizen-detail">
+                                <span class="citizen-label">Стать:</span>
+                                <span class="citizen-value">${citizen.gender}</span>
+                            </div>
+                            <div class="citizen-detail">
+                                <span class="citizen-label">Вік:</span>
+                                <span class="citizen-value">${citizen.age}</span>
+                            </div>
+                            <div class="citizen-detail">
+                                <span class="citizen-label">Наставник:</span>
+                                <span class="citizen-value">${citizen.mentor}</span>
+                            </div>
+                            <p style="margin-top: 15px; font-style: italic;">${citizen.description}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            gridHTML += '</div>';
+            gridContainer.innerHTML = gridHTML;
+        }
+        
+        // Додаємо обробники подій для кнопок вибору клану
+        document.querySelectorAll('.choose-clan-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const clan = this.dataset.clan;
+                chooseClan(clan);
+            });
+        });
+        
+        // Відображаємо громадянство при завантаженні сторінки
+        window.addEventListener('DOMContentLoaded', () => {
+            displayCitizenship();
         });
         
         // Створення падаючого листя за допомогою canvas (оптимізація)
