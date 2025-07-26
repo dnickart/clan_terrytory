@@ -1,0 +1,1686 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <link rel="icon" type="image/png" href="https://yt3.ggpht.com/HVxzKui9vKPJoKRxqqyx6W91v-gmTfPowJkSGdoIMCLpUkHwUKIJrGu2ZMISXEeBySKswbaQxw=s600-c-k-c0x00ffffff-no-rj-rp-mo">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Територія Кланів | Офіційний фан-сайт серії Коти-Вояки</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Глобальні стилі та змінні */
+        :root {
+            /* Кольори */
+            --deep-forest: #0a0f1a;
+            --moonlight: #c9d6ea;
+            --thunderclan: #c84a31;
+            --riverclan: #4a6fa5;
+            --windclan: #d8c359;
+            --shadowclan: #6e4a8c;
+            --starclan: #e4e8f0;
+            --error: #ff6b6b;
+            
+            /* Відступи */
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-xxl: 3rem;
+            
+            /* Шрифти */
+            --font-base: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --font-heading: 'Georgia', 'Times New Roman', serif;
+            
+            /* Тіні */
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 8px rgba(0,0,0,0.2);
+            --shadow-lg: 0 8px 16px rgba(0,0,0,0.3);
+            
+            /* Радіуси */
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            
+            /* Переходи */
+            --transition-fast: 0.2s;
+            --transition-medium: 0.3s;
+            --transition-slow: 0.5s;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-base);
+            background: var(--deep-forest);
+            color: var(--moonlight);
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(74, 111, 165, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(110, 74, 140, 0.1) 0%, transparent 20%);
+            position: relative;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="white" opacity="0.7"/></svg>') repeat,
+                linear-gradient(to bottom, rgba(10, 15, 26, 0.9), rgba(10, 15, 26, 0.7));
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        /* Семантичні стилі */
+        header, nav, main, section, footer {
+            display: block;
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: var(--font-heading);
+            font-weight: bold;
+            line-height: 1.2;
+            color: var(--starclan);
+        }
+        
+        a {
+            text-decoration: none;
+            color: var(--riverclan);
+            transition: color var(--transition-fast);
+        }
+        
+        a:focus, button:focus {
+            outline: 2px solid var(--windclan);
+            outline-offset: 2px;
+        }
+        
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            border: none;
+            transition: all var(--transition-medium);
+        }
+        
+        /* Навігація */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 15, 26, 0.9);
+            backdrop-filter: blur(5px);
+            padding: var(--spacing-md) var(--spacing-xl);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(201, 214, 234, 0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+        
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            background: linear-gradient(45deg, var(--thunderclan), var(--windclan), var(--riverclan), var(--shadowclan));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(228, 232, 240, 0.2);
+        }
+        
+        .nav-container {
+            display: flex;
+        }
+        
+        .nav-list {
+            display: flex;
+            gap: var(--spacing-lg);
+            list-style: none;
+        }
+        
+        .nav-item {
+            position: relative;
+        }
+        
+        .nav-link {
+            display: block;
+            padding: var(--spacing-sm) 0;
+            color: var(--moonlight);
+            font-weight: 500;
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--starclan);
+            transition: width var(--transition-medium);
+        }
+        
+        .nav-link:hover, .nav-link:focus {
+            color: var(--starclan);
+        }
+        
+        .nav-link:hover::after, .nav-link:focus::after {
+            width: 100%;
+        }
+        
+        /* Головний контент */
+        main {
+            padding-top: 80px; /* Відступ для фіксованого хедера */
+        }
+        
+        section {
+            min-height: 100vh;
+            padding: var(--spacing-xxl) var(--spacing-lg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            scroll-margin-top: 80px; /* Для якірних посилань */
+        }
+        
+        /* Стилі для головної сторінки */
+        #home {
+            background: 
+                radial-gradient(circle at 80% 20%, rgba(200, 74, 49, 0.1) 0%, transparent 30%),
+                radial-gradient(circle at 20% 80%, rgba(74, 111, 165, 0.1) 0%, transparent 30%);
+            text-align: center;
+        }
+        
+        .main-title {
+            font-size: 4rem;
+            margin-bottom: var(--spacing-lg);
+            text-shadow: 0 0 15px rgba(228, 232, 240, 0.5);
+            background: linear-gradient(to bottom, var(--starclan), var(--moonlight));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            will-change: transform, opacity;
+        }
+        
+        .main-subtitle {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin-bottom: var(--spacing-xxl);
+            line-height: 1.6;
+            color: var(--moonlight);
+        }
+        
+        .explore-btn {
+            background: linear-gradient(45deg, var(--thunderclan), var(--shadowclan));
+            color: white;
+            border: none;
+            padding: var(--spacing-md) var(--spacing-xl);
+            font-size: 1.2rem;
+            border-radius: var(--radius-xl);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            will-change: transform;
+        }
+        
+        .explore-btn:hover, .explore-btn:focus {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px rgba(200, 74, 49, 0.8);
+        }
+        
+        .explore-btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: var(--transition-slow);
+        }
+        
+        .explore-btn:hover::before {
+            left: 100%;
+        }
+        
+        .paw-print {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23c9d6ea"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M7,13A1,1 0 0,1 6,12A1,1 0 0,1 7,11A1,1 0 0,1 8,12A1,1 0 0,1 7,13M10,10A1,1 0 0,1 9,9A1,1 0 0,1 10,8A1,1 0 0,1 11,9A1,1 0 0,1 10,10M12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16M14,9A1,1 0 0,1 13,8A1,1 0 0,1 14,7A1,1 0 0,1 15,8A1,1 0 0,1 14,9M17,12A1,1 0 0,1 16,11A1,1 0 0,1 17,10A1,1 0 0,1 18,11A1,1 0 0,1 17,12Z"/></svg>');
+            background-size: contain;
+            opacity: 0.7;
+            animation: twinkle 3s infinite;
+            will-change: opacity, transform;
+        }
+        
+        /* Прогрес-бар */
+        .progress-container {
+            position: fixed;
+            bottom: var(--spacing-xl);
+            right: var(--spacing-xl);
+            background: rgba(10, 15, 26, 0.8);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--spacing-sm);
+            z-index: 500;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(201, 214, 234, 0.1);
+        }
+        
+        .progress-title {
+            font-size: 0.9rem;
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .progress-stars {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+        
+        .star {
+            width: 25px;
+            height: 25px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23555"><path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg>');
+            background-size: contain;
+            opacity: 0.6;
+        }
+        
+        .star.active {
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23d8c359"><path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg>');
+            background-size: contain;
+            opacity: 1;
+            animation: pulse 1.5s infinite;
+            will-change: transform;
+        }
+        
+        /* Стилі для заглушок */
+        .placeholder-container {
+            max-width: 1000px;
+            width: 100%;
+            background: rgba(20, 25, 36, 0.8);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            text-align: center;
+            border: 1px solid rgba(201, 214, 234, 0.1);
+            box-shadow: var(--shadow-md);
+            margin-top: var(--spacing-lg);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .placeholder-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--thunderclan), var(--riverclan), var(--windclan), var(--shadowclan));
+        }
+        
+        .placeholder-icon {
+            font-size: 5rem;
+            margin-bottom: var(--spacing-lg);
+            color: var(--windclan);
+            animation: pulse 2s infinite;
+        }
+        
+        .placeholder-title {
+            font-size: 2rem;
+            margin-bottom: var(--spacing-md);
+            color: var(--starclan);
+            text-shadow: 0 0 10px rgba(228, 232, 240, 0.3);
+        }
+        
+        .placeholder-description {
+            font-size: 1.2rem;
+            margin-bottom: var(--spacing-xl);
+            line-height: 1.6;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .placeholder-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-xl);
+        }
+        
+        .placeholder-item {
+            background: rgba(10, 15, 26, 0.5);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            border: 1px dashed var(--riverclan);
+            transition: all var(--transition-medium);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .placeholder-item::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--thunderclan);
+        }
+        
+        .placeholder-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border-color: var(--windclan);
+        }
+        
+        .placeholder-item-title {
+            font-size: 1.1rem;
+            margin-bottom: var(--spacing-sm);
+            color: var(--moonlight);
+            font-weight: bold;
+        }
+        
+        .placeholder-item-content {
+            font-size: 0.9rem;
+            color: rgba(201, 214, 234, 0.7);
+        }
+        
+        .placeholder-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, var(--deep-forest), var(--shadowclan));
+            border-radius: var(--radius-md);
+            margin: var(--spacing-md) 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(201, 214, 234, 0.5);
+            font-style: italic;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .placeholder-image::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                45deg,
+                rgba(0,0,0,0.1),
+                rgba(0,0,0,0.1) 10px,
+                rgba(0,0,0,0.15) 10px,
+                rgba(0,0,0,0.15) 20px
+            );
+        }
+        
+        .placeholder-coming-soon {
+            background: rgba(216, 195, 89, 0.1);
+            border: 1px solid var(--windclan);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-sm) var(--spacing-md);
+            display: inline-block;
+            margin-top: var(--spacing-md);
+            font-size: 0.9rem;
+            color: var(--windclan);
+            animation: pulse 3s infinite;
+        }
+        
+        /* Секція кланів */
+        .clan-section {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: var(--spacing-xxl);
+            text-align: center;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--starclan);
+            border-radius: var(--radius-sm);
+        }
+        
+        .clans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-xl);
+        }
+        
+        .clan-card {
+            background: rgba(20, 25, 36, 0.7);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: transform var(--transition-medium);
+            position: relative;
+            border: 1px solid rgba(201, 214, 234, 0.1);
+            backdrop-filter: blur(5px);
+            will-change: transform;
+        }
+        
+        .clan-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .clan-banner {
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .thunderclan-bg { background: linear-gradient(45deg, var(--deep-forest), var(--thunderclan)); }
+        .riverclan-bg { background: linear-gradient(45deg, var(--deep-forest), var(--riverclan)); }
+        .windclan-bg { background: linear-gradient(45deg, var(--deep-forest), var(--windclan)); }
+        .shadowclan-bg { background: linear-gradient(45deg, var(--deep-forest), var(--shadowclan)); }
+        
+        .clan-icon {
+            font-size: 4rem;
+            opacity: 0.8;
+        }
+        
+        .clan-content {
+            padding: var(--spacing-lg);
+        }
+        
+        .clan-name {
+            font-size: 1.8rem;
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .thunderclan { color: var(--thunderclan); }
+        .riverclan { color: var(--riverclan); }
+        .windclan { color: var(--windclan); }
+        .shadowclan { color: var(--shadowclan); }
+        
+        .clan-leader {
+            font-size: 1.1rem;
+            margin-bottom: var(--spacing-md);
+            color: var(--moonlight);
+        }
+        
+        .clan-description {
+            line-height: 1.6;
+            color: rgba(201, 214, 234, 0.9);
+        }
+        
+        /* Стилі для кнопки вибору клану */
+        .choose-clan-btn {
+            background: linear-gradient(45deg, rgba(200, 74, 49, 0.3), rgba(200, 74, 49, 0.7));
+            color: var(--moonlight);
+            border: 1px solid var(--thunderclan);
+            padding: var(--spacing-sm) var(--spacing-md);
+            margin-top: var(--spacing-md);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-medium);
+            font-weight: bold;
+        }
+        
+        .riverclan .choose-clan-btn {
+            background: linear-gradient(45deg, rgba(74, 111, 165, 0.3), rgba(74, 111, 165, 0.7));
+            border: 1px solid var(--riverclan);
+        }
+        
+        .windclan .choose-clan-btn {
+            background: linear-gradient(45deg, rgba(216, 195, 89, 0.3), rgba(216, 195, 89, 0.7));
+            border: 1px solid var(--windclan);
+            color: var(--deep-forest);
+        }
+        
+        .shadowclan .choose-clan-btn {
+            background: linear-gradient(45deg, rgba(110, 74, 140, 0.3), rgba(110, 74, 140, 0.7));
+            border: 1px solid var(--shadowclan);
+        }
+        
+        .choose-clan-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Секція громадянства */
+        #citizenship {
+            background: 
+                radial-gradient(circle at center, rgba(228, 232, 240, 0.1) 0%, transparent 40%),
+                var(--deep-forest);
+        }
+        
+        .citizenship-container {
+            max-width: 1200px;
+            width: 100%;
+        }
+        
+        .citizenship-header {
+            text-align: center;
+            margin-bottom: var(--spacing-xxl);
+        }
+        
+        .citizenship-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--spacing-xl);
+        }
+        
+        .clan-badge {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .thunderclan-badge { 
+            background: linear-gradient(45deg, var(--thunderclan), #a83c26);
+            color: #fff;
+        }
+        
+        .riverclan-badge { 
+            background: linear-gradient(45deg, var(--riverclan), #3a5a8c);
+            color: #fff;
+        }
+        
+        .windclan-badge { 
+            background: linear-gradient(45deg, var(--windclan), #c0a84a);
+            color: var(--deep-forest);
+        }
+        
+        .shadowclan-badge { 
+            background: linear-gradient(45deg, var(--shadowclan), #5a3f70);
+            color: #fff;
+        }
+        
+        .citizenship-title {
+            font-size: 2rem;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .citizenship-subtitle {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            color: rgba(201, 214, 234, 0.8);
+        }
+        
+        .citizenship-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: var(--spacing-xl);
+            width: 100%;
+        }
+        
+        .citizen-card {
+            background: rgba(20, 25, 36, 0.7);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: transform var(--transition-medium);
+            border: 1px solid rgba(201, 214, 234, 0.1);
+            backdrop-filter: blur(5px);
+        }
+        
+        .citizen-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        
+        .citizen-header {
+            padding: var(--spacing-md);
+            text-align: center;
+            border-bottom: 1px solid rgba(201, 214, 234, 0.1);
+        }
+        
+        .citizen-name {
+            font-size: 1.4rem;
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .citizen-rank {
+            font-size: 1rem;
+            color: var(--windclan);
+            font-weight: bold;
+        }
+        
+        .citizen-body {
+            padding: var(--spacing-md);
+        }
+        
+        .citizen-detail {
+            display: flex;
+            justify-content: space-between;
+            padding: var(--spacing-xs) 0;
+            border-bottom: 1px solid rgba(201, 214, 234, 0.1);
+        }
+        
+        .citizen-label {
+            font-weight: bold;
+            color: rgba(201, 214, 234, 0.7);
+        }
+        
+        .citizen-value {
+            text-align: right;
+            color: var(--moonlight);
+        }
+        
+        .no-clan-message {
+            text-align: center;
+            padding: var(--spacing-xl);
+            background: rgba(20, 25, 36, 0.7);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(201, 214, 234, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .no-clan-icon {
+            font-size: 4rem;
+            color: var(--windclan);
+            margin-bottom: var(--spacing-md);
+            animation: pulse 2s infinite;
+        }
+        
+        /* Секція гри */
+        #game-section {
+            display: none;
+            background: 
+                radial-gradient(circle at center, rgba(110, 74, 140, 0.2) 0%, transparent 40%),
+                var(--deep-forest);
+            text-align: center;
+        }
+        
+        .game-container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(20, 25, 36, 0.9);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            box-shadow: 0 0 40px rgba(110, 74, 140, 0.5);
+            border: 1px solid rgba(201, 214, 234, 0.1);
+            backdrop-filter: blur(5px);
+        }
+        
+        .game-title {
+            font-size: 2.5rem;
+            margin-bottom: var(--spacing-xl);
+            color: var(--starclan);
+            text-shadow: 0 0 10px rgba(228, 232, 240, 0.5);
+        }
+        
+        .game-text {
+            font-size: 1.3rem;
+            line-height: 1.7;
+            margin-bottom: var(--spacing-xl);
+            min-height: 150px;
+        }
+        
+        .choices-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .choice-btn {
+            background: rgba(74, 111, 165, 0.3);
+            border: 1px solid var(--riverclan);
+            color: var(--moonlight);
+            padding: var(--spacing-md);
+            font-size: 1.1rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-medium);
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+            will-change: transform;
+        }
+        
+        .choice-btn:hover, .choice-btn:focus {
+            background: rgba(74, 111, 165, 0.5);
+            transform: translateX(10px);
+        }
+        
+        .choice-btn::before {
+            content: "»";
+            position: absolute;
+            left: -20px;
+            transition: left var(--transition-medium);
+        }
+        
+        .choice-btn:hover::before, .choice-btn:focus::before {
+            left: 10px;
+        }
+        
+        .game-result {
+            display: none;
+            margin-top: var(--spacing-xl);
+            padding: var(--spacing-lg);
+            background: rgba(10, 15, 26, 0.6);
+            border-radius: var(--radius-md);
+            border-left: 4px solid var(--windclan);
+        }
+        
+        .result-title {
+            font-size: 1.8rem;
+            color: var(--windclan);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .result-text {
+            font-size: 1.2rem;
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .reward-art {
+            max-width: 300px;
+            margin: 0 auto;
+            border: 2px solid var(--windclan);
+            border-radius: var(--radius-md);
+            box-shadow: 0 0 20px rgba(216, 195, 89, 0.3);
+        }
+        
+        .reward-art img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: var(--radius-sm);
+        }
+        
+        .share-btn {
+            background: linear-gradient(45deg, var(--windclan), var(--thunderclan));
+            color: var(--deep-forest);
+            border: none;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            font-size: 1.1rem;
+            border-radius: var(--radius-xl);
+            cursor: pointer;
+            margin-top: var(--spacing-lg);
+            font-weight: bold;
+            transition: all var(--transition-medium);
+            will-change: transform;
+        }
+        
+        .share-btn:hover, .share-btn:focus {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(216, 195, 89, 0.5);
+        }
+        
+        /* Підвал */
+        footer {
+            background: rgba(10, 15, 26, 0.9);
+            padding: var(--spacing-xl);
+            text-align: center;
+            border-top: 1px solid rgba(201, 214, 234, 0.1);
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+        
+        .footer-logo {
+            font-size: 1.5rem;
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: var(--spacing-lg);
+            margin: var(--spacing-md) 0;
+        }
+        
+        .social-link {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(201, 214, 234, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-medium);
+        }
+        
+        .social-link:hover, .social-link:focus {
+            background: var(--riverclan);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            color: rgba(201, 214, 234, 0.7);
+            font-size: 0.9rem;
+            margin-top: var(--spacing-md);
+        }
+        
+        /* Анімації */
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+        
+        /* Стилі для посилання на гру */
+        .game-link {
+            margin-top: 20px;
+        }
+        
+        .game-link a {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(45deg, var(--thunderclan), var(--shadowclan));
+            color: white;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .game-link a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, var(--riverclan), var(--windclan));
+        }
+        
+        /* Адаптивність */
+        @media (max-width: 1024px) {
+            .main-title {
+                font-size: 3rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .clans-grid {
+                gap: var(--spacing-lg);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            nav {
+                padding: var(--spacing-md);
+                flex-direction: column;
+                gap: var(--spacing-md);
+            }
+            
+            .nav-list {
+                gap: var(--spacing-md);
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .main-title {
+                font-size: 2.5rem;
+            }
+            
+            .main-subtitle {
+                font-size: 1.2rem;
+                padding: 0 var(--spacing-md);
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .clans-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .progress-container {
+                bottom: var(--spacing-md);
+                right: var(--spacing-md);
+                padding: var(--spacing-sm);
+            }
+            
+            .game-container {
+                padding: var(--spacing-lg);
+            }
+            
+            .placeholder-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .citizenship-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .logo-text {
+                font-size: 1.5rem;
+            }
+            
+            .main-title {
+                font-size: 2rem;
+            }
+            
+            .main-subtitle {
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .explore-btn {
+                padding: var(--spacing-sm) var(--spacing-lg);
+                font-size: 1rem;
+            }
+            
+            .game-title {
+                font-size: 2rem;
+            }
+            
+            .game-text {
+                font-size: 1.1rem;
+            }
+            
+            .choice-btn {
+                padding: var(--spacing-sm);
+                font-size: 1rem;
+            }
+            
+            .placeholder-container {
+                padding: var(--spacing-md);
+            }
+            
+            .placeholder-icon {
+                font-size: 3rem;
+            }
+        }
+        
+        /* Доступність: високий контраст */
+        @media (prefers-contrast: more) {
+            :root {
+                --deep-forest: #000;
+                --moonlight: #fff;
+            }
+            
+            .clan-card {
+                border: 2px solid var(--moonlight);
+            }
+            
+            .nav-link::after {
+                height: 3px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Навігація -->
+    <header>
+        <nav aria-label="Основна навігація">
+            <div class="logo">
+                <i class="fas fa-paw" aria-hidden="true"></i>
+                <div class="logo-text">Територія Кланів</div>
+            </div>
+            <div class="nav-container">
+                <ul class="nav-list" role="menubar">
+                    <li class="nav-item" role="none">
+                        <a href="#home" class="nav-link" role="menuitem">Головна</a>
+                    </li>
+                    <li class="nav-item" role="none">
+                        <a href="#clans" class="nav-link" role="menuitem">Клани</a>
+                    </li>
+                    <li class="nav-item" role="none">
+                        <a href="#citizenship" class="nav-link" role="menuitem">Громадянство</a>
+                    </li>
+                    <li class="nav-item" role="none">
+                        <a href="#characters" class="nav-link" role="menuitem">Персонажі</a>
+                    </li>
+                    <li class="nav-item" role="none">
+                        <a href="#prophecies" class="nav-link" role="menuitem">Пророцтва</a>
+                    </li>
+                    <li class="nav-item" role="none">
+                        <a href="#codex" class="nav-link" role="menuitem">Кодекс Воїна</a>
+                    </li>
+                    <li class="nav-item" role="none">
+                        <a href="#books" class="nav-link" role="menuitem">Книги</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    
+    <!-- Прогрес-бар -->
+    <div class="progress-container" aria-label="Прогрес доступу до гри">
+        <div class="progress-title">Прогрес до гри:</div>
+        <div class="progress-stars">
+            <div class="star" id="star-clans" aria-label="Клани: не відвідано"></div>
+            <div class="star" id="star-characters" aria-label="Персонажі: не відвідано"></div>
+            <div class="star" id="star-prophecies" aria-label="Пророцтва: не відвідано"></div>
+            <div class="star" id="star-codex" aria-label="Кодекс Воїна: не відвідано"></div>
+            <div class="star" id="star-books" aria-label="Книги: не відвідано"></div>
+        </div>
+    </div>
+    
+    <!-- Головний контент -->
+    <main>
+        <!-- Головна сторінка -->
+        <section id="home" class="section" aria-labelledby="home-heading">
+            <h1 class="main-title" id="home-heading">Територія Кланів</h1>
+            <p class="main-subtitle">Вітаємо на території чотирьох кланів. Сміливість, вірність, честь та мудрість чекають на тебе. Вирушай у подорож світом Котів-Вояків, де кожен крок наповнений таємницями та пригодами.</p>
+            <button class="explore-btn" aria-label="Перейти до секції кланів">Дослідити Території</button>
+            
+            <!-- Сліди лап -->
+            <div class="paw-print" style="top: 20%; left: 15%; animation-delay: 0s;"></div>
+            <div class="paw-print" style="top: 30%; left: 25%; animation-delay: 0.5s;"></div>
+            <div class="paw-print" style="top: 40%; left: 35%; animation-delay: 1s;"></div>
+        </section>
+        
+        <!-- Секція кланів -->
+        <section id="clans" class="section" aria-labelledby="clans-heading">
+            <div class="clan-section">
+                <h2 class="section-title" id="clans-heading">Чотири Клани</h2>
+                <div class="clans-grid">
+                    <article class="clan-card" aria-labelledby="thunderclan-heading">
+                        <div class="clan-banner thunderclan-bg">
+                            <i class="fas fa-fire clan-icon" aria-hidden="true"></i>
+                        </div>
+                        <div class="clan-content thunderclan">
+                            <h3 class="clan-name" id="thunderclan-heading">Громовий Клан</h3>
+                            <p class="clan-leader">Вожак: Блейзззоря</p>
+                            <p class="clan-description">Хоробрі та сильні воїни, що живуть у лісі. Відомі своєю відданістю та мужністю. Їхня територія багата на здобич та схованки.</p>
+                            <button class="choose-clan-btn" data-clan="thunderclan">Обрати цей клан</button>
+                        </div>
+                    </article>
+                    
+                    <article class="clan-card" aria-labelledby="riverclan-heading">
+                        <div class="clan-banner riverclan-bg">
+                            <i class="fas fa-water clan-icon" aria-hidden="true"></i>
+                        </div>
+                        <div class="clan-content riverclan">
+                            <h3 class="clan-name" id="riverclan-heading">Річковий Клан</h3>
+                            <p class="clan-leader">Вожак: Зіркоцап</p>
+                            <p class="clan-description">Майстри плавання та риболовлі. Живуть біля річки, де будують свої табори на островах. Відомі своєю розсудливістю та спритністю.</p>
+                            <button class="choose-clan-btn" data-clan="riverclan">Обрати цей клан</button>
+                        </div>
+                    </article>
+                    
+                    <article class="clan-card" aria-labelledby="windclan-heading">
+                        <div class="clan-banner windclan-bg">
+                            <i class="fas fa-wind clan-icon" aria-hidden="true"></i>
+                        </div>
+                        <div class="clan-content windclan">
+                            <h3 class="clan-name" id="windclan-heading">Клан Вітру</h3>
+                            <p class="clan-leader">Вожак: Орлине Перо</p>
+                            <p class="clan-description">Швидкі та витривалі бігуни, що населяють відкриті рівнини. Відомі своєю незалежністю та зв'язком із вітром і травами.</p>
+                            <button class="choose-clan-btn" data-clan="windclan">Обрати цей клан</button>
+                        </div>
+                    </article>
+                    
+                    <article class="clan-card" aria-labelledby="shadowclan-heading">
+                        <div class="clan-banner shadowclan-bg">
+                            <i class="fas fa-moon clan-icon" aria-hidden="true"></i>
+                        </div>
+                        <div class="clan-content shadowclan">
+                            <h3 class="clan-name" id="shadowclan-heading">Клан Тіні</h3>
+                            <p class="clan-leader">Вожак: Тигрохвіст</p>
+                            <p class="clan-description">Таємничі та хитрі мешканці боліт. Відомі своєю рішучістю та вмінням виживати у найсуворіших умовах.</p>
+                            <button class="choose-clan-btn" data-clan="shadowclan">Обрати цей клан</button>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Секція громадянства -->
+        <section id="citizenship" class="section" aria-labelledby="citizenship-heading">
+            <div class="citizenship-container">
+                <div class="citizenship-header">
+                    <h2 class="section-title" id="citizenship-heading">Громадянство клану</h2>
+                    <p class="citizenship-subtitle">Тут ви можете переглянути інформацію про членів вашого клану</p>
+                </div>
+                
+                <div class="citizenship-content">
+                    <div id="clan-badge-container">
+                        <!-- Динамічний бейдж клану -->
+                    </div>
+                    
+                    <div id="citizenship-grid-container">
+                        <!-- Динамічний список громадян -->
+                    </div>
+                    
+                    <div id="no-clan-message" class="no-clan-message" style="display: none;">
+                        <i class="fas fa-paw no-clan-icon"></i>
+                        <h3>Ви ще не обрали клан</h3>
+                        <p>Будь ласка, поверніться до розділу "Клани" та оберіть свій клан, щоб побачити його громадянство.</p>
+                        <button class="explore-btn" style="margin-top: 20px;" onclick="document.getElementById('clans').scrollIntoView({ behavior: 'smooth' })">Обрати клан</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Секція персонажів -->
+        <section id="characters" class="section" aria-labelledby="characters-heading">
+            <div class="placeholder-container">
+                <div class="placeholder-icon">
+                    <i class="fas fa-cat"></i>
+                </div>
+                <h2 class="placeholder-title" id="characters-heading">Воїни Зірок</h2>
+                <p class="placeholder-description">Тут буде представлено усіх ключових персонажів з усіх кланів. Ви зможете дізнатись про їхню історію, звання, родину та важливі події, в яких вони брали участь.</p>
+                
+                <div class="placeholder-grid">
+                    <div class="placeholder-item">
+                        <div class="placeholder-item-title">Головні герої</div>
+                        <div class="placeholder-item-content">Блейзззоря, Зіркоцап, Орлине Перо, Тигрохвіст</div>
+                    </div>
+                    <div class="placeholder-item">
+                        <div class="placeholder-item-title">Зореклан</div>
+                        <div class="placeholder-item-content">Листопад, Метелик, Сині Зірки</div>
+                    </div>
+                    <div class="placeholder-item">
+                        <div class="placeholder-item-title">Легендарні воїни</div>
+                        <div class="placeholder-item-content">Пожвав, Сріблястий, Гром</div>
+                    </div>
+                </div>
+                
+                <div class="placeholder-image">
+                    <i class="fas fa-paw" style="font-size: 3rem;"></i>
+                    <span style="margin-left: 10px;">Галерея персонажів</span>
+                </div>
+                
+                <div class="game-link">
+                  <a href="https://dnickart.github.io/clan_terrytory/characters/" target="_blank" rel="noopener">
+                    Перейти до персонажів
+                  </a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Секція пророцтв -->
+        <section id="prophecies" class="section" aria-labelledby="prophecies-heading">
+            <div class="placeholder-container">
+                <div class="placeholder-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <h2 class="placeholder-title" id="prophecies-heading">Пророцтва</h2>
+                <p class="placeholder-description">Цей розділ містить усі відомі пророцтва Зореклану, які вплинули на долю кланів. Кожне пророцтво супроводжується поясненням та подіями, до яких воно призвело.</p>
+                
+                <div class="placeholder-image">
+                    <i class="fas fa-moon" style="font-size: 3rem;"></i>
+                    <span style="margin-left: 10px;">Зображення пророцтва</span>
+                </div>
+                
+                <div class="placeholder-grid">
+                    <div class="placeholder-item">
+                        <div class="placeholder-item-title">"Полум'я здатне врятувати клан"</div>
+                        <div class="placeholder-item-content">Пророцтво про вогняного кота</div>
+                    </div>
+                    <div class="placeholder-item">
+                        <div class="placeholder-item-title">"Темрява поглине небо"</div>
+                        <div class="placeholder-item-content">Пророцтво про Темного Часу</div>
+                    </div>
+                </div>
+                
+                <div class="placeholder-coming-soon">Розділ готується до запуску</div>
+            </div>
+        </section>
+        
+        <!-- Секція Кодексу Воїна -->
+        <section id="codex" class="section" aria-labelledby="codex-heading">
+            <div class="placeholder-container">
+                <div class="placeholder-icon">
+                    <i class="fas fa-scroll"></i>
+                </div>
+                <h2 class="placeholder-title" id="codex-heading">Кодекс Воїна</h2>
+                <p class="placeholder-description">Повний текст Кодексу Воїна, закони кланів, звання, обов'язки кожного члена клану, а також інформація про лікарські трави та ритуали.</p>
+                
+                <div class="placeholder-grid">
+                    <div class="placeholder-item">
+                        <div class="placeholder-item-title">Звання та обов'язки</div>
+                        <div class="placeholder-item-content">Воїн, учень, лікар, старейшина</div>
+                    </div>
+                    <div class="placeholder-item">
+                        <div class="placeholder-item-title">Лікарські трави</div>
+                        <div class="placeholder-item-content">Котяча м'ята, пижмо, золотарник</div>
+                    </div>
+                    <div class="placeholder-item">
+                        <div class="placeholder-item-title">Священні ритуали</div>
+                        <div class="placeholder-item-content">Вартові, Напередодні Нового Листя</div>
+                    </div>
+                    <div class="placeholder-item">
+                        <div class="placeholder-item-title">Закони кланів</div>
+                        <div class="placeholder-item-content">8 основних законів воїнів</div>
+                    </div>
+                </div>
+                
+                <div class="placeholder-coming-soon">Розділ готується до запуску</div>
+            </div>
+        </section>
+        
+        <!-- Секція книг -->
+        <section id="books" class="section" aria-labelledby="books-heading">
+            <div class="placeholder-container">
+                <div class="placeholder-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h2 class="placeholder-title" id="books-heading">Хроніки Кланів</h2>
+                <p class="placeholder-description">Повна колекція книг серії "Коти-Вояки" в хронологічному порядку. Для кожної книги доступний огляд, список персонажів та ключових подій.</p>
+                
+                <div class="placeholder-grid">
+                    <div class="placeholder-item">
+                        <div class="placeholder-item-title">Перше Пророцтво</div>
+                        <div class="placeholder-item-content">Початок історії кланів</div>
+                    </div>
+                    <div class="placeholder-item">
+                        <div class="placeholder-item-title">Нове Пророцтво</div>
+                        <div class="placeholder-item-content">Подорож до нової території</div>
+                    </div>
+                    <div class="placeholder-item">
+                        <div class="placeholder-item-title">Сила Трьох</div>
+                        <div class="placeholder-item-content">Нові герої та виклики</div>
+                    </div>
+                    <div class="placeholder-item">
+                        <div class="placeholder-item-title">Пророцтво Темного Часу</div>
+                        <div class="placeholder-item-content">Боротьба з темрявою</div>
+                    </div>
+                </div>
+                
+                <div class="placeholder-image">
+                    <i class="fas fa-book-open" style="font-size: 3rem;"></i>
+                    <span style="margin-left: 10px;">Обкладинки книг</span>
+                </div>
+                
+                <div class="placeholder-coming-soon">Розділ готується до запуску</div>
+            </div>
+        </section>
+        
+        <!-- Секція гри -->
+        <section id="game-section" class="section" aria-labelledby="game-heading">
+            <div class="placeholder-container">
+                <div class="placeholder-icon">
+                    <i class="fas fa-gamepad"></i>
+                </div>
+                <h2 class="placeholder-title" id="game-heading">Шлях До Зірок</h2>
+                <p class="placeholder-description">Ця інтерактивна пригода стане доступною після перегляду всіх розділів сайту. Ви зможете стати на шлях молодого учня та виконати важливе доручення, яке випробує вашу мудрість та відвагу.</p>
+                
+                <div class="placeholder-grid">
+                    <div class="placeholder-item">
+                        <div class="placeholder-item-title">Вибір клану</div>
+                        <div class="placeholder-item-content">Оберіть свій клан для пригоди</div>
+                    </div>
+                    <div class="placeholder-item">
+                        <div class="placeholder-item-title">Важливі рішення</div>
+                        <div class="placeholder-item-content">Ваш вибір вплине на результат</div>
+                    </div>
+                    <div class="placeholder-item">
+                        <div class="placeholder-item-title">Ексклюзивна нагорода</div>
+                        <div class="placeholder-item-content">Отримайте арт "Воїн Зірок"</div>
+                    </div>
+                </div>
+                
+                <div class="placeholder-image" style="height: 300px;">
+                    <i class="fas fa-paw" style="font-size: 5rem;"></i>
+                    <span style="margin-left: 10px; font-size: 1.5rem;">Міні-гра "Шлях До Зірок"</span>
+                </div>
+                
+                <div class="placeholder-coming-soon">Гра стане доступною після перегляду всіх розділів</div>
+                
+                <!-- Кнопка переходу до гри -->
+                <div class="game-link">
+                  <a href="https://dnickart.github.io/clan_terrytory/game" target="_blank" rel="noopener">
+                    Перейти до гри
+                  </a>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Підвал -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">Територія Кланів</div>
+            <p>Офіційний фан-сайт серії книг "Коти-Вояки"</p>
+            
+            <div class="social-links">
+                <a href="https://www.facebook.com" class="social-link" aria-label="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://x.com/" class="social-link" aria-label="Twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://www.instagram.com/" class="social-link" aria-label="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://www.youtube.com/" class="social-link" aria-label="YouTube">
+                    <i class="fab fa-youtube"></i>
+                </a>
+            </div>
+            
+            <p class="copyright">© 2025 Територія Кланів. Усі права захищені. Це неофіційний фан-сайт.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Система відстеження перегляду розділів
+        const sections = ['clans', 'characters', 'prophecies', 'codex', 'books'];
+        const visitedSections = new Set();
+        
+        // Спостерігач для відстеження видимості секцій
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const sectionId = entry.target.id;
+                    if (sections.includes(sectionId)) {
+                        visitedSections.add(sectionId);
+                        updateProgress();
+                        
+                        // Позначаємо зірку як активну
+                        const star = document.getElementById(`star-${sectionId}`);
+                        if (star) {
+                            star.classList.add('active');
+                            star.setAttribute('aria-label', `${sectionId}: відвідано`);
+                        }
+                        
+                        // Видаляємо спостерігач після відвідування
+                        observer.unobserve(entry.target);
+                    }
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        // Додаємо спостерігач для кожної секції
+        sections.forEach(section => {
+            const element = document.getElementById(section);
+            if (element) observer.observe(element);
+        });
+        
+        // Оновлення прогрес бару
+        function updateProgress() {
+            // Якщо всі розділи відвідані - показуємо гру
+            if (visitedSections.size === sections.length) {
+                showGame();
+            }
+        }
+        
+        // Показати гру
+        function showGame() {
+            setTimeout(() => {
+                const gameSection = document.getElementById('game-section');
+                gameSection.style.display = 'block';
+                gameSection.scrollIntoView({ behavior: 'smooth' });
+                
+                // Анімація появи
+                document.querySelector('.placeholder-container').style.animation = 'fadeIn 1.5s forwards';
+                
+                // Фокус на заголовку гри для допоміжних технологій
+                document.getElementById('game-heading').focus();
+            }, 1000);
+        }
+        
+        // Обробник кнопки "Дослідити Території"
+        document.querySelector('.explore-btn').addEventListener('click', () => {
+            document.getElementById('clans').scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        // Дані про громадян кланів
+        const clanCitizens = {
+            thunderclan: [
+                { name: "Блейзззоря", rank: "Вожак", description: "Хоробрий і сильний лідер клану", gender: "Кішка", age: "48 місяців", mentor: "Піскова Буря" },
+                { name: "Вогнегрив", rank: "Заступник", description: "Вірний помічник вожака", gender: "Кіт", age: "42 місяці", mentor: "Блейзззоря" },
+                { name: "Золотокігть", rank: "Лікар", description: "Мудра і досвідчена лікарка", gender: "Кішка", age: "56 місяців", mentor: "Піщана Тінь" },
+                { name: "Бур'янова Лапка", rank: "Учень", description: "Молодий та допитливий учень", gender: "Кіт", age: "6 місяців", mentor: "Вогнегрив" }
+            ],
+            riverclan: [
+                { name: "Зіркоцап", rank: "Вожак", description: "Спокійний і розсудливий лідер", gender: "Кіт", age: "52 місяці", mentor: "Камінний Потік" },
+                { name: "Срібляста Хвиля", rank: "Заступник", description: "Енергійна і віддана помічниця", gender: "Кішка", age: "38 місяців", mentor: "Зіркоцап" },
+                { name: "Береговик", rank: "Лікар", description: "Знавець лікарських трав", gender: "Кіт", age: "60 місяців", mentor: "Місячний Камінь" },
+                { name: "Білочка", rank: "Учень", description: "Перспективна учениця", gender: "Кішка", age: "5 місяців", mentor: "Срібляста Хвиля" }
+            ],
+            windclan: [
+                { name: "Орлине Перо", rank: "Вожак", description: "Швидкий і спостережливий лідер", gender: "Кіт", age: "45 місяців", mentor: "Високий Камінь" },
+                { name: "Стрімка Лапа", rank: "Заступник", description: "Надійний і швидкий помічник", gender: "Кіт", age: "40 місяців", mentor: "Орлине Перо" },
+                { name: "Вересова Шерсть", rank: "Лікар", description: "Досвідчена знахарка", gender: "Кішка", age: "55 місяців", mentor: "Сонячний Промінь" },
+                { name: "Кролича Лапка", rank: "Учень", description: "Енергійний молодий учень", gender: "Кіт", age: "7 місяців", mentor: "Стрімка Лапа" }
+            ],
+            shadowclan: [
+                { name: "Тигрохвіст", rank: "Вожак", description: "Хитрий і безкомпромісний лідер", gender: "Кіт", age: "50 місяців", mentor: "Темна Зірка" },
+                { name: "Кам'яний Кіготь", rank: "Заступник", description: "Сильний і лояльний помічник", gender: "Кіт", age: "43 місяці", mentor: "Тигрохвіст" },
+                { name: "Нічна Тінь", rank: "Лікар", description: "Таємнича і знаюча лікарка", gender: "Кішка", age: "58 місяців", mentor: "Місячна Квітка" },
+                { name: "Гострий Зуб", rank: "Учень", description: "Амбітний молодий учень", gender: "Кіт", age: "6 місяців", mentor: "Кам'яний Кіготь" }
+            ]
+        };
+        
+        // Функція для вибору клану
+        function chooseClan(clanName) {
+            // Зберігаємо вибір клану
+            localStorage.setItem('chosenClan', clanName);
+            
+            // Оновлюємо відображення громадянства
+            displayCitizenship();
+            
+            // Прокручуємо до секції громадянства
+            document.getElementById('citizenship').scrollIntoView({ behavior: 'smooth' });
+            
+            // Повідомлення про успішний вибір
+            alert(`Вітаємо! Ви обрали ${getClanDisplayName(clanName)}!`);
+        }
+        
+        // Функція для отримання відображуваної назви клану
+        function getClanDisplayName(clan) {
+            const clanNames = {
+                thunderclan: "Громовий Клан",
+                riverclan: "Річковий Клан",
+                windclan: "Клан Вітру",
+                shadowclan: "Клан Тіні"
+            };
+            return clanNames[clan] || clan;
+        }
+        
+        // Функція для отримання іконки клану
+        function getClanIcon(clan) {
+            const clanIcons = {
+                thunderclan: "fas fa-fire",
+                riverclan: "fas fa-water",
+                windclan: "fas fa-wind",
+                shadowclan: "fas fa-moon"
+            };
+            return clanIcons[clan] || "fas fa-paw";
+        }
+        
+        // Функція для відображення громадянства
+        function displayCitizenship() {
+            const chosenClan = localStorage.getItem('chosenClan');
+            const badgeContainer = document.getElementById('clan-badge-container');
+            const gridContainer = document.getElementById('citizenship-grid-container');
+            const noClanMessage = document.getElementById('no-clan-message');
+            
+            if (!chosenClan) {
+                badgeContainer.innerHTML = '';
+                gridContainer.innerHTML = '';
+                noClanMessage.style.display = 'block';
+                return;
+            }
+            
+            noClanMessage.style.display = 'none';
+            
+            // Відображаємо бейдж клану
+            badgeContainer.innerHTML = `
+                <div class="clan-badge ${chosenClan}-badge">
+                    <i class="${getClanIcon(chosenClan)}"></i>
+                </div>
+                <h2 class="citizenship-title">${getClanDisplayName(chosenClan)}</h2>
+                <p class="citizenship-subtitle">Список членів клану</p>
+            `;
+            
+            // Відображаємо громадян клану
+            const citizens = clanCitizens[chosenClan] || [];
+            let gridHTML = '<div class="citizenship-grid">';
+            
+            citizens.forEach(citizen => {
+                gridHTML += `
+                    <div class="citizen-card">
+                        <div class="citizen-header">
+                            <h3 class="citizen-name">${citizen.name}</h3>
+                            <p class="citizen-rank">${citizen.rank}</p>
+                        </div>
+                        <div class="citizen-body">
+                            <div class="citizen-detail">
+                                <span class="citizen-label">Стать:</span>
+                                <span class="citizen-value">${citizen.gender}</span>
+                            </div>
+                            <div class="citizen-detail">
+                                <span class="citizen-label">Вік:</span>
+                                <span class="citizen-value">${citizen.age}</span>
+                            </div>
+                            <div class="citizen-detail">
+                                <span class="citizen-label">Наставник:</span>
+                                <span class="citizen-value">${citizen.mentor}</span>
+                            </div>
+                            <p style="margin-top: 15px; font-style: italic;">${citizen.description}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            gridHTML += '</div>';
+            gridContainer.innerHTML = gridHTML;
+        }
+        
+        // Додаємо обробники подій для кнопок вибору клану
+        document.querySelectorAll('.choose-clan-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const clan = this.dataset.clan;
+                chooseClan(clan);
+            });
+        });
+        
+        // Відображаємо громадянство при завантаженні сторінки
+        window.addEventListener('DOMContentLoaded', () => {
+            displayCitizenship();
+        });
+        
+        // Створення падаючого листя за допомогою canvas (оптимізація)
+        window.addEventListener('load', function() {
+            const canvas = document.createElement('canvas');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            canvas.style.position = 'fixed';
+            canvas.style.top = '0';
+            canvas.style.left = '0';
+            canvas.style.pointerEvents = 'none';
+            canvas.style.zIndex = '-1';
+            document.body.appendChild(canvas);
+            
+            const ctx = canvas.getContext('2d');
+            const leaves = [];
+            const leafImg = new Image();
+            leafImg.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23d8c359"><path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"/></svg>';
+            
+            // Створення листочків
+            for (let i = 0; i < 20; i++) {
+                leaves.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: 10 + Math.random() * 20,
+                    speed: 0.5 + Math.random() * 1.5,
+                    angle: Math.random() * Math.PI * 2,
+                    rotation: Math.random() * Math.PI * 2,
+                    rotationSpeed: (Math.random() - 0.5) * 0.05
+                });
+            }
+            
+            // Анімація листя
+            function animateLeaves() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                leaves.forEach(leaf => {
+                    leaf.y += leaf.speed;
+                    leaf.rotation += leaf.rotationSpeed;
+                    
+                    if (leaf.y > canvas.height) {
+                        leaf.y = -20;
+                        leaf.x = Math.random() * canvas.width;
+                    }
+                    
+                    ctx.save();
+                    ctx.translate(leaf.x, leaf.y);
+                    ctx.rotate(leaf.rotation);
+                    ctx.drawImage(leafImg, -leaf.size/2, -leaf.size/2, leaf.size, leaf.size);
+                    ctx.restore();
+                });
+                
+                requestAnimationFrame(animateLeaves);
+            }
+            
+            leafImg.onload = animateLeaves;
+            
+            // Адаптація canvas при зміні розміру вікна
+            window.addEventListener('resize', function() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+        });
+    </script>
+</body>
+</html>
