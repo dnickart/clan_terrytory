@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Сервер | коти-вояки</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Глобальні стилі та змінні */
+        :root {
+            --deep-forest: #0a0f1a;
+            --moonlight: #c9d6ea;
+            --thunderclan: #c84a31;
+            --riverclan: #4a6fa5;
+            --windclan: #d8c359;
+            --shadowclan: #6e4a8c;
+            --starclan: #e4e8f0;
+            --discord: #5865F2;
+            
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-xxl: 3rem;
+            
+            --font-base: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --font-heading: 'Georgia', 'Times New Roman', serif;
+            
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            
+            --transition-medium: 0.3s;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-base);
+            background: var(--deep-forest);
+            color: var(--moonlight);
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(74, 111, 165, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(110, 74, 140, 0.1) 0%, transparent 20%);
+            position: relative;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="white" opacity="0.7"/></svg>') repeat,
+                linear-gradient(to bottom, rgba(10, 15, 26, 0.9), rgba(10, 15, 26, 0.7));
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .discord-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-xxl) var(--spacing-lg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .discord-header {
+            margin-bottom: var(--spacing-xxl);
+            position: relative;
+            padding: var(--spacing-xl);
+        }
+        
+        .discord-title {
+            font-family: var(--font-heading);
+            font-size: 3.5rem;
+            margin-bottom: var(--spacing-lg);
+            color: var(--starclan);
+            text-shadow: 0 0 15px rgba(228, 232, 240, 0.5);
+            position: relative;
+        }
+        
+        .discord-subtitle {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto var(--spacing-xl);
+            line-height: 1.6;
+            color: var(--moonlight);
+        }
+        
+        .discord-logo {
+            width: 150px;
+            height: 150px;
+            background: var(--discord);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--spacing-xl);
+            font-size: 5rem;
+            color: white;
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 30px rgba(88, 101, 242, 0.5);
+        }
+        
+        .discord-card {
+            background: rgba(20, 25, 36, 0.8);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: var(--spacing-xl);
+            border: 1px solid rgba(201, 214, 234, 0.1);
+            position: relative;
+            overflow: hidden;
+            text-align: left;
+        }
+        
+        .discord-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--thunderclan), var(--riverclan), var(--windclan), var(--shadowclan));
+        }
+        
+        .card-title {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            margin-bottom: var(--spacing-lg);
+            color: var(--starclan);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+        
+        .card-title i {
+            color: var(--discord);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-xl);
+        }
+        
+        .feature-item {
+            background: rgba(10, 15, 26, 0.5);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            border-left: 4px solid var(--discord);
+            transition: all var(--transition-medium);
+        }
+        
+        .feature-item:hover {
+            transform: translateY(-5px);
+            background: rgba(88, 101, 242, 0.1);
+        }
+        
+        .feature-title {
+            font-size: 1.3rem;
+            margin-bottom: var(--spacing-md);
+            color: var(--starclan);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+        
+        .feature-title i {
+            color: var(--windclan);
+        }
+        
+        .feature-description {
+            color: rgba(201, 214, 234, 0.8);
+        }
+        
+        .discord-btn {
+            display: inline-block;
+            background: var(--discord);
+            color: white;
+            border: none;
+            padding: var(--spacing-md) var(--spacing-xl);
+            font-size: 1.3rem;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            text-decoration: none;
+            margin: var(--spacing-xl) 0;
+            transition: all var(--transition-medium);
+            box-shadow: 0 5px 15px rgba(88, 101, 242, 0.4);
+            position: relative;
+            overflow: hidden;
+            font-weight: bold;
+        }
+        
+        .discord-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(88, 101, 242, 0.6);
+        }
+        
+        .discord-btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: var(--transition-medium);
+        }
+        
+        .discord-btn:hover::before {
+            left: 100%;
+        }
+        
+        .discord-btn i {
+            margin-right: var(--spacing-md);
+        }
+        
+        .testimonials {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            width: 100%;
+            margin: var(--spacing-xl) 0;
+        }
+        
+        .testimonial {
+            background: rgba(20, 25, 36, 0.7);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            border: 1px solid rgba(201, 214, 234, 0.1);
+            position: relative;
+            text-align: left;
+        }
+        
+        .testimonial::before {
+            content: """;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 5rem;
+            color: rgba(88, 101, 242, 0.2);
+            font-family: var(--font-heading);
+            line-height: 1;
+        }
+        
+        .testimonial-content {
+            margin-top: var(--spacing-md);
+            font-style: italic;
+            color: rgba(201, 214, 234, 0.9);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            margin-top: var(--spacing-md);
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--riverclan);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: var(--spacing-md);
+            font-size: 1.5rem;
+        }
+        
+        .author-info {
+            text-align: left;
+        }
+        
+        .author-name {
+            font-weight: bold;
+            color: var(--starclan);
+        }
+        
+        .author-clan {
+            font-size: 0.9rem;
+            color: var(--windclan);
+        }
+        
+        .rules-list {
+            margin-top: var(--spacing-lg);
+            padding-left: var(--spacing-lg);
+        }
+        
+        .rule-item {
+            margin-bottom: var(--spacing-md);
+            padding-left: var(--spacing-md);
+            position: relative;
+        }
+        
+        .rule-item::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--discord);
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+        
+        .footer-note {
+            margin-top: var(--spacing-xl);
+            color: rgba(201, 214, 234, 0.7);
+            font-size: 0.9rem;
+            max-width: 800px;
+        }
+        
+        .paw-print {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23c9d6ea"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M7,13A1,1 0 0,1 6,12A1,1 0 0,1 7,11A1,1 0 0,1 8,12A1,1 0 0,1 7,13M10,10A1,1 0 0,1 9,9A1,1 0 0,1 10,8A1,1 0 0,1 11,9A1,1 0 0,1 10,10M12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16M14,9A1,1 0 0,1 13,8A1,1 0 0,1 14,7A1,1 0 0,1 15,8A1,1 0 0,1 14,9M17,12A1,1 0 0,1 16,11A1,1 0 0,1 17,10A1,1 0 0,1 18,11A1,1 0 0,1 17,12Z"/></svg>');
+            background-size: contain;
+            opacity: 0.7;
+            animation: twinkle 3s infinite;
+        }
+        
+        /* Анімації */
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* Адаптивність */
+        @media (max-width: 768px) {
+            .discord-title {
+                font-size: 2.5rem;
+            }
+            
+            .discord-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .discord-logo {
+                width: 120px;
+                height: 120px;
+                font-size: 4rem;
+            }
+            
+            .card-title {
+                font-size: 1.8rem;
+            }
+            
+            .discord-btn {
+                font-size: 1.1rem;
+                padding: var(--spacing-md) var(--spacing-lg);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .discord-title {
+                font-size: 2rem;
+            }
+            
+            .discord-subtitle {
+                font-size: 1rem;
+            }
+            
+            .card-title {
+                font-size: 1.5rem;
+            }
+            
+            .feature-title {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="discord-container">
+        <!-- Сліди лап -->
+        <div class="paw-print" style="top: 10%; left: 10%; animation-delay: 0s;"></div>
+        <div class="paw-print" style="top: 15%; left: 90%; animation-delay: 0.5s;"></div>
+        <div class="paw-print" style="top: 80%; left: 15%; animation-delay: 1s;"></div>
+        <div class="paw-print" style="top: 85%; left: 85%; animation-delay: 1.5s;"></div>
+        
+        <div class="discord-header">
+            <div class="discord-logo">
+                <i class="fab fa-discord"></i>
+            </div>
+            <h1 class="discord-title">Discord Спільнота</h1>
+            <p class="discord-subtitle">Приєднуйся до найбільшої української спільноти шанувальників серії "Коти-Вояки"! Тут створили територію, де кожен знайде собі клан та друзів по духу.</p>
+            
+            <a href="https://discord.gg/zX7Z9djS" class="discord-btn" target="_blank" rel="noopener">
+                <i class="fab fa-discord"></i> Приєднатися до серверу
+            </a>
+        </div>
+        
+        <div class="discord-card">
+            <h2 class="card-title"><i class="fas fa-users"></i> Чому варто приєднатися?</h2>
+            <p>Цей Discord сервер - це бурхливе життя кланів, де кожен знайде спілкування за інтересами:</p>
+            
+            <div class="features-grid">
+                <div class="feature-item">
+                    <h3 class="feature-title"><i class="fas fa-comments"></i> Живе спілкування</h3>
+                    <p class="feature-description">Обговорюй події з книг, ділись теоріями та знаходи однодумців серед шанувальників серії</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h3 class="feature-title"><i class="fas fa-book"></i> Книжковий клуб</h3>
+                    <p class="feature-description">Читання та обговорення книг серії, аналіз персонажів та подій</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h3 class="feature-title"><i class="fas fa-paint-brush"></i> Творчість та арт</h3>
+                    <p class="feature-description">Спільні арт-проекти, конкурси малюнків та історій про твоїх улюблених персонажів</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h3 class="feature-title"><i class="fas fa-gamepad"></i> Ігри та рольові</h3>
+                    <p class="feature-description">Унікальні рольові ігри в світі котів-вояків, квести та тематичні заходи</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h3 class="feature-title"><i class="fas fa-star"></i> Ексклюзивний контент</h3>
+                    <p class="feature-description">Першими дізнавайся про новини серії, отримуй доступ до унікальних матеріалів</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h3 class="feature-title"><i class="fas fa-paw"></i> Обери свій клан</h3>
+                    <p class="feature-description">Стань частиною Громового, Річкового, Клану Вітру чи Клану Тіні - кожен знайде собі місце</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="discord-card">
+            <h2 class="card-title"><i class="fas fa-heart"></i> Що кажуть наші учасники</h2>
+            
+            <div class="testimonials">
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        "Я ніколи не думала, що знайду стільки однодумців! Тут кожен розуміє мою любов до котів-вояків. Ми разом малюємо, обговорюємо книги і навіть влаштовуємо тематичні вечірки!"
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar"><i class="fas fa-cat"></i></div>
+                        <div class="author-info">
+                            <div class="author-name">Мрячкозірка</div>
+                            <div class="author-clan">Річковий Клан</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        "Найкраще місце для справжніх шанувальників! Тут я знайшов друзів, з якими можна обговорити навіть найменші деталі сюжету. А щомісячні ігри в ролі воїна свого клану - це щось неймовірне!"
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar"><i class="fas fa-paw"></i></div>
+                        <div class="author-info">
+                            <div class="author-name">Вогнезір</div>
+                            <div class="author-clan">Громовий Клан</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        "Як фанат з 100-річним досвідом, можу сказати - це найавтентичніша спільнота! Адміни створили неймовірну атмосферу лісу чотирьох кланів. Особливо подобаються дискусії про пророцтва Зореклану."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar"><i class="fas fa-moon"></i></div>
+                        <div class="author-info">
+                            <div class="author-name">Чорнозір</div>
+                            <div class="author-clan">Клан Тіні</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="discord-card">
+            <h2 class="card-title"><i class="fas fa-scroll"></i> Кодекс нашої спільноти</h2>
+            <p>Щоб наша територія залишалась безпечною та дружньою для всіх, ми дотримуємося простих правил:</p>
+            
+            <ul class="rules-list">
+                <li class="rule-item">Поважай інших учасників та їхню думку, навіть якщо вона відрізняється від твоєї</li>
+                <li class="rule-item">Уникай спойлерів - завжди попереджуй, якщо збираєшся обговорювати події з нових книг</li>
+                <li class="rule-item">Будь доброзичливим - ця спільнота вільна від токсичності та агресії</li>
+                <li class="rule-item">Ділись тільки оригінальним контентом або вказуй авторство</li>
+                <li class="rule-item">Обговорюй тільки тематику серії "Коти-Вояки" у відповідних каналах</li>
+                <li class="rule-item">Поважай ролі та ієрархію кланів у рольових каналах</li>
+            </ul>
+            
+            <p style="margin-top: var(--spacing-lg);">Порушення правил може призвести до попередження або вигнання з серверу.</p>
+        </div>
+        
+        <a href="https://discord.gg/zX7Z9djS" class="discord-btn" target="_blank" rel="noopener">
+            <i class="fab fa-discord"></i> Приєднатися зараз
+        </a>
+        
+        <p class="footer-note">
+            Приєднуючись до нашої Discord спільноти, ти стаєш частиною великої родини шанувальників "Котів-Вояків". 
+            Незалежно від того, чи ти новачок у світі кланів, чи досвідчений старейшина - тут знайдеться місце для кожного!
+        </p>
+    </div>
+
+    <script>
+        // Анімація для кнопки
+        const discordBtn = document.querySelector('.discord-btn');
+        
+        discordBtn.addEventListener('mouseover', function() {
+            this.style.animation = 'pulse 0.5s';
+        });
+        
+        discordBtn.addEventListener('animationend', function() {
+            this.style.animation = '';
+        });
+        
+        // Динамічні сліди лап при скролі
+        document.addEventListener('scroll', function() {
+            const pawPrints = document.querySelectorAll('.paw-print');
+            const scrollPosition = window.scrollY;
+            
+            pawPrints.forEach((paw, index) => {
+                const speed = 0.1 + (index * 0.05);
+                paw.style.transform = `translateY(${scrollPosition * speed}px) scale(${1 + (scrollPosition * 0.0001)})`;
+            });
+        });
+        
+        // Ефект паралаксу для заголовка
+        const discordTitle = document.querySelector('.discord-title');
+        
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            discordTitle.style.transform = `translateY(${scrollY * 0.2}px)`;
+        });
+    </script>
+</body>
+</html>
