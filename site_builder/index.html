@@ -1,0 +1,2926 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Покращений конструктор сайтів для кланів Warrior Cats</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --deep-forest: #0a0f1a;
+            --moonlight: #c9d6ea;
+            --thunderclan: #c84a31;
+            --riverclan: #4a6fa5;
+            --windclan: #d8c359;
+            --shadowclan: #6e4a8c;
+            --skyclan: #5a9bd5;
+            --starclan: #e4e8f0;
+            --error: #ff6b6b;
+            --success: #51cf66;
+            
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-xxl: 3rem;
+            
+            --font-base: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --font-heading: 'Georgia', 'Times New Roman', serif;
+            
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 8px rgba(0,0,0,0.2);
+            --shadow-lg: 0 8px 16px rgba(0,0,0,0.3);
+            
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            
+            --transition-fast: 0.2s;
+            --transition-medium: 0.3s;
+            --transition-slow: 0.5s;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-base);
+            background: var(--deep-forest);
+            color: var(--moonlight);
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(74, 111, 165, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(110, 74, 140, 0.1) 0%, transparent 20%);
+            position: relative;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="white" opacity="0.7"/></svg>') repeat,
+                linear-gradient(to bottom, rgba(10, 15, 26, 0.9), rgba(10, 15, 26, 0.7));
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .main-container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        /* Панель інструментів */
+        .toolbar {
+            width: 320px;
+            background: rgba(20, 25, 36, 0.95);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(201, 214, 234, 0.1);
+            padding: var(--spacing-lg);
+            overflow-y: auto;
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            z-index: 1000;
+            transition: transform var(--transition-medium);
+        }
+        
+        .toolbar-header {
+            text-align: center;
+            margin-bottom: var(--spacing-xl);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 1px solid rgba(201, 214, 234, 0.1);
+            position: relative;
+        }
+        
+        .toolbar-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--starclan);
+            margin-bottom: var(--spacing-sm);
+            background: linear-gradient(45deg, var(--thunderclan), var(--windclan));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .toolbar-subtitle {
+            font-size: 0.9rem;
+            color: rgba(201, 214, 234, 0.7);
+        }
+        
+        .toggle-toolbar {
+            position: absolute;
+            top: 0;
+            right: -40px;
+            background: rgba(20, 25, 36, 0.9);
+            width: 40px;
+            height: 40px;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 1px solid rgba(201, 214, 234, 0.1);
+            border-left: none;
+        }
+        
+        .section {
+            margin-bottom: var(--spacing-xl);
+            border-bottom: 1px solid rgba(201, 214, 234, 0.1);
+            padding-bottom: var(--spacing-lg);
+        }
+        
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--windclan);
+            margin-bottom: var(--spacing-md);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            cursor: pointer;
+        }
+        
+        .section-title i {
+            font-size: 1.2rem;
+            transition: transform var(--transition-medium);
+        }
+        
+        .section-content {
+            overflow: hidden;
+            transition: height var(--transition-medium);
+        }
+        
+        .section.collapsed .section-title i {
+            transform: rotate(180deg);
+        }
+        
+        /* Кнопки елементів */
+        .element-btn {
+            width: 100%;
+            background: rgba(74, 111, 165, 0.2);
+            border: 1px solid var(--riverclan);
+            color: var(--moonlight);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-sm);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-medium);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            font-family: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .element-btn:hover {
+            background: rgba(74, 111, 165, 0.4);
+            transform: translateX(5px);
+        }
+        
+        .element-btn i {
+            font-size: 1.2rem;
+            width: 24px;
+            text-align: center;
+        }
+        
+        .element-btn .badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--thunderclan);
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+        
+        /* Панель властивостей */
+        .properties-panel {
+            background: rgba(10, 15, 26, 0.8);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+            border: 1px solid rgba(201, 214, 234, 0.1);
+            display: none;
+        }
+        
+        .property-group {
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .property-label {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--windclan);
+            margin-bottom: var(--spacing-sm);
+            font-weight: bold;
+        }
+        
+        .property-input {
+            width: 100%;
+            padding: var(--spacing-sm);
+            background: rgba(20, 25, 36, 0.8);
+            border: 1px solid rgba(201, 214, 234, 0.2);
+            border-radius: var(--radius-sm);
+            color: var(--moonlight);
+            font-family: inherit;
+        }
+        
+        .property-input:focus {
+            outline: none;
+            border-color: var(--riverclan);
+            box-shadow: 0 0 5px rgba(74, 111, 165, 0.5);
+        }
+        
+        .color-picker {
+            display: flex;
+            gap: var(--spacing-sm);
+            flex-wrap: wrap;
+        }
+        
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all var(--transition-fast);
+        }
+        
+        .color-option:hover,
+        .color-option.active {
+            border-color: var(--starclan);
+            transform: scale(1.1);
+        }
+        
+        .color-thunderclan { background: var(--thunderclan); }
+        .color-riverclan { background: var(--riverclan); }
+        .color-windclan { background: var(--windclan); }
+        .color-shadowclan { background: var(--shadowclan); }
+        .color-skyclan { background: var(--skyclan); }
+        .color-starclan { background: var(--starclan); }
+        
+        /* Область редагування */
+        .editor-area {
+            flex: 1;
+            margin-left: 320px;
+            display: flex;
+            flex-direction: column;
+            transition: margin var(--transition-medium);
+        }
+        
+        .editor-header {
+            background: rgba(20, 25, 36, 0.95);
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-bottom: 1px solid rgba(201, 214, 234, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+        }
+        
+        .editor-title {
+            font-size: 1.2rem;
+            color: var(--starclan);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+        
+        .editor-actions {
+            display: flex;
+            gap: var(--spacing-md);
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            background: linear-gradient(45deg, var(--thunderclan), var(--shadowclan));
+            color: white;
+            border: none;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            transition: all var(--transition-medium);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .action-btn.secondary {
+            background: linear-gradient(45deg, var(--riverclan), var(--windclan));
+        }
+        
+        .language-selector {
+            background: rgba(74, 111, 165, 0.3);
+            color: var(--moonlight);
+            border: 1px solid var(--riverclan);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-sm);
+            cursor: pointer;
+        }
+        
+        .canvas {
+            flex: 1;
+            background: var(--moonlight);
+            position: relative;
+            overflow: auto;
+            padding: var(--spacing-xl);
+        }
+        
+        .canvas-content {
+            min-height: 100%;
+            background: white;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            border-left: 5px solid var(--thunderclan);
+            transition: border-color 0.5s ease;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        /* Елементи на canvas */
+        .canvas-element {
+            position: relative;
+            margin: var(--spacing-md) 0;
+            padding: var(--spacing-md);
+            border: 2px dashed transparent;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        
+        .canvas-element:hover {
+            border-color: var(--riverclan);
+        }
+        
+        .canvas-element.selected {
+            border-color: var(--windclan);
+            background: rgba(216, 195, 89, 0.1);
+        }
+        
+        .element-controls {
+            position: absolute;
+            top: -35px;
+            right: 0;
+            display: none;
+            gap: var(--spacing-xs);
+            background: rgba(20, 25, 36, 0.9);
+            padding: var(--spacing-xs);
+            border-radius: var(--radius-md);
+        }
+        
+        .canvas-element.selected .element-controls {
+            display: flex;
+        }
+        
+        .control-btn {
+            width: 28px;
+            height: 28px;
+            background: var(--thunderclan);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            transition: all var(--transition-fast);
+        }
+        
+        .control-btn:hover {
+            background: var(--shadowclan);
+            transform: scale(1.1);
+        }
+        
+        /* Типи елементів */
+        .text-element {
+            font-family: var(--font-base);
+            color: #333;
+        }
+        
+        .heading-element {
+            font-family: var(--font-heading);
+            font-weight: bold;
+            color: #222;
+            font-size: 2rem;
+        }
+        
+        .image-element {
+            text-align: center;
+            padding: var(--spacing-xl);
+            background: #f5f5f5;
+            border: 2px dashed #ccc;
+            border-radius: var(--radius-md);
+            color: #666;
+        }
+        
+        .button-element {
+            display: inline-block;
+            padding: var(--spacing-md) var(--spacing-xl);
+            background: var(--riverclan);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--radius-md);
+            font-weight: bold;
+            transition: all var(--transition-medium);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .button-element:hover {
+            background: var(--thunderclan);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .button-element:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .button-element:hover:after {
+            left: 100%;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-md);
+        }
+        
+        .gallery-item {
+            border: 1px solid #ddd;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: transform var(--transition-medium);
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        
+        .gallery-caption {
+            padding: var(--spacing-sm);
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        .event-calendar {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: var(--spacing-md);
+        }
+        
+        .event-calendar th, .event-calendar td {
+            border: 1px solid #ddd;
+            padding: var(--spacing-sm);
+            text-align: center;
+        }
+        
+        .event-calendar th {
+            background: #f5f5f5;
+            font-weight: bold;
+        }
+        
+        .event-day {
+            background: rgba(74, 111, 165, 0.1);
+            cursor: pointer;
+        }
+        
+        .event-day:hover {
+            background: rgba(74, 111, 165, 0.2);
+        }
+        
+        .event-details {
+            margin-top: var(--spacing-md);
+            padding: var(--spacing-md);
+            background: #f9f9f9;
+            border-radius: var(--radius-md);
+            display: none;
+        }
+        
+        .rules-list {
+            list-style: none;
+            margin-top: var(--spacing-md);
+        }
+        
+        .rules-list li {
+            margin-bottom: var(--spacing-sm);
+            padding-left: var(--spacing-lg);
+            position: relative;
+        }
+        
+        .rules-list li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--thunderclan);
+            font-size: 1.2rem;
+        }
+        
+        .poll-options {
+            margin-top: var(--spacing-md);
+        }
+        
+        .poll-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .poll-option input {
+            margin-right: var(--spacing-sm);
+        }
+        
+        .poll-results {
+            margin-top: var(--spacing-md);
+            display: none;
+        }
+        
+        .poll-bar {
+            height: 20px;
+            background: var(--riverclan);
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--spacing-sm);
+            transition: width 1s ease-in-out;
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            margin-top: var(--spacing-md);
+            border-radius: var(--radius-md);
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* Попередній перегляд */
+        .preview-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            display: none;
+            overflow-y: auto;
+        }
+        
+        .preview-content {
+            max-width: 1200px;
+            margin: var(--spacing-xl) auto;
+            background: white;
+            border-radius: var(--radius-lg);
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        
+        .preview-header {
+            background: var(--deep-forest);
+            color: var(--moonlight);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+        }
+        
+        .close-preview {
+            background: var(--thunderclan);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: transform var(--transition-medium);
+        }
+        
+        .close-preview:hover {
+            transform: rotate(90deg);
+        }
+        
+        .preview-actions {
+            display: flex;
+            gap: var(--spacing-md);
+        }
+        
+        .device-toggle {
+            display: flex;
+            background: rgba(201, 214, 234, 0.1);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+        
+        .device-btn {
+            padding: var(--spacing-sm) var(--spacing-md);
+            background: transparent;
+            border: none;
+            color: var(--moonlight);
+            cursor: pointer;
+            transition: background var(--transition-fast);
+        }
+        
+        .device-btn.active {
+            background: var(--riverclan);
+        }
+        
+        /* Модальне вікно завантаження */
+        .download-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 3000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .download-content {
+            background: rgba(20, 25, 36, 0.95);
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-lg);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            border: 1px solid rgba(201, 214, 234, 0.2);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .download-title {
+            font-size: 1.5rem;
+            color: var(--starclan);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .download-info {
+            color: rgba(201, 214, 234, 0.8);
+            margin-bottom: var(--spacing-xl);
+            line-height: 1.6;
+        }
+        
+        .download-actions {
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        /* Адаптивність */
+        @media (max-width: 1024px) {
+            .toolbar {
+                width: 280px;
+            }
+            
+            .editor-area {
+                margin-left: 280px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .toolbar {
+                width: 250px;
+                transform: translateX(-100%);
+            }
+            
+            .toolbar.visible {
+                transform: translateX(0);
+            }
+            
+            .editor-area {
+                margin-left: 0;
+            }
+            
+            .editor-header {
+                padding: var(--spacing-sm);
+            }
+            
+            .action-btn {
+                padding: var(--spacing-xs) var(--spacing-sm);
+                font-size: 0.9rem;
+            }
+            
+            .canvas {
+                padding: var(--spacing-sm);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .editor-actions {
+                gap: var(--spacing-sm);
+            }
+            
+            .action-btn span {
+                display: none;
+            }
+            
+            .action-btn i {
+                margin-right: 0;
+            }
+        }
+        
+        /* Анімації */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .canvas-element {
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        
+        .tutorial-highlight {
+            animation: pulse 2s infinite;
+            border-color: var(--windclan) !important;
+        }
+        
+        /* Підказки */
+        .tooltip {
+            position: relative;
+            cursor: help;
+        }
+        
+        .tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity var(--transition-fast);
+            z-index: 1000;
+        }
+        
+        .tooltip:hover::after {
+            opacity: 1;
+        }
+        
+        /* Заглушка для пустого canvas */
+        .empty-canvas {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #999;
+            text-align: center;
+            padding: var(--spacing-xl);
+        }
+        
+        .empty-canvas i {
+            font-size: 4rem;
+            margin-bottom: var(--spacing-lg);
+            color: #ddd;
+            animation: pulse 3s infinite;
+        }
+        
+        .empty-canvas h3 {
+            font-size: 1.5rem;
+            margin-bottom: var(--spacing-md);
+            color: #666;
+        }
+        
+        .empty-canvas p {
+            max-width: 400px;
+            line-height: 1.6;
+        }
+        
+        /* Повідомлення */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, var(--success), #40c057);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-md);
+            font-weight: bold;
+            z-index: 2000;
+            box-shadow: var(--shadow-lg);
+            transform: translateX(100%);
+            transition: transform var(--transition-medium);
+            max-width: 300px;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        /* Карта території */
+        .territory-map {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23d0e7d4"/></svg>');
+            border-radius: var(--radius-md);
+            margin-top: var(--spacing-md);
+            overflow: hidden;
+        }
+        
+        .map-marker {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--thunderclan);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            box-shadow: 0 0 0 rgba(200, 74, 49, 0.4);
+            animation: pulse 1.5s infinite;
+        }
+        
+        .map-marker:after {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border-radius: 50%;
+            border: 2px solid var(--thunderclan);
+            opacity: 0;
+            animation: ripple 2s infinite;
+        }
+        
+        @keyframes ripple {
+            0% {
+                transform: scale(0.5);
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+        }
+        
+        .map-tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            z-index: 10;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity var(--transition-fast);
+            min-width: 150px;
+        }
+        
+        /* Соціальні кнопки */
+        .social-buttons {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-md);
+        }
+        
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.2rem;
+            transition: transform var(--transition-fast);
+        }
+        
+        .social-btn.facebook { background: #3b5998; }
+        .social-btn.twitter { background: #1da1f2; }
+        .social-btn.instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+        
+        .social-btn:hover {
+            transform: translateY(-3px);
+        }
+        
+        /* Аналітика */
+        .analytics-overview {
+            display: flex;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-md);
+            flex-wrap: wrap;
+        }
+        
+        .analytics-card {
+            background: #f9f9f9;
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+        }
+        
+        .analytics-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--riverclan);
+        }
+        
+        .analytics-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        /* Клас для анімацій при прокрутці */
+        .scroll-animation {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .scroll-animation.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Панель інструментів -->
+        <div class="toolbar" id="toolbar">
+            <div class="toolbar-header">
+                <div class="toolbar-title">
+                    <i class="fas fa-paw"></i>
+                    Конструктор Кланів
+                </div>
+                <div class="toolbar-subtitle">Створи свій власний сайт клану!</div>
+                <div class="toggle-toolbar" id="toggle-toolbar">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">
+                    <i class="fas fa-plus"></i>
+                    Додати елементи
+                </div>
+                <div class="section-content">
+                    <button class="element-btn" data-element="heading">
+                        <i class="fas fa-heading"></i>
+                        Заголовок
+                    </button>
+                    <button class="element-btn" data-element="text">
+                        <i class="fas fa-font"></i>
+                        Текст
+                    </button>
+                    <button class="element-btn" data-element="image">
+                        <i class="fas fa-image"></i>
+                        Зображення
+                    </button>
+                    <button class="element-btn" data-element="button">
+                        <i class="fas fa-hand-pointer"></i>
+                        Кнопка
+                    </button>
+                    <button class="element-btn" data-element="divider">
+                        <i class="fas fa-minus"></i>
+                        Роздільник
+                    </button>
+                    <button class="element-btn" data-element="gallery">
+                        <i class="fas fa-images"></i>
+                        Галерея
+                        <span class="badge">NEW</span>
+                    </button>
+                    <button class="element-btn" data-element="calendar">
+                        <i class="fas fa-calendar"></i>
+                        Календар
+                    </button>
+                    <button class="element-btn" data-element="rules">
+                        <i class="fas fa-scroll"></i>
+                        Правила
+                    </button>
+                    <button class="element-btn" data-element="poll">
+                        <i class="fas fa-poll"></i>
+                        Опитування
+                    </button>
+                    <button class="element-btn" data-element="video">
+                        <i class="fas fa-video"></i>
+                        Відео
+                    </button>
+                    <button class="element-btn" data-element="map">
+                        <i class="fas fa-map-marked-alt"></i>
+                        Мапа
+                    </button>
+                    <button class="element-btn" data-element="social">
+                        <i class="fas fa-share-alt"></i>
+                        Соцмережі
+                    </button>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">
+                    <i class="fas fa-palette"></i>
+                    Теми кланів
+                </div>
+                <div class="section-content">
+                    <button class="element-btn" data-theme="thunderclan">
+                        <i class="fas fa-fire"></i>
+                        Громовий Клан
+                    </button>
+                    <button class="element-btn" data-theme="riverclan">
+                        <i class="fas fa-water"></i>
+                        Річковий Клан
+                    </button>
+                    <button class="element-btn" data-theme="windclan">
+                        <i class="fas fa-wind"></i>
+                        Клан Вітру
+                    </button>
+                    <button class="element-btn" data-theme="shadowclan">
+                        <i class="fas fa-moon"></i>
+                        Клан Тіні
+                    </button>
+                    <button class="element-btn" data-theme="skyclan">
+                        <i class="fas fa-cloud"></i>
+                        Клан Неба
+                    </button>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">
+                    <i class="fas fa-layer-group"></i>
+                    Готові шаблони
+                </div>
+                <div class="section-content">
+                    <button class="element-btn" id="template-header">
+                        <i class="fas fa-crown"></i>
+                        Заголовок клану
+                    </button>
+                    <button class="element-btn" id="template-about">
+                        <i class="fas fa-info-circle"></i>
+                        Про клан
+                    </button>
+                    <button class="element-btn" id="template-contact">
+                        <i class="fas fa-envelope"></i>
+                        Контакти
+                    </button>
+                    <button class="element-btn" id="template-history">
+                        <i class="fas fa-book"></i>
+                        Історія клану
+                    </button>
+                    <button class="element-btn" id="template-members">
+                        <i class="fas fa-users"></i>
+                        Список воїнів
+                    </button>
+                    <button class="element-btn" id="template-events">
+                        <i class="fas fa-calendar-alt"></i>
+                        Календар подій
+                    </button>
+                    <button class="element-btn" id="template-gallery">
+                        <i class="fas fa-images"></i>
+                        Галерея клану
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Панель властивостей -->
+            <div class="properties-panel" id="properties-panel">
+                <div class="section-title">
+                    <i class="fas fa-cog"></i>
+                    Налаштування
+                </div>
+                <div id="properties-content">
+                    <!-- Динамічний контент -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Область редагування -->
+        <div class="editor-area">
+            <div class="editor-header">
+                <div class="editor-title">
+                    <i class="fas fa-paw"></i>
+                    Мій сайт клану
+                </div>
+                <div class="editor-actions">
+                    <select class="language-selector" id="language-selector">
+                        <option value="uk">🇺🇦 Українська</option>
+                        <option value="en">🇬🇧 English</option>
+                    </select>
+                    <button class="action-btn secondary" id="preview-btn">
+                        <i class="fas fa-eye"></i>
+                        <span>Переглянути</span>
+                    </button>
+                    <button class="action-btn" id="save-btn">
+                        <i class="fas fa-save"></i>
+                        <span>Зберегти</span>
+                    </button>
+                    <button class="action-btn" id="download-btn">
+                        <i class="fas fa-download"></i>
+                        <span>Завантажити</span>
+                    </button>
+                    <button class="action-btn secondary" id="analytics-btn">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Аналітика</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="canvas" id="canvas">
+                <div class="canvas-content" id="canvas-content">
+                    <div class="empty-canvas">
+                        <i class="fas fa-paw"></i>
+                        <h3>Розпочни створення свого сайту!</h3>
+                        <p>Вибери елементи з лівої панелі та додай їх сюди, щоб створити свій унікальний сайт клану. Це дуже просто!</p>
+                        <button class="action-btn" id="start-tutorial" style="margin-top: 1rem;">
+                            <i class="fas fa-graduation-cap"></i>
+                            Пройти навчання
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Попередній перегляд -->
+    <div class="preview-overlay" id="preview-overlay">
+        <div class="preview-content" id="preview-content">
+            <div class="preview-header">
+                <h2>Попередній перегляд сайту</h2>
+                <div class="preview-actions">
+                    <div class="device-toggle">
+                        <button class="device-btn active" data-device="desktop">
+                            <i class="fas fa-desktop"></i>
+                        </button>
+                        <button class="device-btn" data-device="tablet">
+                            <i class="fas fa-tablet-alt"></i>
+                        </button>
+                        <button class="device-btn" data-device="mobile">
+                            <i class="fas fa-mobile-alt"></i>
+                        </button>
+                    </div>
+                    <button class="action-btn secondary" id="share-btn">
+                        <i class="fas fa-share-alt"></i>
+                        Поділитися
+                    </button>
+                </div>
+                <button class="close-preview" id="close-preview">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="preview-body">
+                <!-- Тут буде контент -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Модальне вікно завантаження -->
+    <div class="download-modal" id="download-modal">
+        <div class="download-content">
+            <div class="download-title">
+                <i class="fas fa-download"></i>
+                Завантажити сайт
+            </div>
+            <div class="download-info">
+                <p>Ваш сайт буде збережений як HTML-файл, який ви зможете відкрити в будь-якому браузері або продовжити редагувати в цьому конструкторі.</p>
+                <p><strong>Увага:</strong> Цей матеріал створений фанатами. Clan Territory не відповідає за вміст створених вами сайтів.</p>
+            </div>
+            <div class="download-actions">
+                <button class="action-btn secondary" id="cancel-download">Скасувати</button>
+                <button class="action-btn" id="confirm-download">Завантажити HTML</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Вікно аналітики -->
+    <div class="download-modal" id="analytics-modal">
+        <div class="download-content">
+            <div class="download-title">
+                <i class="fas fa-chart-bar"></i>
+                Аналітика сайту
+            </div>
+            <div class="download-info">
+                <p>Статистика відвідувань вашого сайту. Дані оновлюються автоматично.</p>
+                
+                <div class="analytics-overview">
+                    <div class="analytics-card">
+                        <div class="analytics-value" id="visitors-count">124</div>
+                        <div class="analytics-label">Відвідувачі</div>
+                    </div>
+                    <div class="analytics-card">
+                        <div class="analytics-value" id="pageviews-count">487</div>
+                        <div class="analytics-label">Перегляди</div>
+                    </div>
+                    <div class="analytics-card">
+                        <div class="analytics-value" id="time-count">3:45</div>
+                        <div class="analytics-label">Час на сайті</div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 1.5rem;">
+                    <h3 style="color: var(--moonlight); margin-bottom: 0.5rem;">Найпопулярніші сторінки:</h3>
+                    <ul style="color: rgba(201, 214, 234, 0.8);">
+                        <li>Головна сторінка - 124 перегляди</li>
+                        <li>Про клан - 87 переглядів</li>
+                        <li>Календар подій - 65 переглядів</li>
+                        <li>Галерея - 52 перегляди</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="download-actions">
+                <button class="action-btn secondary" id="close-analytics">Закрити</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="notification" class="notification"></div>
+    
+    <script>
+        // Глобальні змінні
+        let selectedElement = null;
+        let elementCounter = 0;
+        let currentTheme = 'thunderclan';
+        let currentLanguage = 'uk';
+        let analyticsData = {
+            visitors: 124,
+            pageviews: 487,
+            avgTime: '3:45'
+        };
+        
+        // Тексти локалізації
+        const translations = {
+            uk: {
+                welcome: "Ласкаво просимо до Конструктора Кланів!",
+                addElement: "Додати елемент: ",
+                elementHeading: "Заголовок",
+                elementText: "Текст",
+                elementImage: "Зображення",
+                elementButton: "Кнопка",
+                elementDivider: "Роздільник",
+                elementGallery: "Галерея",
+                elementCalendar: "Календар",
+                elementRules: "Правила",
+                elementPoll: "Опитування",
+                elementVideo: "Відео",
+                elementMap: "Мапа",
+                elementSocial: "Соцмережі",
+                saveSuccess: "Сайт збережено!",
+                downloadSuccess: "Сайт завантажено!",
+                themeApplied: "Застосовано тему: ",
+                deleteConfirm: "Ви впевнені, що хочете видалити цей елемент?",
+                elementDeleted: "Елемент видалено",
+                previewTitle: "Попередній перегляд сайту",
+                analyticsTitle: "Аналітика сайту",
+                visitors: "Відвідувачі",
+                pageviews: "Перегляди",
+                avgTime: "Середній час"
+            },
+            en: {
+                welcome: "Welcome to the Clan Builder!",
+                addElement: "Add element: ",
+                elementHeading: "Heading",
+                elementText: "Text",
+                elementImage: "Image",
+                elementButton: "Button",
+                elementDivider: "Divider",
+                elementGallery: "Gallery",
+                elementCalendar: "Calendar",
+                elementRules: "Rules",
+                elementPoll: "Poll",
+                elementVideo: "Video",
+                elementMap: "Map",
+                elementSocial: "Social Media",
+                saveSuccess: "Site saved!",
+                downloadSuccess: "Site downloaded!",
+                themeApplied: "Theme applied: ",
+                deleteConfirm: "Are you sure you want to delete this element?",
+                elementDeleted: "Element deleted",
+                previewTitle: "Site Preview",
+                analyticsTitle: "Site Analytics",
+                visitors: "Visitors",
+                pageviews: "Pageviews",
+                avgTime: "Avg. Time"
+            }
+        };
+        
+        // Елементи DOM
+        const canvasContent = document.getElementById('canvas-content');
+        const propertiesPanel = document.getElementById('properties-panel');
+        const propertiesContent = document.getElementById('properties-content');
+        const previewOverlay = document.getElementById('preview-overlay');
+        const previewBody = document.getElementById('preview-body');
+        const downloadModal = document.getElementById('download-modal');
+        const analyticsModal = document.getElementById('analytics-modal');
+        const notification = document.getElementById('notification');
+        const languageSelector = document.getElementById('language-selector');
+        const toolbar = document.getElementById('toolbar');
+        const toggleToolbar = document.getElementById('toggle-toolbar');
+        
+        // Ініціалізація
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeEventListeners();
+            loadSavedSite();
+            applyTheme(currentTheme);
+            setupAnimations();
+            showNotification(translate('welcome'));
+        });
+        
+        // Ініціалізація обробників подій
+        function initializeEventListeners() {
+            // Кнопки додавання елементів
+            document.querySelectorAll('[data-element]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const elementType = this.dataset.element;
+                    addElement(elementType);
+                });
+            });
+            
+            // Кнопки тем
+            document.querySelectorAll('[data-theme]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    currentTheme = this.dataset.theme;
+                    applyTheme(currentTheme);
+                    showNotification(translate('themeApplied') + getThemeName(currentTheme));
+                });
+            });
+            
+            // Кнопки шаблонів
+            document.getElementById('template-header').addEventListener('click', addHeaderTemplate);
+            document.getElementById('template-about').addEventListener('click', addAboutTemplate);
+            document.getElementById('template-contact').addEventListener('click', addContactTemplate);
+            document.getElementById('template-history').addEventListener('click', addHistoryTemplate);
+            document.getElementById('template-members').addEventListener('click', addMembersTemplate);
+            document.getElementById('template-events').addEventListener('click', addEventsTemplate);
+            document.getElementById('template-gallery').addEventListener('click', addGalleryTemplate);
+            
+            // Кнопки дій
+            document.getElementById('preview-btn').addEventListener('click', showPreview);
+            document.getElementById('save-btn').addEventListener('click', saveSite);
+            document.getElementById('download-btn').addEventListener('click', showDownloadModal);
+            document.getElementById('analytics-btn').addEventListener('click', showAnalytics);
+            document.getElementById('close-preview').addEventListener('click', hidePreview);
+            document.getElementById('cancel-download').addEventListener('click', hideDownloadModal);
+            document.getElementById('confirm-download').addEventListener('click', downloadSite);
+            document.getElementById('close-analytics').addEventListener('click', hideAnalytics);
+            document.getElementById('start-tutorial').addEventListener('click', startTutorial);
+            document.getElementById('share-btn').addEventListener('click', shareSite);
+            
+            // Клік по canvas для зняття виділення
+            canvasContent.addEventListener('click', function(e) {
+                if (e.target === canvasContent) {
+                    deselectElement();
+                }
+            });
+            
+            // Вибрана мова
+            languageSelector.addEventListener('change', function() {
+                currentLanguage = this.value;
+                updateUI();
+            });
+            
+            // Перемикання панелі інструментів
+            toggleToolbar.addEventListener('click', function() {
+                toolbar.classList.toggle('visible');
+                this.querySelector('i').classList.toggle('fa-chevron-right');
+                this.querySelector('i').classList.toggle('fa-chevron-left');
+            });
+            
+            // Перемикання пристроїв у прев'ю
+            document.querySelectorAll('.device-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const device = this.dataset.device;
+                    document.querySelectorAll('.device-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    previewContent.classList.remove('desktop-view', 'tablet-view', 'mobile-view');
+                    previewContent.classList.add(device + '-view');
+                });
+            });
+        }
+        
+        // Додавання елемента
+        function addElement(type) {
+            elementCounter++;
+            const elementId = `element-${elementCounter}`;
+            
+            const element = document.createElement('div');
+            element.className = 'canvas-element scroll-animation';
+            element.id = elementId;
+            element.addEventListener('click', function(e) {
+                e.stopPropagation();
+                selectElement(element);
+            });
+            
+            // Контролери елемента
+            const controls = document.createElement('div');
+            controls.className = 'element-controls';
+            controls.innerHTML = `
+                <button class="control-btn tooltip" data-tooltip="${translate('delete')}" onclick="deleteElement('${elementId}')">
+                    <i class="fas fa-trash"></i>
+                </button>
+                <button class="control-btn tooltip" data-tooltip="${translate('duplicate')}" onclick="duplicateElement('${elementId}')">
+                    <i class="fas fa-clone"></i>
+                </button>
+                <button class="control-btn tooltip" data-tooltip="${translate('edit')}" onclick="editElement('${elementId}')">
+                    <i class="fas fa-edit"></i>
+                </button>
+            `;
+            element.appendChild(controls);
+            
+            // Створення контенту залежно від типу
+            let content = '';
+            switch(type) {
+                case 'heading':
+                    content = '<h2 class="heading-element">' + translate('elementHeading') + '</h2>';
+                    break;
+                case 'text':
+                    content = '<p class="text-element">' + translate('sampleText') + '</p>';
+                    break;
+                case 'image':
+                    content = '<div class="image-element"><i class="fas fa-image" style="font-size: 3rem; margin-bottom: 1rem;"></i><p>' + translate('addImage') + '</p></div>';
+                    break;
+                case 'button':
+                    content = '<a href="#" class="button-element">' + translate('elementButton') + '</a>';
+                    break;
+                case 'divider':
+                    content = '<hr style="border: none; height: 2px; background: linear-gradient(90deg, transparent, #ccc, transparent); margin: 2rem 0;">';
+                    break;
+                case 'gallery':
+                    content = `
+                        <h3 class="heading-element">${translate('galleryTitle')}</h3>
+                        <div class="gallery-grid">
+                            <div class="gallery-item">
+                                <div style="background: #f0f0f0; height: 150px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-image" style="font-size: 3rem; color: #666;"></i>
+                                </div>
+                                <div class="gallery-caption">${translate('image1')}</div>
+                            </div>
+                            <div class="gallery-item">
+                                <div style="background: #f0f0f0; height: 150px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-image" style="font-size: 3rem; color: #666;"></i>
+                                </div>
+                                <div class="gallery-caption">${translate('image2')}</div>
+                            </div>
+                            <div class="gallery-item">
+                                <div style="background: #f0f0f0; height: 150px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-image" style="font-size: 3rem; color: #666;"></i>
+                                </div>
+                                <div class="gallery-caption">${translate('image3')}</div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'calendar':
+                    content = `
+                        <h3 class="heading-element">${translate('calendarTitle')}</h3>
+                        <div class="event-calendar">
+                            <tr>
+                                <th>${translate('mon')}</th>
+                                <th>${translate('tue')}</th>
+                                <th>${translate('wed')}</th>
+                                <th>${translate('thu')}</th>
+                                <th>${translate('fri')}</th>
+                                <th>${translate('sat')}</th>
+                                <th>${translate('sun')}</th>
+                            </tr>
+                            <tr>
+                                <td class="event-day">1</td>
+                                <td>2</td>
+                                <td>3</td>
+                                <td class="event-day">4</td>
+                                <td>5</td>
+                                <td>6</td>
+                                <td>7</td>
+                            </tr>
+                        </div>
+                        <div class="event-details">
+                            <h4>${translate('eventDetails')}</h4>
+                            <p>${translate('eventDescription')}</p>
+                        </div>
+                    `;
+                    break;
+                case 'rules':
+                    content = `
+                        <h3 class="heading-element">${translate('rulesTitle')}</h3>
+                        <ul class="rules-list">
+                            <li>${translate('rule1')}</li>
+                            <li>${translate('rule2')}</li>
+                            <li>${translate('rule3')}</li>
+                            <li>${translate('rule4')}</li>
+                            <li>${translate('rule5')}</li>
+                        </ul>
+                    `;
+                    break;
+                case 'poll':
+                    content = `
+                        <h3 class="heading-element">${translate('pollTitle')}</h3>
+                        <div class="poll-options">
+                            <div class="poll-option">
+                                <input type="radio" name="poll" id="option1">
+                                <label for="option1">${translate('option1')}</label>
+                            </div>
+                            <div class="poll-option">
+                                <input type="radio" name="poll" id="option2">
+                                <label for="option2">${translate('option2')}</label>
+                            </div>
+                            <div class="poll-option">
+                                <input type="radio" name="poll" id="option3">
+                                <label for="option3">${translate('option3')}</label>
+                            </div>
+                        </div>
+                        <button class="button-element">${translate('vote')}</button>
+                        <div class="poll-results">
+                            <div class="poll-bar" style="width: 60%">60%</div>
+                            <div class="poll-bar" style="width: 30%">30%</div>
+                            <div class="poll-bar" style="width: 10%">10%</div>
+                        </div>
+                    `;
+                    break;
+                case 'video':
+                    content = `
+                        <h3 class="heading-element">${translate('videoTitle')}</h3>
+                        <div class="video-container">
+                            <div style="display: flex; align-items: center; justify-content: center; height: 100%; background: #f0f0f0;">
+                                <i class="fas fa-video" style="font-size: 3rem; color: #666;"></i>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'map':
+                    content = `
+                        <h3 class="heading-element">${translate('mapTitle')}</h3>
+                        <p>${translate('mapDescription')}</p>
+                        <div class="territory-map">
+                            <div class="map-marker" style="top: 30%; left: 40%;" data-title="${translate('camp')}"></div>
+                            <div class="map-marker" style="top: 60%; left: 25%;" data-title="${translate('hunting')}"></div>
+                            <div class="map-marker" style="top: 45%; left: 70%;" data-title="${translate('border')}"></div>
+                            <div class="map-tooltip" id="map-tooltip"></div>
+                        </div>
+                    `;
+                    break;
+                case 'social':
+                    content = `
+                        <h3 class="heading-element">${translate('socialTitle')}</h3>
+                        <div class="social-buttons">
+                            <a href="#" class="social-btn facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="social-btn twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="social-btn instagram"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    `;
+                    break;
+            }
+            
+            element.innerHTML = content + element.innerHTML;
+            
+            // Видалення заглушки та додавання елемента
+            const emptyCanvas = canvasContent.querySelector('.empty-canvas');
+            if (emptyCanvas) {
+                emptyCanvas.remove();
+            }
+            
+            canvasContent.appendChild(element);
+            selectElement(element);
+            
+            showNotification(translate('addElement') + translate('element' + type.charAt(0).toUpperCase() + type.slice(1)));
+            
+            // Запустити анімацію при прокрутці
+            setTimeout(() => {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                });
+                
+                observer.observe(element);
+            }, 100);
+        }
+        
+        // Додавання шаблону заголовка
+        function addHeaderTemplate() {
+            addElement('heading');
+            const lastElement = canvasContent.lastElementChild;
+            if (lastElement) {
+                lastElement.querySelector('.heading-element').textContent = translate('welcomeTitle');
+                lastElement.querySelector('.heading-element').style.color = getThemeColor(currentTheme);
+            }
+            
+            addElement('text');
+            const textElement = canvasContent.lastElementChild;
+            if (textElement) {
+                textElement.querySelector('.text-element').textContent = translate('welcomeText');
+            }
+            
+            addElement('divider');
+            
+            showNotification(translate('templateAdded'));
+        }
+        
+        // Додавання шаблону "Про клан"
+        function addAboutTemplate() {
+            addElement('heading');
+            const lastElement = canvasContent.lastElementChild;
+            if (lastElement) {
+                lastElement.querySelector('.heading-element').textContent = translate('aboutTitle');
+            }
+            
+            addElement('text');
+            const textElement1 = canvasContent.lastElementChild;
+            if (textElement1) {
+                textElement1.querySelector('.text-element').textContent = translate('aboutText');
+            }
+            
+            addElement('text');
+            const textElement2 = canvasContent.lastElementChild;
+            if (textElement2) {
+                textElement2.querySelector('.text-element').innerHTML = `
+                    <strong>${translate('ourValues')}</strong>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>${translate('value1')}</li>
+                        <li>${translate('value2')}</li>
+                        <li>${translate('value3')}</li>
+                        <li>${translate('value4')}</li>
+                    </ul>
+                `;
+            }
+            
+            showNotification(translate('templateAdded'));
+        }
+        
+        // Додавання шаблону контактів
+        function addContactTemplate() {
+            addElement('heading');
+            const lastElement = canvasContent.lastElementChild;
+            if (lastElement) {
+                lastElement.querySelector('.heading-element').textContent = translate('contactTitle');
+            }
+            
+            addElement('text');
+            const textElement = canvasContent.lastElementChild;
+            if (textElement) {
+                textElement.querySelector('.text-element').textContent = translate('contactText');
+            }
+            
+            addElement('button');
+            const buttonElement = canvasContent.lastElementChild;
+            if (buttonElement) {
+                buttonElement.querySelector('.button-element').textContent = translate('contactButton');
+                buttonElement.querySelector('.button-element').href = 'mailto:clan@example.com';
+                buttonElement.querySelector('.button-element').style.background = getThemeColor(currentTheme);
+            }
+            
+            showNotification(translate('templateAdded'));
+        }
+        
+        // Додавання шаблону історії клану
+        function addHistoryTemplate() {
+            addElement('heading');
+            const headingElement = canvasContent.lastElementChild;
+            if (headingElement) {
+                headingElement.querySelector('.heading-element').textContent = translate('historyTitle');
+            }
+            
+            addElement('text');
+            const textElement = canvasContent.lastElementChild;
+            if (textElement) {
+                textElement.querySelector('.text-element').innerHTML = `
+                    <p>${translate('historyText1')}</p>
+                    <p>${translate('historyText2')}</p>
+                `;
+            }
+            
+            addElement('image');
+            const imageElement = canvasContent.lastElementChild;
+            if (imageElement) {
+                imageElement.querySelector('.image-element').innerHTML = `
+                    <div style="background: #f0f0f0; padding: 1rem; border-radius: 8px; text-align: center;">
+                        <i class="fas fa-mountain" style="font-size: 3rem; color: #666;"></i>
+                        <p style="margin-top: 1rem;">${translate('ourTerritory')}</p>
+                    </div>
+                `;
+            }
+            
+            showNotification(translate('templateAdded'));
+        }
+        
+        // Додавання шаблону списку воїнів
+        function addMembersTemplate() {
+            addElement('heading');
+            const headingElement = canvasContent.lastElementChild;
+            if (headingElement) {
+                headingElement.querySelector('.heading-element').textContent = translate('membersTitle');
+            }
+            
+            addElement('text');
+            const textElement = canvasContent.lastElementChild;
+            if (textElement) {
+                textElement.querySelector('.text-element').innerHTML = `
+                    <ul style="margin-left: 20px;">
+                        <li>${translate('leader')}</li>
+                        <li>${translate('deputy')}</li>
+                        <li>${translate('healer')}</li>
+                        <li>${translate('warriors')}</li>
+                    </ul>
+                `;
+            }
+            
+            showNotification(translate('templateAdded'));
+        }
+        
+        // Додавання шаблону календаря подій
+        function addEventsTemplate() {
+            addElement('calendar');
+            showNotification(translate('templateAdded'));
+        }
+        
+        // Додавання шаблону галереї
+        function addGalleryTemplate() {
+            addElement('gallery');
+            showNotification(translate('templateAdded'));
+        }
+        
+        // Вибір елемента
+        function selectElement(element) {
+            // Зняти виділення з попереднього елемента
+            if (selectedElement) {
+                selectedElement.classList.remove('selected');
+            }
+            
+            // Виділити новий елемент
+            selectedElement = element;
+            element.classList.add('selected');
+            
+            // Показати панель властивостей
+            showProperties(element);
+        }
+        
+        // Зняти виділення
+        function deselectElement() {
+            if (selectedElement) {
+                selectedElement.classList.remove('selected');
+                selectedElement = null;
+                hideProperties();
+            }
+        }
+        
+        // Показати панель властивостей
+        function showProperties(element) {
+            const elementType = getElementType(element);
+            let propertiesHTML = '';
+            
+            switch(elementType) {
+                case 'heading':
+                    const headingText = element.querySelector('.heading-element').textContent;
+                    propertiesHTML = `
+                        <div class="property-group">
+                            <label class="property-label">${translate('text')}:</label>
+                            <input type="text" class="property-input" value="${headingText}" onchange="updateElementProperty('text', this.value)">
+                        </div>
+                        <div class="property-group">
+                            <label class="property-label">${translate('color')}:</label>
+                            <div class="color-picker">
+                                <div class="color-option color-thunderclan" onclick="updateElementProperty('color', '#c84a31')"></div>
+                                <div class="color-option color-riverclan" onclick="updateElementProperty('color', '#4a6fa5')"></div>
+                                <div class="color-option color-windclan" onclick="updateElementProperty('color', '#d8c359')"></div>
+                                <div class="color-option color-shadowclan" onclick="updateElementProperty('color', '#6e4a8c')"></div>
+                                <div class="color-option color-skyclan" onclick="updateElementProperty('color', '#5a9bd5')"></div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'text':
+                    const textContent = element.querySelector('.text-element').textContent;
+                    propertiesHTML = `
+                        <div class="property-group">
+                            <label class="property-label">${translate('text')}:</label>
+                            <textarea class="property-input" rows="4" onchange="updateElementProperty('text', this.value)">${textContent}</textarea>
+                        </div>
+                        <div class="property-group">
+                            <label class="property-label">${translate('color')}:</label>
+                            <div class="color-picker">
+                                <div class="color-option color-thunderclan" onclick="updateElementProperty('color', '#c84a31')"></div>
+                                <div class="color-option color-riverclan" onclick="updateElementProperty('color', '#4a6fa5')"></div>
+                                <div class="color-option color-windclan" onclick="updateElementProperty('color', '#d8c359')"></div>
+                                <div class="color-option color-shadowclan" onclick="updateElementProperty('color', '#6e4a8c')"></div>
+                                <div class="color-option" style="background: #333;" onclick="updateElementProperty('color', '#333')"></div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'button':
+                    const buttonText = element.querySelector('.button-element').textContent;
+                    const buttonHref = element.querySelector('.button-element').href;
+                    propertiesHTML = `
+                        <div class="property-group">
+                            <label class="property-label">${translate('text')}:</label>
+                            <input type="text" class="property-input" value="${buttonText}" onchange="updateElementProperty('text', this.value)">
+                        </div>
+                        <div class="property-group">
+                            <label class="property-label">${translate('link')}:</label>
+                            <input type="text" class="property-input" value="${buttonHref}" onchange="updateElementProperty('href', this.value)">
+                        </div>
+                        <div class="property-group">
+                            <label class="property-label">${translate('style')}:</label>
+                            <div class="color-picker">
+                                <div class="color-option color-thunderclan" onclick="updateElementProperty('buttonStyle', 'thunderclan')"></div>
+                                <div class="color-option color-riverclan" onclick="updateElementProperty('buttonStyle', 'riverclan')"></div>
+                                <div class="color-option color-windclan" onclick="updateElementProperty('buttonStyle', 'windclan')"></div>
+                                <div class="color-option color-shadowclan" onclick="updateElementProperty('buttonStyle', 'shadowclan')"></div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'image':
+                    propertiesHTML = `
+                        <div class="property-group">
+                            <label class="property-label">${translate('imageUrl')}:</label>
+                            <input type="text" class="property-input" placeholder="https://example.com/image.jpg" onchange="updateElementProperty('src', this.value)">
+                        </div>
+                        <div class="property-group">
+                            <label class="property-label">${translate('altText')}:</label>
+                            <input type="text" class="property-input" placeholder="${translate('imageDescription')}" onchange="updateElementProperty('alt', this.value)">
+                        </div>
+                    `;
+                    break;
+                case 'gallery':
+                    propertiesHTML = `
+                        <div class="property-group">
+                            <label class="property-label">${translate('galleryTitle')}:</label>
+                            <input type="text" class="property-input" value="${translate('galleryTitle')}" onchange="updateElementProperty('title', this.value)">
+                        </div>
+                        <div class="property-group">
+                            <label class="property-label">${translate('imageCount')}:</label>
+                            <select class="property-input" onchange="updateElementProperty('count', this.value)">
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="6">6</option>
+                                <option value="9">9</option>
+                            </select>
+                        </div>
+                    `;
+                    break;
+                case 'poll':
+                    propertiesHTML = `
+                        <div class="property-group">
+                            <label class="property-label">${translate('question')}:</label>
+                            <input type="text" class="property-input" value="${translate('pollTitle')}" onchange="updateElementProperty('question', this.value)">
+                        </div>
+                        <div class="property-group">
+                            <label class="property-label">${translate('options')} (${translate('onePerLine')}):</label>
+                            <textarea class="property-input" rows="4" onchange="updateElementProperty('options', this.value)">${translate('option1')}\n${translate('option2')}\n${translate('option3')}</textarea>
+                        </div>
+                    `;
+                    break;
+                case 'video':
+                    propertiesHTML = `
+                        <div class="property-group">
+                            <label class="property-label">YouTube URL:</label>
+                            <input type="text" class="property-input" placeholder="https://www.youtube.com/watch?v=..." onchange="updateElementProperty('src', this.value)">
+                        </div>
+                    `;
+                    break;
+                default:
+                    propertiesHTML = `<p>${translate('selectElement')}</p>`;
+            }
+            
+            propertiesContent.innerHTML = propertiesHTML;
+            propertiesPanel.style.display = 'block';
+        }
+        
+        // Приховати панель властивостей
+        function hideProperties() {
+            propertiesPanel.style.display = 'none';
+        }
+        
+        // Оновити властивість елемента
+        function updateElementProperty(property, value) {
+            if (!selectedElement) return;
+            
+            const elementType = getElementType(selectedElement);
+            
+            switch(property) {
+                case 'text':
+                    if (elementType === 'heading') {
+                        selectedElement.querySelector('.heading-element').textContent = value;
+                    } else if (elementType === 'text') {
+                        selectedElement.querySelector('.text-element').textContent = value;
+                    } else if (elementType === 'button') {
+                        selectedElement.querySelector('.button-element').textContent = value;
+                    }
+                    break;
+                case 'color':
+                    if (elementType === 'heading') {
+                        selectedElement.querySelector('.heading-element').style.color = value;
+                    } else if (elementType === 'text') {
+                        selectedElement.querySelector('.text-element').style.color = value;
+                    }
+                    break;
+                case 'href':
+                    if (elementType === 'button') {
+                        selectedElement.querySelector('.button-element').href = value;
+                    }
+                    break;
+                case 'buttonStyle':
+                    if (elementType === 'button') {
+                        const button = selectedElement.querySelector('.button-element');
+                        const colors = {
+                            thunderclan: '#c84a31',
+                            riverclan: '#4a6fa5',
+                            windclan: '#d8c359',
+                            shadowclan: '#6e4a8c'
+                        };
+                        button.style.background = colors[value];
+                        if (value === 'windclan') {
+                            button.style.color = '#0a0f1a';
+                        } else {
+                            button.style.color = 'white';
+                        }
+                    }
+                    break;
+                case 'src':
+                    if (elementType === 'image') {
+                        const imageDiv = selectedElement.querySelector('.image-element');
+                        if (value) {
+                            imageDiv.innerHTML = `<img src="${value}" alt="${translate('clanImage')}" style="max-width: 100%; height: auto; border-radius: 8px;">`;
+                        } else {
+                            imageDiv.innerHTML = '<i class="fas fa-image" style="font-size: 3rem; margin-bottom: 1rem;"></i><p>' + translate('addImage') + '</p>';
+                        }
+                    }
+                    else if (elementType === 'video') {
+                        const videoId = getYouTubeId(value);
+                        if (videoId) {
+                            selectedElement.querySelector('.video-container').innerHTML = `
+                                <iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            `;
+                        }
+                    }
+                    break;
+                case 'alt':
+                    if (elementType === 'image') {
+                        const img = selectedElement.querySelector('img');
+                        if (img) {
+                            img.alt = value;
+                        }
+                    }
+                    break;
+            }
+        }
+        
+        // Отримати ID відео YouTube
+        function getYouTubeId(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+        
+        // Отримати тип елемента
+        function getElementType(element) {
+            if (element.querySelector('.heading-element')) return 'heading';
+            if (element.querySelector('.text-element')) return 'text';
+            if (element.querySelector('.button-element')) return 'button';
+            if (element.querySelector('.image-element')) return 'image';
+            if (element.querySelector('hr')) return 'divider';
+            if (element.querySelector('.gallery-grid')) return 'gallery';
+            if (element.querySelector('.event-calendar')) return 'calendar';
+            if (element.querySelector('.rules-list')) return 'rules';
+            if (element.querySelector('.poll-options')) return 'poll';
+            if (element.querySelector('.video-container')) return 'video';
+            if (element.querySelector('.territory-map')) return 'map';
+            if (element.querySelector('.social-buttons')) return 'social';
+            return 'unknown';
+        }
+        
+        // Видалити елемент
+        function deleteElement(elementId) {
+            const element = document.getElementById(elementId);
+            if (element && confirm(translate('deleteConfirm'))) {
+                if (element === selectedElement) {
+                    deselectElement();
+                }
+                element.remove();
+                
+                // Показати заглушку, якщо немає елементів
+                if (canvasContent.children.length === 0) {
+                    canvasContent.innerHTML = `
+                        <div class="empty-canvas">
+                            <i class="fas fa-paw"></i>
+                            <h3>${translate('startCreating')}</h3>
+                            <p>${translate('startDescription')}</p>
+                            <button class="action-btn" id="start-tutorial" style="margin-top: 1rem;">
+                                <i class="fas fa-graduation-cap"></i>
+                                ${translate('startTutorial')}
+                            </button>
+                        </div>
+                    `;
+                    document.getElementById('start-tutorial').addEventListener('click', startTutorial);
+                }
+                
+                showNotification(translate('elementDeleted'));
+            }
+        }
+        
+        // Дублювати елемент
+        function duplicateElement(elementId) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                const clone = element.cloneNode(true);
+                elementCounter++;
+                const newId = `element-${elementCounter}`;
+                clone.id = newId;
+                
+                // Оновити обробники подій
+                clone.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    selectElement(clone);
+                });
+                
+                // Вставити після оригінального елемента
+                element.parentNode.insertBefore(clone, element.nextSibling);
+                selectElement(clone);
+                
+                showNotification(translate('elementDuplicated'));
+            }
+        }
+        
+        // Редагувати елемент
+        function editElement(elementId) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                selectElement(element);
+            }
+        }
+        
+        // Застосувати тему
+        function applyTheme(theme) {
+            const colors = {
+                thunderclan: '#c84a31',
+                riverclan: '#4a6fa5',
+                windclan: '#d8c359',
+                shadowclan: '#6e4a8c',
+                skyclan: '#5a9bd5'
+            };
+            
+            const color = colors[theme] || '#c84a31';
+            canvasContent.style.borderLeft = `5px solid ${color}`;
+        }
+        
+        // Отримати колір теми
+        function getThemeColor(theme) {
+            const colors = {
+                thunderclan: '#c84a31',
+                riverclan: '#4a6fa5',
+                windclan: '#d8c359',
+                shadowclan: '#6e4a8c',
+                skyclan: '#5a9bd5'
+            };
+            return colors[theme] || '#c84a31';
+        }
+        
+        // Показати попередній перегляд
+        function showPreview() {
+            // Створити HTML для попереднього перегляду
+            const elements = canvasContent.querySelectorAll('.canvas-element');
+            let previewHTML = '<div style="padding: 2rem; font-family: Georgia, serif; line-height: 1.6; max-width: 1000px; margin: 0 auto;">';
+            
+            elements.forEach(element => {
+                const clone = element.cloneNode(true);
+                // Видалити контролери
+                const controls = clone.querySelector('.element-controls');
+                if (controls) controls.remove();
+                // Видалити класи редактора
+                clone.classList.remove('canvas-element', 'selected', 'scroll-animation');
+                clone.classList.add('fade-in');
+                previewHTML += clone.outerHTML;
+            });
+            
+            // Додати футер
+            previewHTML += `
+                <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #ddd; text-align: center; color: #666; font-size: 0.9rem;">
+                    <p>${translate('createdWith')} <a href="#" target="_blank" style="color: ${getThemeColor(currentTheme)};">${translate('clanBuilder')}</a></p>
+                    <p style="font-size: 0.8rem; margin-top: 0.5rem;">${translate('disclaimer')}</p>
+                </div>
+            `;
+            
+            previewHTML += '</div>';
+            
+            // Вставити в прев'ю
+            previewBody.innerHTML = previewHTML;
+            previewOverlay.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            
+            // Ініціалізувати анімації для прев'ю
+            setupAnimations();
+        }
+        
+        // Налаштувати анімації
+        function setupAnimations() {
+            const animatedElements = document.querySelectorAll('.scroll-animation');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            });
+            
+            animatedElements.forEach(el => {
+                observer.observe(el);
+            });
+        }
+        
+        // Приховати попередній перегляд
+        function hidePreview() {
+            previewOverlay.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Показати аналітику
+        function showAnalytics() {
+            document.getElementById('visitors-count').textContent = analyticsData.visitors;
+            document.getElementById('pageviews-count').textContent = analyticsData.pageviews;
+            document.getElementById('time-count').textContent = analyticsData.avgTime;
+            analyticsModal.style.display = 'flex';
+        }
+        
+        // Приховати аналітику
+        function hideAnalytics() {
+            analyticsModal.style.display = 'none';
+        }
+        
+        // Показати модальне вікно завантаження
+        function showDownloadModal() {
+            downloadModal.style.display = 'flex';
+        }
+        
+        // Приховати модальне вікно завантаження
+        function hideDownloadModal() {
+            downloadModal.style.display = 'none';
+        }
+        
+        // Завантажити сайт
+        function downloadSite() {
+            // Генерувати HTML для сайту
+            const elements = canvasContent.querySelectorAll('.canvas-element');
+            let siteHTML = `
+                <!DOCTYPE html>
+                <html lang="${currentLanguage}">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>${translate('clanSite')}</title>
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+                    <style>
+                        body {
+                            font-family: Georgia, serif;
+                            background: #f8f9fa;
+                            color: #333;
+                            line-height: 1.6;
+                            margin: 0;
+                            padding: 0;
+                        }
+                        .container {
+                            max-width: 1000px;
+                            margin: 0 auto;
+                            padding: 2rem;
+                        }
+                        h1, h2, h3 {
+                            color: ${getThemeColor(currentTheme)};
+                            font-family: 'Times New Roman', serif;
+                        }
+                        a {
+                            color: ${getThemeColor(currentTheme)};
+                            text-decoration: none;
+                        }
+                        a:hover {
+                            text-decoration: underline;
+                        }
+                        .btn {
+                            display: inline-block;
+                            padding: 0.8rem 1.5rem;
+                            background: ${getThemeColor(currentTheme)};
+                            color: white;
+                            border-radius: 8px;
+                            font-weight: bold;
+                            margin-top: 1rem;
+                            transition: all 0.3s ease;
+                            position: relative;
+                            overflow: hidden;
+                        }
+                        .btn:hover {
+                            transform: translateY(-2px);
+                            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+                        }
+                        .btn:after {
+                            content: "";
+                            position: absolute;
+                            top: 0;
+                            left: -100%;
+                            width: 100%;
+                            height: 100%;
+                            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+                            transition: 0.5s;
+                        }
+                        .btn:hover:after {
+                            left: 100%;
+                        }
+                        .image-container {
+                            text-align: center;
+                            margin: 2rem 0;
+                        }
+                        .image-container img {
+                            max-width: 100%;
+                            border-radius: 8px;
+                        }
+                        .footer {
+                            margin-top: 3rem;
+                            padding-top: 2rem;
+                            border-top: 1px solid #ddd;
+                            text-align: center;
+                            color: #666;
+                            font-size: 0.9rem;
+                        }
+                        .gallery-grid {
+                            display: grid;
+                            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                            gap: 1rem;
+                            margin-top: 1rem;
+                        }
+                        .gallery-item {
+                            border: 1px solid #ddd;
+                            border-radius: 8px;
+                            overflow: hidden;
+                            transition: transform 0.3s ease;
+                        }
+                        .gallery-item:hover {
+                            transform: translateY(-5px);
+                        }
+                        .gallery-item img {
+                            width: 100%;
+                            height: 150px;
+                            object-fit: cover;
+                        }
+                        .gallery-caption {
+                            padding: 0.5rem;
+                            text-align: center;
+                            font-size: 0.9rem;
+                        }
+                        .event-calendar {
+                            width: 100%;
+                            border-collapse: collapse;
+                            margin-top: 1rem;
+                        }
+                        .event-calendar th, .event-calendar td {
+                            border: 1px solid #ddd;
+                            padding: 0.5rem;
+                            text-align: center;
+                        }
+                        .event-calendar th {
+                            background: #f5f5f5;
+                            font-weight: bold;
+                        }
+                        .event-day {
+                            background: rgba(74, 111, 165, 0.1);
+                            cursor: pointer;
+                        }
+                        .event-day:hover {
+                            background: rgba(74, 111, 165, 0.2);
+                        }
+                        .event-details {
+                            margin-top: 1rem;
+                            padding: 1rem;
+                            background: #f9f9f9;
+                            border-radius: 8px;
+                        }
+                        .rules-list {
+                            list-style: none;
+                            margin-top: 1rem;
+                        }
+                        .rules-list li {
+                            margin-bottom: 0.5rem;
+                            padding-left: 1.5rem;
+                            position: relative;
+                        }
+                        .rules-list li:before {
+                            content: "•";
+                            position: absolute;
+                            left: 0;
+                            color: #c84a31;
+                            font-size: 1.2rem;
+                        }
+                        .poll-options {
+                            margin-top: 1rem;
+                        }
+                        .poll-option {
+                            display: flex;
+                            align-items: center;
+                            margin-bottom: 0.5rem;
+                        }
+                        .poll-results {
+                            margin-top: 1rem;
+                        }
+                        .poll-bar {
+                            height: 20px;
+                            background: #4a6fa5;
+                            border-radius: 4px;
+                            margin-bottom: 0.5rem;
+                            transition: width 1s ease-in-out;
+                        }
+                        .video-container {
+                            position: relative;
+                            padding-bottom: 56.25%;
+                            height: 0;
+                            overflow: hidden;
+                            margin-top: 1rem;
+                            border-radius: 8px;
+                        }
+                        .video-container iframe {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            border: none;
+                        }
+                        .territory-map {
+                            position: relative;
+                            width: 100%;
+                            height: 400px;
+                            background: #d0e7d4;
+                            border-radius: 8px;
+                            margin-top: 1rem;
+                            overflow: hidden;
+                        }
+                        .map-marker {
+                            position: absolute;
+                            width: 20px;
+                            height: 20px;
+                            background: #c84a31;
+                            border-radius: 50%;
+                            transform: translate(-50%, -50%);
+                            cursor: pointer;
+                            box-shadow: 0 0 0 rgba(200, 74, 49, 0.4);
+                            animation: pulse 1.5s infinite;
+                        }
+                        .map-tooltip {
+                            position: absolute;
+                            background: rgba(0, 0, 0, 0.8);
+                            color: white;
+                            padding: 0.5rem 1rem;
+                            border-radius: 4px;
+                            font-size: 0.9rem;
+                            z-index: 10;
+                            pointer-events: none;
+                            opacity: 0;
+                            transition: opacity 0.2s;
+                        }
+                        .social-buttons {
+                            display: flex;
+                            gap: 0.5rem;
+                            margin-top: 1rem;
+                        }
+                        .social-btn {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            width: 36px;
+                            height: 36px;
+                            border-radius: 50%;
+                            color: white;
+                            font-size: 1.2rem;
+                            transition: transform 0.2s;
+                        }
+                        .social-btn:hover {
+                            transform: translateY(-3px);
+                        }
+                        .social-btn.facebook { background: #3b5998; }
+                        .social-btn.twitter { background: #1da1f2; }
+                        .social-btn.instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+                        @keyframes pulse {
+                            0%, 100% { transform: scale(1); }
+                            50% { transform: scale(1.05); }
+                        }
+                        @keyframes ripple {
+                            0% {
+                                transform: scale(0.5);
+                                opacity: 0.7;
+                            }
+                            100% {
+                                transform: scale(1.5);
+                                opacity: 0;
+                            }
+                        }
+                        .fade-in {
+                            animation: fadeIn 0.8s ease-in-out;
+                        }
+                        @keyframes fadeIn {
+                            from { opacity: 0; }
+                            to { opacity: 1; }
+                        }
+                        .scroll-animation {
+                            opacity: 0;
+                            transform: translateY(30px);
+                            transition: opacity 0.6s ease, transform 0.6s ease;
+                        }
+                        .scroll-animation.visible {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+            `;
+            
+            elements.forEach(element => {
+                const clone = element.cloneNode(true);
+                // Видалити контролери
+                const controls = clone.querySelector('.element-controls');
+                if (controls) controls.remove();
+                
+                // Замінити класи на стилі
+                if (clone.querySelector('.heading-element')) {
+                    const heading = clone.querySelector('.heading-element');
+                    heading.outerHTML = `<h2 style="color: ${getThemeColor(currentTheme)}; font-family: 'Times New Roman', serif;">${heading.innerHTML}</h2>`;
+                }
+                
+                if (clone.querySelector('.text-element')) {
+                    const text = clone.querySelector('.text-element');
+                    text.outerHTML = `<div class="text-content">${text.innerHTML}</div>`;
+                }
+                
+                if (clone.querySelector('.button-element')) {
+                    const button = clone.querySelector('.button-element');
+                    button.className = 'btn';
+                }
+                
+                if (clone.querySelector('.image-element')) {
+                    const imageContainer = clone.querySelector('.image-element');
+                    imageContainer.className = 'image-container';
+                }
+                
+                if (getElementType(clone) === 'gallery') {
+                    clone.classList.add('gallery-section');
+                }
+                
+                siteHTML += clone.outerHTML;
+            });
+            
+            // Додати футер
+            siteHTML += `
+                        <div class="footer">
+                            <p>${translate('createdWith')} <a href="#" target="_blank">${translate('clanBuilder')}</a></p>
+                            <p style="font-size: 0.8rem; margin-top: 0.5rem;">${translate('disclaimer')}</p>
+                        </div>
+                    </div>
+                    <script>
+                        // Анімації при прокрутці
+                        const scrollElements = document.querySelectorAll('.scroll-animation');
+                        const observer = new IntersectionObserver((entries) => {
+                            entries.forEach(entry => {
+                                if (entry.isIntersecting) {
+                                    entry.target.classList.add('visible');
+                                    observer.unobserve(entry.target);
+                                }
+                            });
+                        });
+                        
+                        scrollElements.forEach(el => {
+                            observer.observe(el);
+                        });
+                        
+                        // Карта території
+                        const markers = document.querySelectorAll('.map-marker');
+                        const tooltip = document.querySelector('.map-tooltip');
+                        
+                        markers.forEach(marker => {
+                            marker.addEventListener('mouseenter', function() {
+                                const title = this.dataset.title;
+                                tooltip.textContent = title;
+                                tooltip.style.left = (this.offsetLeft + 10) + 'px';
+                                tooltip.style.top = (this.offsetTop - 40) + 'px';
+                                tooltip.style.opacity = '1';
+                            });
+                            
+                            marker.addEventListener('mouseleave', function() {
+                                tooltip.style.opacity = '0';
+                            });
+                        });
+                        
+                        // Опитування
+                        const voteBtn = document.querySelector('.btn');
+                        if (voteBtn) {
+                            voteBtn.addEventListener('click', function() {
+                                const results = document.querySelector('.poll-results');
+                                results.style.display = 'block';
+                                this.textContent = '${translate('voted')}';
+                                this.disabled = true;
+                            });
+                        }
+                    <\/script>
+                </body>
+                </html>
+            `;
+            
+            // Створити файл для завантаження
+            const blob = new Blob([siteHTML], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'clan-website.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            hideDownloadModal();
+            showNotification(translate('downloadSuccess'));
+        }
+        
+        // Поділитися сайтом
+        function shareSite() {
+            if (navigator.share) {
+                navigator.share({
+                    title: translate('clanSite'),
+                    text: translate('checkoutSite'),
+                    url: window.location.href
+                })
+                .then(() => showNotification(translate('shareSuccess')))
+                .catch(error => showNotification(translate('shareError')));
+            } else {
+                // Fallback для браузерів без підтримки Web Share API
+                const dummy = document.createElement('input');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                showNotification(translate('linkCopied'));
+            }
+        }
+        
+        // Зберегти сайт
+        function saveSite() {
+            const siteData = {
+                content: canvasContent.innerHTML,
+                theme: currentTheme,
+                language: currentLanguage,
+                timestamp: new Date().toISOString()
+            };
+            
+            localStorage.setItem('clan_site_builder', JSON.stringify(siteData));
+            showNotification(translate('saveSuccess'));
+        }
+        
+        // Завантажити збережений сайт
+        function loadSavedSite() {
+            const saved = localStorage.getItem('clan_site_builder');
+            if (saved) {
+                try {
+                    const siteData = JSON.parse(saved);
+                    canvasContent.innerHTML = siteData.content;
+                    currentTheme = siteData.theme || 'thunderclan';
+                    currentLanguage = siteData.language || 'uk';
+                    languageSelector.value = currentLanguage;
+                    applyTheme(currentTheme);
+                    
+                    // Відновити обробники подій
+                    canvasContent.querySelectorAll('.canvas-element').forEach(element => {
+                        element.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            selectElement(element);
+                        });
+                    });
+                    
+                    // Видалити заглушку, якщо є елементи
+                    if (canvasContent.children.length > 0) {
+                        const emptyCanvas = canvasContent.querySelector('.empty-canvas');
+                        if (emptyCanvas) emptyCanvas.remove();
+                    }
+                    
+                    showNotification(translate('loadSuccess'));
+                    
+                    // Запустити анімації
+                    setupAnimations();
+                } catch (e) {
+                    console.error('Помилка завантаження:', e);
+                }
+            }
+        }
+        
+        // Почати навчання
+        function startTutorial() {
+            canvasContent.innerHTML = '';
+            addElement('heading');
+            addElement('text');
+            addElement('gallery');
+            addElement('poll');
+            showNotification(translate('tutorialStarted'));
+        }
+        
+        // Показати повідомлення
+        function showNotification(message) {
+            notification.innerHTML = `<i class="fas fa-info-circle"></i> ${message}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Перекласти текст
+        function translate(key) {
+            const langTranslations = translations[currentLanguage] || translations.uk;
+            return langTranslations[key] || key;
+        }
+        
+        // Оновити інтерфейс
+        function updateUI() {
+            // Оновлюємо тексти кнопок і заголовків
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                el.textContent = translate(key);
+            });
+            
+            // Оновлюємо підказки
+            document.querySelectorAll('[data-tooltip]').forEach(el => {
+                const key = el.getAttribute('data-tooltip');
+                el.setAttribute('data-tooltip', translate(key));
+            });
+            
+            // Оновлюємо атрибути placeholder
+            document.querySelectorAll('[data-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-placeholder');
+                el.setAttribute('placeholder', translate(key));
+            });
+            
+            // Зберігаємо стан
+            saveSite();
+        }
+        
+        // Отримати назву теми
+        function getThemeName(theme) {
+            const names = {
+                thunderclan: translate('thunderclan'),
+                riverclan: translate('riverclan'),
+                windclan: translate('windclan'),
+                shadowclan: translate('shadowclan'),
+                skyclan: translate('skyclan')
+            };
+            return names[theme] || theme;
+        }
+        
+        // Додаткові тексти для локалізації
+        translations.uk = {
+            ...translations.uk,
+            delete: "Видалити",
+            duplicate: "Дублювати",
+            edit: "Редагувати",
+            sampleText: "Це приклад текстового блоку. Ви можете змінити цей текст на власний.",
+            addImage: "Натисніть, щоб додати зображення",
+            galleryTitle: "Галерея клану",
+            calendarTitle: "Календар подій",
+            rulesTitle: "Правила клану",
+            pollTitle: "Опитування: Кого виберіть наступним лідером?",
+            videoTitle: "Відео з життя клану",
+            mapTitle: "Мапа нашої території",
+            socialTitle: "Ми в соціальних мережах",
+            image1: "Табір клану",
+            image2: "Полювання",
+            image3: "Священне місце",
+            mon: "Пн",
+            tue: "Вт",
+            wed: "Ср",
+            thu: "Чт",
+            fri: "Пт",
+            sat: "Сб",
+            sun: "Нд",
+            eventDetails: "Збори клану",
+            eventDescription: "Обговорення нових територій та планів на наступний місяць.",
+            rule1: "Завжди захищай територію клану",
+            rule2: "Поважай старших воїнів",
+            rule3: "Не полюй на території інших кланів",
+            rule4: "Виховуй молодь згідно Кодексу Воїна",
+            rule5: "Завжди допомагай членам свого клану",
+            option1: "Білогрива",
+            option2: "Вогнехвіст",
+            option3: "Стрімкозір",
+            vote: "Голосувати",
+            camp: "Табір",
+            hunting: "Мисливські угіддя",
+            border: "Кордон",
+            clanImage: "Зображення клану",
+            imageUrl: "URL зображення",
+            altText: "Альтернативний текст",
+            imageDescription: "Опис зображення",
+            text: "Текст",
+            color: "Колір",
+            link: "Посилання",
+            style: "Стиль",
+            imageCount: "Кількість зображень",
+            question: "Питання",
+            options: "Варіанти відповідей",
+            onePerLine: "Один варіант на рядок",
+            startCreating: "Розпочни створення свого сайту!",
+            startDescription: "Вибери елементи з панелі інструментів та додай їх сюди.",
+            startTutorial: "Пройти навчання",
+            welcomeTitle: "Ласкаво просимо до нашого клану!",
+            welcomeText: "Ми - сильний та гордий клан, що живе за законами Кодексу Воїна.",
+            aboutTitle: "Про наш клан",
+            aboutText: "Наш клан має багату історію та славні традиції, які ми бережемо.",
+            ourValues: "Наші цінності:",
+            value1: "Відданість клану",
+            value2: "Хоробрість у битві",
+            value3: "Повага до старійшин",
+            value4: "Турбота про молодь",
+            contactTitle: "Зв'яжіться з нами",
+            contactText: "Маєте питання або хочете приєднатися? Напишіть нам!",
+            contactButton: "Написати листа",
+            historyTitle: "Історія нашого клану",
+            historyText1: "Наш клан був заснований багатьма місяцями тому великим ватажком.",
+            historyText2: "Ми пройшли через багато випробувань, але завжди залишалися вірними Кодексу Воїна.",
+            ourTerritory: "Наша територія",
+            membersTitle: "Наші воїни",
+            leader: "Бурокіт - ватажок",
+            deputy: "Срібнолис - наступник",
+            healer: "Травниця - цілитель",
+            warriors: "Бистраногий, Вогнегривий, Місяцесвіт - воїни",
+            templateAdded: "Шаблон додано!",
+            elementDuplicated: "Елемент дубльовано",
+            createdWith: "Створено за допомогою",
+            clanBuilder: "Конструктора Кланів",
+            disclaimer: "Цей матеріал створений фанатами. Clan Territory не відповідає за вміст.",
+            clanSite: "Сайт мого клану",
+            checkOutSite: "Перегляньте сайт мого клану!",
+            shareSuccess: "Дякуємо за поширення!",
+            shareError: "Помилка при спробі поділитися",
+            linkCopied: "Посилання скопійовано!",
+            loadSuccess: "Сайт завантажено!"
+        };
+        
+        translations.en = {
+            ...translations.en,
+            delete: "Delete",
+            duplicate: "Duplicate",
+            edit: "Edit",
+            sampleText: "This is a sample text block. You can change this text to your own.",
+            addImage: "Click to add an image",
+            galleryTitle: "Clan Gallery",
+            calendarTitle: "Event Calendar",
+            rulesTitle: "Clan Rules",
+            pollTitle: "Poll: Who should be the next leader?",
+            videoTitle: "Clan Life Video",
+            mapTitle: "Our Territory Map",
+            socialTitle: "Follow Us",
+            image1: "Clan Camp",
+            image2: "Hunting Grounds",
+            image3: "Sacred Place",
+            mon: "Mon",
+            tue: "Tue",
+            wed: "Wed",
+            thu: "Thu",
+            fri: "Fri",
+            sat: "Sat",
+            sun: "Sun",
+            eventDetails: "Clan Gathering",
+            eventDescription: "Discussion of new territories and plans for the next moon.",
+            rule1: "Always defend clan territory",
+            rule2: "Respect senior warriors",
+            rule3: "Do not hunt on other clans' territory",
+            rule4: "Train youth according to the Warrior Code",
+            rule5: "Always help your clanmates",
+            option1: "Whitestorm",
+            option2: "Fireheart",
+            option3: "Swiftstar",
+            vote: "Vote",
+            camp: "Camp",
+            hunting: "Hunting grounds",
+            border: "Border",
+            clanImage: "Clan image",
+            imageUrl: "Image URL",
+            altText: "Alt text",
+            imageDescription: "Image description",
+            text: "Text",
+            color: "Color",
+            link: "Link",
+            style: "Style",
+            imageCount: "Number of images",
+            question: "Question",
+            options: "Options",
+            onePerLine: "One per line",
+            startCreating: "Start creating your site!",
+            startDescription: "Choose elements from the toolbar and add them here.",
+            startTutorial: "Start Tutorial",
+            welcomeTitle: "Welcome to Our Clan!",
+            welcomeText: "We are a strong and proud clan living by the Warrior Code.",
+            aboutTitle: "About Our Clan",
+            aboutText: "Our clan has a rich history and glorious traditions that we cherish.",
+            ourValues: "Our Values:",
+            value1: "Loyalty to the clan",
+            value2: "Courage in battle",
+            value3: "Respect for elders",
+            value4: "Care for the youth",
+            contactTitle: "Contact Us",
+            contactText: "Have questions or want to join? Write to us!",
+            contactButton: "Send Message",
+            historyTitle: "Our Clan History",
+            historyText1: "Our clan was founded many moons ago by a great leader.",
+            historyText2: "We have faced many challenges but always remained true to the Warrior Code.",
+            ourTerritory: "Our Territory",
+            membersTitle: "Our Warriors",
+            leader: "Bluestar - Leader",
+            deputy: "Redtail - Deputy",
+            healer: "Yellowfang - Medicine Cat",
+            warriors: "Longtail, Darkstripe, Runningwind - Warriors",
+            templateAdded: "Template added!",
+            elementDuplicated: "Element duplicated",
+            createdWith: "Created with",
+            clanBuilder: "Clan Builder",
+            disclaimer: "This is a fan-made material. Clan Territory is not responsible for the content.",
+            clanSite: "My Clan Website",
+            checkOutSite: "Check out my clan's website!",
+            shareSuccess: "Thanks for sharing!",
+            shareError: "Error trying to share",
+            linkCopied: "Link copied!",
+            loadSuccess: "Site loaded successfully!"
+        };
+    </script>
+</body>
+</html>
