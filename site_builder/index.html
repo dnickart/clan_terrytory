@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Покращений конструктор сайтів для кланів Warrior Cats</title>
+    <title>Конструктор сайтів для кланів Warrior Cats</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -719,6 +719,121 @@
             flex-wrap: wrap;
         }
         
+        /* Вікно аналітики */
+        .analytics-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 3000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .analytics-content {
+            background: rgba(20, 25, 36, 0.95);
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-lg);
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            border: 1px solid rgba(201, 214, 234, 0.2);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .analytics-title {
+            font-size: 1.5rem;
+            color: var(--starclan);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .analytics-overview {
+            display: flex;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-xl);
+            flex-wrap: wrap;
+        }
+        
+        .analytics-card {
+            background: rgba(74, 111, 165, 0.2);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+        }
+        
+        .analytics-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--windclan);
+        }
+        
+        .analytics-label {
+            font-size: 0.9rem;
+            color: rgba(201, 214, 234, 0.8);
+        }
+        
+        .action-history {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: var(--spacing-lg);
+            text-align: left;
+            background: rgba(10, 15, 26, 0.5);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+        }
+        
+        .action-item {
+            padding: var(--spacing-sm);
+            border-bottom: 1px solid rgba(201, 214, 234, 0.1);
+            font-size: 0.9rem;
+        }
+        
+        .action-item:last-child {
+            border-bottom: none;
+        }
+        
+        /* Вікно імпорту */
+        .import-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 3000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .import-content {
+            background: rgba(20, 25, 36, 0.95);
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-lg);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            border: 1px solid rgba(201, 214, 234, 0.2);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .import-title {
+            font-size: 1.5rem;
+            color: var(--starclan);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .import-info {
+            color: rgba(201, 214, 234, 0.8);
+            margin-bottom: var(--spacing-md);
+            line-height: 1.6;
+        }
+        
         /* Адаптивність */
         @media (max-width: 1024px) {
             .toolbar {
@@ -977,44 +1092,46 @@
             transform: translateY(-3px);
         }
         
-        /* Аналітика */
-        .analytics-overview {
-            display: flex;
-            gap: var(--spacing-md);
-            margin-top: var(--spacing-md);
-            flex-wrap: wrap;
-        }
-        
-        .analytics-card {
-            background: #f9f9f9;
+        /* Стилі для HTML-блоків */
+        .html-block {
+            position: relative;
+            border: 1px solid #ddd;
             border-radius: var(--radius-md);
             padding: var(--spacing-md);
-            flex: 1;
-            min-width: 150px;
-            text-align: center;
+            background: #f9f9f9;
+            max-height: 500px;
+            overflow: auto;
         }
         
-        .analytics-value {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: var(--riverclan);
-        }
-        
-        .analytics-label {
+        .html-warning {
+            background: #ffeb3b;
+            color: #333;
+            padding: var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--spacing-md);
             font-size: 0.9rem;
-            color: #666;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
         }
         
-        /* Клас для анімацій при прокрутці */
-        .scroll-animation {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
+        .html-content {
+            font-family: monospace;
+            white-space: pre-wrap;
+            background: white;
+            padding: var(--spacing-md);
+            border-radius: var(--radius-sm);
+            max-height: 400px;
+            overflow: auto;
         }
         
-        .scroll-animation.visible {
-            opacity: 1;
-            transform: translateY(0);
+        .html-preview {
+            border: 1px solid #ddd;
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            background: white;
+            min-height: 200px;
+            overflow: auto;
         }
     </style>
 </head>
@@ -1197,6 +1314,24 @@
                         <i class="fas fa-chart-bar"></i>
                         <span>Аналітика</span>
                     </button>
+                    <button class="action-btn secondary" id="import-btn">
+                        <i class="fas fa-file-import"></i>
+                        <span>Імпортувати JSON</span>
+                    </button>
+                    <button class="action-btn secondary" id="export-btn">
+                        <i class="fas fa-file-export"></i>
+                        <span>Експортувати JSON</span>
+                    </button>
+                    <!-- Кнопка для відкриття HTML -->
+                    <button class="action-btn secondary" id="open-html-btn">
+                        <i class="fas fa-file-code"></i>
+                        <span>Відкрити HTML</span>
+                    </button>
+                    <!-- Нова кнопка для відкриття будь-якого HTML -->
+                    <button class="action-btn secondary" id="open-any-html-btn">
+                        <i class="fas fa-file-import"></i>
+                        <span>Відкрити будь-який HTML</span>
+                    </button>
                 </div>
             </div>
             
@@ -1267,42 +1402,54 @@
     </div>
     
     <!-- Вікно аналітики -->
-    <div class="download-modal" id="analytics-modal">
-        <div class="download-content">
-            <div class="download-title">
+    <div class="analytics-modal" id="analytics-modal">
+        <div class="analytics-content">
+            <div class="analytics-title">
                 <i class="fas fa-chart-bar"></i>
                 Аналітика сайту
             </div>
-            <div class="download-info">
-                <p>Статистика відвідувань вашого сайту. Дані оновлюються автоматично.</p>
-                
-                <div class="analytics-overview">
-                    <div class="analytics-card">
-                        <div class="analytics-value" id="visitors-count">124</div>
-                        <div class="analytics-label">Відвідувачі</div>
-                    </div>
-                    <div class="analytics-card">
-                        <div class="analytics-value" id="pageviews-count">487</div>
-                        <div class="analytics-label">Перегляди</div>
-                    </div>
-                    <div class="analytics-card">
-                        <div class="analytics-value" id="time-count">3:45</div>
-                        <div class="analytics-label">Час на сайті</div>
-                    </div>
+            
+            <div class="analytics-overview">
+                <div class="analytics-card">
+                    <div class="analytics-value" id="save-count">0</div>
+                    <div class="analytics-label">Збереження</div>
                 </div>
-                
-                <div style="margin-top: 1.5rem;">
-                    <h3 style="color: var(--moonlight); margin-bottom: 0.5rem;">Найпопулярніші сторінки:</h3>
-                    <ul style="color: rgba(201, 214, 234, 0.8);">
-                        <li>Головна сторінка - 124 перегляди</li>
-                        <li>Про клан - 87 переглядів</li>
-                        <li>Календар подій - 65 переглядів</li>
-                        <li>Галерея - 52 перегляди</li>
-                    </ul>
+                <div class="analytics-card">
+                    <div class="analytics-value" id="element-count">0</div>
+                    <div class="analytics-label">Елементів</div>
+                </div>
+                <div class="analytics-card">
+                    <div class="analytics-value" id="theme-count">0</div>
+                    <div class="analytics-label">Тем використано</div>
                 </div>
             </div>
-            <div class="download-actions">
+            
+            <div class="action-history" id="action-history">
+                <!-- Історія дій буде тут -->
+            </div>
+            
+            <div class="download-actions" style="margin-top: var(--spacing-lg);">
+                <button class="action-btn secondary" id="reset-analytics">Скинути статистику</button>
                 <button class="action-btn secondary" id="close-analytics">Закрити</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Вікно імпорту -->
+    <div class="import-modal" id="import-modal">
+        <div class="import-content">
+            <div class="import-title">
+                <i class="fas fa-file-import"></i>
+                Імпортувати сайт
+            </div>
+            <div class="import-info">
+                <p>Оберіть файл JSON, який був збережений раніше через функцію експорту.</p>
+                <input type="file" id="import-file" accept=".json" style="margin: 1rem 0; width: 100%;">
+                <div id="import-status" style="color: var(--success); margin-top: 1rem;"></div>
+            </div>
+            <div class="download-actions">
+                <button class="action-btn secondary" id="cancel-import">Скасувати</button>
+                <button class="action-btn" id="confirm-import">Імпортувати</button>
             </div>
         </div>
     </div>
@@ -1316,9 +1463,12 @@
         let currentTheme = 'thunderclan';
         let currentLanguage = 'uk';
         let analyticsData = {
-            visitors: 124,
-            pageviews: 487,
-            avgTime: '3:45'
+            saveCount: 0,
+            elementCount: 0,
+            themeChanges: 0,
+            actionHistory: [],
+            usedTemplates: new Set(),
+            usedElements: {}
         };
         
         // Тексти локалізації
@@ -1345,9 +1495,125 @@
                 elementDeleted: "Елемент видалено",
                 previewTitle: "Попередній перегляд сайту",
                 analyticsTitle: "Аналітика сайту",
-                visitors: "Відвідувачі",
-                pageviews: "Перегляди",
-                avgTime: "Середній час"
+                importSuccess: "Сайт успішно імпортовано!",
+                exportSuccess: "Сайт експортовано у формат JSON!",
+                importError: "Помилка при імпорті файлу",
+                fileError: "Некоректний формат файлу",
+                tutorialHeading: "Це заголовок",
+                tutorialText: "Це текстовий блок. Ви можете змінити його зміст.",
+                tutorialButton: "Кнопка",
+                tutorialStarted: "Навчальний посібник розпочато!",
+                clanName: "Назва клану",
+                clanLeader: "Лідер клану",
+                clanDeputy: "Наступник лідера",
+                clanMedicineCat: "Котячий цілитель",
+                clanDescription: "Опис клану",
+                shareSuccess: "Посилання скопійовано!",
+                resetAnalytics: "Статистику скинуто!",
+                resetConfirm: "Ви впевнені, що хочете скинути статистику?",
+                actionAdded: "Додано елемент",
+                actionDeleted: "Видалено елемент",
+                actionTheme: "Змінено тему",
+                actionSaved: "Збережено сайт",
+                actionImported: "Імпортовано сайт",
+                actionExported: "Експортовано сайт",
+                galleryTitle: "Галерея клану",
+                calendarTitle: "Календар подій",
+                rulesTitle: "Правила клану",
+                pollTitle: "Опитування: Кого виберіть наступним лідером?",
+                videoTitle: "Відео з життя клану",
+                mapTitle: "Мапа нашої території",
+                socialTitle: "Ми в соціальних мережах",
+                image1: "Табір клану",
+                image2: "Полювання",
+                image3: "Священне місце",
+                mon: "Пн",
+                tue: "Вт",
+                wed: "Ср",
+                thu: "Чт",
+                fri: "Пт",
+                sat: "Сб",
+                sun: "Нд",
+                eventDetails: "Збори клану",
+                eventDescription: "Обговорення нових територій та планів на наступний місяць.",
+                rule1: "Завжди захищай територію клану",
+                rule2: "Поважай старших воїнів",
+                rule3: "Не полюй на території інших кланів",
+                rule4: "Виховуй молодь згідно Кодексу Воїна",
+                rule5: "Завжди допомагай членам свого клану",
+                option1: "Білогрива",
+                option2: "Вогнехвіст",
+                option3: "Стрімкозір",
+                vote: "Голосувати",
+                camp: "Табір",
+                hunting: "Мисливські угіддя",
+                border: "Кордон",
+                clanImage: "Зображення клану",
+                imageUrl: "URL зображення",
+                altText: "Альтернативний текст",
+                imageDescription: "Опис зображення",
+                text: "Текст",
+                color: "Колір",
+                link: "Посилання",
+                style: "Стиль",
+                imageCount: "Кількість зображень",
+                question: "Питання",
+                options: "Варіанти відповідей",
+                onePerLine: "Один варіант на рядок",
+                startCreating: "Розпочни створення свого сайту!",
+                startDescription: "Вибери елементи з панелі інструментів та додай їх сюди.",
+                startTutorial: "Пройти навчання",
+                welcomeTitle: "Ласкаво просимо до нашого клану!",
+                welcomeText: "Ми - сильний та гордий клан, що живе за законами Кодексу Воїна.",
+                aboutTitle: "Про наш клан",
+                aboutText: "Наш клан має багату історію та славні традиції, які ми бережемо.",
+                ourValues: "Наші цінності:",
+                value1: "Відданість клану",
+                value2: "Хоробрість у битві",
+                value3: "Повага до старійшин",
+                value4: "Турбота про молодь",
+                contactTitle: "Зв'яжіться з нами",
+                contactText: "Маєте питання або хочете приєднатися? Напишіть нам!",
+                contactButton: "Написати листа",
+                historyTitle: "Історія нашого клану",
+                historyText1: "Наш клан був заснований багатьма місяцями тому великим ватажком.",
+                historyText2: "Ми пройшли через багато випробувань, але завжди залишалися вірними Кодексу Воїна.",
+                ourTerritory: "Наша територія",
+                membersTitle: "Наші воїни",
+                leader: "Бурокіт - ватажок",
+                deputy: "Срібнолис - наступник",
+                healer: "Травниця - цілитель",
+                warriors: "Бистраногий, Вогнегривий, Місяцесвіт - воїни",
+                templateAdded: "Шаблон додано!",
+                elementDuplicated: "Елемент дубльовано",
+                createdWith: "Створено за допомогою",
+                clanBuilder: "Конструктора Кланів",
+                disclaimer: "Цей матеріал створений фанатами. Clan Territory не відповідає за вміст.",
+                clanSite: "Сайт мого клану",
+                checkOutSite: "Перегляньте сайт мого клану!",
+                shareSuccess: "Дякуємо за поширення!",
+                shareError: "Помилка при спробі поділитися",
+                linkCopied: "Посилання скопійовано!",
+                loadSuccess: "Сайт завантажено!",
+                voted: "Проголосовано",
+                // Нові переклади для функції відкриття HTML
+                openHtml: "Відкрити HTML",
+                htmlImported: "HTML-файл успішно імпортовано!",
+                invalidHtml: "Це не HTML-файл з Конструктора Кланів",
+                importHtmlError: "Помилка імпорту HTML",
+                sampleText: "Це приклад тексту. Ви можете змінити його зміст.",
+                thunderclan: "Громовий Клан",
+                riverclan: "Річковий Клан",
+                windclan: "Клан Вітру",
+                shadowclan: "Клан Тіні",
+                skyclan: "Клан Неба",
+                // Нові переклади для будь-яких HTML-файлів
+                openAnyHtml: "Відкрити будь-який HTML",
+                anyHtmlImported: "Будь-який HTML-файл успішно імпортовано!",
+                importAnyHtmlError: "Помилка імпорту HTML",
+                htmlBlock: "HTML блок",
+                htmlWarning: "Увага: Цей HTML блок може містити небезпечний код. Скрипти та стилі можуть не працювати коректно.",
+                editHtml: "Редагувати HTML код"
             },
             en: {
                 welcome: "Welcome to the Clan Builder!",
@@ -1371,9 +1637,125 @@
                 elementDeleted: "Element deleted",
                 previewTitle: "Site Preview",
                 analyticsTitle: "Site Analytics",
-                visitors: "Visitors",
-                pageviews: "Pageviews",
-                avgTime: "Avg. Time"
+                importSuccess: "Site imported successfully!",
+                exportSuccess: "Site exported to JSON format!",
+                importError: "Error importing file",
+                fileError: "Invalid file format",
+                tutorialHeading: "This is a heading",
+                tutorialText: "This is a text block. You can change its content.",
+                tutorialButton: "Button",
+                tutorialStarted: "Tutorial started!",
+                clanName: "Clan name",
+                clanLeader: "Clan leader",
+                clanDeputy: "Deputy leader",
+                clanMedicineCat: "Medicine cat",
+                clanDescription: "Clan description",
+                shareSuccess: "Link copied!",
+                resetAnalytics: "Analytics reset!",
+                resetConfirm: "Are you sure you want to reset analytics?",
+                actionAdded: "Element added",
+                actionDeleted: "Element deleted",
+                actionTheme: "Theme changed",
+                actionSaved: "Site saved",
+                actionImported: "Site imported",
+                actionExported: "Site exported",
+                galleryTitle: "Clan Gallery",
+                calendarTitle: "Event Calendar",
+                rulesTitle: "Clan Rules",
+                pollTitle: "Poll: Who should be the next leader?",
+                videoTitle: "Clan Life Video",
+                mapTitle: "Our Territory Map",
+                socialTitle: "Follow Us",
+                image1: "Clan Camp",
+                image2: "Hunting Grounds",
+                image3: "Sacred Place",
+                mon: "Mon",
+                tue: "Tue",
+                wed: "Wed",
+                thu: "Thu",
+                fri: "Fri",
+                sat: "Sat",
+                sun: "Sun",
+                eventDetails: "Clan Gathering",
+                eventDescription: "Discussion of new territories and plans for the next moon.",
+                rule1: "Always defend clan territory",
+                rule2: "Respect senior warriors",
+                rule3: "Do not hunt on other clans' territory",
+                rule4: "Train youth according to the Warrior Code",
+                rule5: "Always help your clanmates",
+                option1: "Whitestorm",
+                option2: "Fireheart",
+                option3: "Swiftstar",
+                vote: "Vote",
+                camp: "Camp",
+                hunting: "Hunting grounds",
+                border: "Border",
+                clanImage: "Clan image",
+                imageUrl: "Image URL",
+                altText: "Alt text",
+                imageDescription: "Image description",
+                text: "Text",
+                color: "Color",
+                link: "Link",
+                style: "Style",
+                imageCount: "Number of images",
+                question: "Question",
+                options: "Options",
+                onePerLine: "One per line",
+                startCreating: "Start creating your site!",
+                startDescription: "Choose elements from the toolbar and add them here.",
+                startTutorial: "Start Tutorial",
+                welcomeTitle: "Welcome to Our Clan!",
+                welcomeText: "We are a strong and proud clan living by the Warrior Code.",
+                aboutTitle: "About Our Clan",
+                aboutText: "Our clan has a rich history and glorious traditions that we cherish.",
+                ourValues: "Our Values:",
+                value1: "Loyalty to the clan",
+                value2: "Courage in battle",
+                value3: "Respect for elders",
+                value4: "Care for the youth",
+                contactTitle: "Contact Us",
+                contactText: "Have questions or want to join? Write to us!",
+                contactButton: "Send Message",
+                historyTitle: "Our Clan History",
+                historyText1: "Our clan was founded many moons ago by a great leader.",
+                historyText2: "We have faced many challenges but always remained true to the Warrior Code.",
+                ourTerritory: "Our Territory",
+                membersTitle: "Our Warriors",
+                leader: "Bluestar - Leader",
+                deputy: "Redtail - Deputy",
+                healer: "Yellowfang - Medicine Cat",
+                warriors: "Longtail, Darkstripe, Runningwind - Warriors",
+                templateAdded: "Template added!",
+                elementDuplicated: "Element duplicated",
+                createdWith: "Created with",
+                clanBuilder: "Clan Builder",
+                disclaimer: "This is a fan-made material. Clan Territory is not responsible for the content.",
+                clanSite: "My Clan Website",
+                checkOutSite: "Check out my clan's website!",
+                shareSuccess: "Thanks for sharing!",
+                shareError: "Error trying to share",
+                linkCopied: "Link copied!",
+                loadSuccess: "Site loaded successfully!",
+                voted: "Voted",
+                // New translations for HTML open function
+                openHtml: "Open HTML",
+                htmlImported: "HTML file imported successfully!",
+                invalidHtml: "This is not a Clan Builder HTML file",
+                importHtmlError: "HTML import error",
+                sampleText: "This is sample text. You can change its content.",
+                thunderclan: "ThunderClan",
+                riverclan: "RiverClan",
+                windclan: "WindClan",
+                shadowclan: "ShadowClan",
+                skyclan: "SkyClan",
+                // New translations for any HTML files
+                openAnyHtml: "Open Any HTML",
+                anyHtmlImported: "Any HTML file imported successfully!",
+                importAnyHtmlError: "HTML import error",
+                htmlBlock: "HTML Block",
+                htmlWarning: "Warning: This HTML block may contain unsafe code. Scripts and styles may not work properly.",
+                editHtml: "Edit HTML Code"
             }
         };
         
@@ -1385,15 +1767,20 @@
         const previewBody = document.getElementById('preview-body');
         const downloadModal = document.getElementById('download-modal');
         const analyticsModal = document.getElementById('analytics-modal');
+        const importModal = document.getElementById('import-modal');
         const notification = document.getElementById('notification');
         const languageSelector = document.getElementById('language-selector');
         const toolbar = document.getElementById('toolbar');
         const toggleToolbar = document.getElementById('toggle-toolbar');
+        const importFile = document.getElementById('import-file');
+        const importStatus = document.getElementById('import-status');
+        const actionHistory = document.getElementById('action-history');
         
         // Ініціалізація
         document.addEventListener('DOMContentLoaded', function() {
             initializeEventListeners();
             loadSavedSite();
+            loadAnalyticsData();
             applyTheme(currentTheme);
             setupAnimations();
             showNotification(translate('welcome'));
@@ -1414,7 +1801,10 @@
                 btn.addEventListener('click', function() {
                     currentTheme = this.dataset.theme;
                     applyTheme(currentTheme);
-                    showNotification(translate('themeApplied') + getThemeName(currentTheme));
+                    trackAction('actionTheme', currentTheme);
+                    analyticsData.themeChanges++;
+                    saveAnalyticsData();
+                    showNotification(translate('themeApplied') + translate(currentTheme));
                 });
             });
             
@@ -1438,6 +1828,17 @@
             document.getElementById('close-analytics').addEventListener('click', hideAnalytics);
             document.getElementById('start-tutorial').addEventListener('click', startTutorial);
             document.getElementById('share-btn').addEventListener('click', shareSite);
+            document.getElementById('import-btn').addEventListener('click', showImportModal);
+            document.getElementById('export-btn').addEventListener('click', exportSite);
+            document.getElementById('cancel-import').addEventListener('click', hideImportModal);
+            document.getElementById('confirm-import').addEventListener('click', confirmImport);
+            document.getElementById('reset-analytics').addEventListener('click', resetAnalytics);
+            
+            // Кнопка для відкриття HTML
+            document.getElementById('open-html-btn').addEventListener('click', openHtmlFile);
+            
+            // Нова кнопка для відкриття будь-якого HTML
+            document.getElementById('open-any-html-btn').addEventListener('click', openAnyHtmlFile);
             
             // Клік по canvas для зняття виділення
             canvasContent.addEventListener('click', function(e) {
@@ -1655,6 +2056,15 @@
             canvasContent.appendChild(element);
             selectElement(element);
             
+            // Оновлення статистики
+            analyticsData.elementCount++;
+            if (!analyticsData.usedElements[type]) {
+                analyticsData.usedElements[type] = 0;
+            }
+            analyticsData.usedElements[type]++;
+            trackAction('actionAdded', type);
+            saveAnalyticsData();
+            
             showNotification(translate('addElement') + translate('element' + type.charAt(0).toUpperCase() + type.slice(1)));
             
             // Запустити анімацію при прокрутці
@@ -1690,6 +2100,8 @@
             addElement('divider');
             
             showNotification(translate('templateAdded'));
+            analyticsData.usedTemplates.add('header');
+            saveAnalyticsData();
         }
         
         // Додавання шаблону "Про клан"
@@ -1721,6 +2133,8 @@
             }
             
             showNotification(translate('templateAdded'));
+            analyticsData.usedTemplates.add('about');
+            saveAnalyticsData();
         }
         
         // Додавання шаблону контактів
@@ -1746,6 +2160,8 @@
             }
             
             showNotification(translate('templateAdded'));
+            analyticsData.usedTemplates.add('contact');
+            saveAnalyticsData();
         }
         
         // Додавання шаблону історії клану
@@ -1777,6 +2193,8 @@
             }
             
             showNotification(translate('templateAdded'));
+            analyticsData.usedTemplates.add('history');
+            saveAnalyticsData();
         }
         
         // Додавання шаблону списку воїнів
@@ -1801,18 +2219,24 @@
             }
             
             showNotification(translate('templateAdded'));
+            analyticsData.usedTemplates.add('members');
+            saveAnalyticsData();
         }
         
         // Додавання шаблону календаря подій
         function addEventsTemplate() {
             addElement('calendar');
             showNotification(translate('templateAdded'));
+            analyticsData.usedTemplates.add('events');
+            saveAnalyticsData();
         }
         
         // Додавання шаблону галереї
         function addGalleryTemplate() {
             addElement('gallery');
             showNotification(translate('templateAdded'));
+            analyticsData.usedTemplates.add('gallery');
+            saveAnalyticsData();
         }
         
         // Вибір елемента
@@ -1955,6 +2379,20 @@
                         </div>
                     `;
                     break;
+                case 'html-block':
+                    const htmlContent = element.querySelector('.html-content').textContent;
+                    propertiesHTML = `
+                        <div class="property-group">
+                            <label class="property-label">${translate('editHtml')}:</label>
+                            <textarea class="property-input" rows="15" style="font-family: monospace;" onchange="updateElementProperty('html', this.value)">${escapeHtml(htmlContent)}</textarea>
+                        </div>
+                        <div class="property-group">
+                            <p style="color: var(--moonlight); font-size: 0.9rem; margin-top: 1rem;">
+                                <i class="fas fa-info-circle"></i> ${translate('htmlWarning')}
+                            </p>
+                        </div>
+                    `;
+                    break;
                 default:
                     propertiesHTML = `<p>${translate('selectElement')}</p>`;
             }
@@ -2039,6 +2477,14 @@
                         }
                     }
                     break;
+                case 'html':
+                    if (elementType === 'html-block') {
+                        const htmlContent = selectedElement.querySelector('.html-content');
+                        if (htmlContent) {
+                            htmlContent.textContent = value;
+                        }
+                    }
+                    break;
             }
         }
         
@@ -2063,6 +2509,7 @@
             if (element.querySelector('.video-container')) return 'video';
             if (element.querySelector('.territory-map')) return 'map';
             if (element.querySelector('.social-buttons')) return 'social';
+            if (element.querySelector('.html-block')) return 'html-block';
             return 'unknown';
         }
         
@@ -2074,6 +2521,11 @@
                     deselectElement();
                 }
                 element.remove();
+                
+                // Оновлення статистики
+                analyticsData.elementCount--;
+                trackAction('actionDeleted');
+                saveAnalyticsData();
                 
                 // Показати заглушку, якщо немає елементів
                 if (canvasContent.children.length === 0) {
@@ -2113,6 +2565,11 @@
                 // Вставити після оригінального елемента
                 element.parentNode.insertBefore(clone, element.nextSibling);
                 selectElement(clone);
+                
+                // Оновлення статистики
+                analyticsData.elementCount++;
+                trackAction('actionAdded', 'duplicate');
+                saveAnalyticsData();
                 
                 showNotification(translate('elementDuplicated'));
             }
@@ -2166,6 +2623,13 @@
                 // Видалити класи редактора
                 clone.classList.remove('canvas-element', 'selected', 'scroll-animation');
                 clone.classList.add('fade-in');
+                
+                // Обробити HTML-блоки
+                if (clone.querySelector('.html-block')) {
+                    const htmlContent = clone.querySelector('.html-content').textContent;
+                    clone.innerHTML = `<div class="html-preview">${htmlContent}</div>`;
+                }
+                
                 previewHTML += clone.outerHTML;
             });
             
@@ -2213,15 +2677,43 @@
         
         // Показати аналітику
         function showAnalytics() {
-            document.getElementById('visitors-count').textContent = analyticsData.visitors;
-            document.getElementById('pageviews-count').textContent = analyticsData.pageviews;
-            document.getElementById('time-count').textContent = analyticsData.avgTime;
+            // Оновити дані на панелі
+            document.getElementById('save-count').textContent = analyticsData.saveCount;
+            document.getElementById('element-count').textContent = analyticsData.elementCount;
+            document.getElementById('theme-count').textContent = analyticsData.themeChanges;
+            
+            // Оновити історію дій
+            actionHistory.innerHTML = '';
+            analyticsData.actionHistory.slice().reverse().forEach(action => {
+                const actionItem = document.createElement('div');
+                actionItem.className = 'action-item';
+                actionItem.innerHTML = `<strong>${formatTime(action.timestamp)}</strong>: ${action.message}`;
+                actionHistory.appendChild(actionItem);
+            });
+            
             analyticsModal.style.display = 'flex';
         }
         
         // Приховати аналітику
         function hideAnalytics() {
             analyticsModal.style.display = 'none';
+        }
+        
+        // Скинути статистику
+        function resetAnalytics() {
+            if (confirm(translate('resetConfirm'))) {
+                analyticsData = {
+                    saveCount: 0,
+                    elementCount: 0,
+                    themeChanges: 0,
+                    actionHistory: [],
+                    usedTemplates: new Set(),
+                    usedElements: {}
+                };
+                saveAnalyticsData();
+                showAnalytics();
+                showNotification(translate('resetAnalytics'));
+            }
         }
         
         // Показати модальне вікно завантаження
@@ -2234,7 +2726,7 @@
             downloadModal.style.display = 'none';
         }
         
-        // Завантажити сайт
+        // Завантажити сайт як HTML
         function downloadSite() {
             // Генерувати HTML для сайту
             const elements = canvasContent.querySelectorAll('.canvas-element');
@@ -2535,8 +3027,9 @@
                     imageContainer.className = 'image-container';
                 }
                 
-                if (getElementType(clone) === 'gallery') {
-                    clone.classList.add('gallery-section');
+                if (clone.querySelector('.html-block')) {
+                    const htmlContent = clone.querySelector('.html-content').textContent;
+                    clone.innerHTML = htmlContent;
                 }
                 
                 siteHTML += clone.outerHTML;
@@ -2611,29 +3104,148 @@
             URL.revokeObjectURL(url);
             
             hideDownloadModal();
+            trackAction('actionExported');
             showNotification(translate('downloadSuccess'));
+        }
+        
+        // Експортувати сайт у формат JSON
+        function exportSite() {
+            const siteData = {
+                content: canvasContent.innerHTML,
+                theme: currentTheme,
+                language: currentLanguage,
+                elementCounter: elementCounter,
+                timestamp: new Date().toISOString()
+            };
+            
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(siteData, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "clan-site-export.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            document.body.removeChild(downloadAnchor);
+            
+            trackAction('actionExported');
+            showNotification(translate('exportSuccess'));
+        }
+        
+        // Імпортувати сайт з JSON
+        function showImportModal() {
+            importModal.style.display = 'flex';
+            importStatus.textContent = '';
+        }
+        
+        function hideImportModal() {
+            importModal.style.display = 'none';
+        }
+        
+        function confirmImport() {
+            if (!importFile.files.length) {
+                importStatus.textContent = translate('fileError');
+                importStatus.style.color = 'var(--error)';
+                return;
+            }
+            
+            const file = importFile.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                try {
+                    const siteData = JSON.parse(e.target.result);
+                    
+                    // Перевірити базову структуру
+                    if (!siteData.content || !siteData.theme) {
+                        throw new Error("Invalid file format");
+                    }
+                    
+                    // Застосувати імпортовані дані
+                    canvasContent.innerHTML = siteData.content;
+                    currentTheme = siteData.theme;
+                    elementCounter = siteData.elementCounter || 0;
+                    applyTheme(currentTheme);
+                    
+                    // Відновити обробники подій
+                    canvasContent.querySelectorAll('.canvas-element').forEach(element => {
+                        element.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            selectElement(element);
+                        });
+                    });
+                    
+                    // Видалити заглушку, якщо є елементи
+                    if (canvasContent.children.length > 0) {
+                        const emptyCanvas = canvasContent.querySelector('.empty-canvas');
+                        if (emptyCanvas) emptyCanvas.remove();
+                    }
+                    
+                    importStatus.textContent = translate('importSuccess');
+                    importStatus.style.color = 'var(--success)';
+                    
+                    // Оновити статистику
+                    trackAction('actionImported');
+                    
+                    // Закрити модальне вікно через 2 секунди
+                    setTimeout(() => {
+                        hideImportModal();
+                        showNotification(translate('importSuccess'));
+                    }, 2000);
+                } catch (error) {
+                    importStatus.textContent = `${translate('importError')}: ${error.message}`;
+                    importStatus.style.color = 'var(--error)';
+                }
+            };
+            
+            reader.readAsText(file);
+        }
+        
+        // Почати навчання
+        function startTutorial() {
+            canvasContent.innerHTML = '';
+            
+            // Додати кроки навчання
+            setTimeout(() => addElement('heading'), 500);
+            setTimeout(() => {
+                const heading = canvasContent.querySelector('.heading-element');
+                if (heading) heading.textContent = translate('tutorialHeading');
+            }, 700);
+            
+            setTimeout(() => addElement('text'), 1000);
+            setTimeout(() => {
+                const text = canvasContent.querySelector('.text-element');
+                if (text) text.textContent = translate('tutorialText');
+            }, 1200);
+            
+            setTimeout(() => addElement('button'), 1500);
+            setTimeout(() => {
+                const button = canvasContent.querySelector('.button-element');
+                if (button) button.textContent = translate('tutorialButton');
+            }, 1700);
+            
+            showNotification(translate('tutorialStarted'));
         }
         
         // Поділитися сайтом
         function shareSite() {
-            if (navigator.share) {
-                navigator.share({
-                    title: translate('clanSite'),
-                    text: translate('checkoutSite'),
-                    url: window.location.href
+            // Створити JSON з даними сайту
+            const siteData = {
+                content: canvasContent.innerHTML,
+                theme: currentTheme,
+                language: currentLanguage,
+                timestamp: new Date().toISOString()
+            };
+            
+            const jsonData = JSON.stringify(siteData);
+            
+            // Скопіювати JSON в буфер обміну
+            navigator.clipboard.writeText(jsonData)
+                .then(() => {
+                    showNotification(translate('shareSuccess'));
                 })
-                .then(() => showNotification(translate('shareSuccess')))
-                .catch(error => showNotification(translate('shareError')));
-            } else {
-                // Fallback для браузерів без підтримки Web Share API
-                const dummy = document.createElement('input');
-                document.body.appendChild(dummy);
-                dummy.value = window.location.href;
-                dummy.select();
-                document.execCommand('copy');
-                document.body.removeChild(dummy);
-                showNotification(translate('linkCopied'));
-            }
+                .catch(err => {
+                    console.error('Помилка копіювання: ', err);
+                    showNotification(translate('importError'));
+                });
         }
         
         // Зберегти сайт
@@ -2642,10 +3254,17 @@
                 content: canvasContent.innerHTML,
                 theme: currentTheme,
                 language: currentLanguage,
+                elementCounter: elementCounter,
                 timestamp: new Date().toISOString()
             };
             
             localStorage.setItem('clan_site_builder', JSON.stringify(siteData));
+            
+            // Оновлення статистики
+            analyticsData.saveCount++;
+            trackAction('actionSaved');
+            saveAnalyticsData();
+            
             showNotification(translate('saveSuccess'));
         }
         
@@ -2658,6 +3277,7 @@
                     canvasContent.innerHTML = siteData.content;
                     currentTheme = siteData.theme || 'thunderclan';
                     currentLanguage = siteData.language || 'uk';
+                    elementCounter = siteData.elementCounter || 0;
                     languageSelector.value = currentLanguage;
                     applyTheme(currentTheme);
                     
@@ -2675,7 +3295,7 @@
                         if (emptyCanvas) emptyCanvas.remove();
                     }
                     
-                    showNotification(translate('loadSuccess'));
+                    trackAction('actionImported');
                     
                     // Запустити анімації
                     setupAnimations();
@@ -2685,17 +3305,319 @@
             }
         }
         
-        // Почати навчання
-        function startTutorial() {
-            canvasContent.innerHTML = '';
-            addElement('heading');
-            addElement('text');
-            addElement('gallery');
-            addElement('poll');
-            showNotification(translate('tutorialStarted'));
+        // Завантажити дані аналітики
+        function loadAnalyticsData() {
+            const saved = localStorage.getItem('clan_analytics');
+            if (saved) {
+                try {
+                    analyticsData = JSON.parse(saved);
+                    // Відновити Set з масиву
+                    if (analyticsData.usedTemplates && Array.isArray(analyticsData.usedTemplates)) {
+                        analyticsData.usedTemplates = new Set(analyticsData.usedTemplates);
+                    }
+                } catch (e) {
+                    console.error('Помилка завантаження аналітики:', e);
+                }
+            }
         }
         
-        // Показати повідомлення
+        // Зберегти дані аналітики
+        function saveAnalyticsData() {
+            // Конвертувати Set в масив для збереження
+            const dataToSave = {
+                ...analyticsData,
+                usedTemplates: Array.from(analyticsData.usedTemplates)
+            };
+            localStorage.setItem('clan_analytics', JSON.stringify(dataToSave));
+        }
+        
+        // Записати дію в історію
+        function trackAction(actionType, data = null) {
+            let message = translate(actionType);
+            if (data) {
+                message += `: ${data}`;
+            }
+            
+            analyticsData.actionHistory.push({
+                timestamp: new Date().toISOString(),
+                message: message
+            });
+            
+            // Обмежити історію 50 записами
+            if (analyticsData.actionHistory.length > 50) {
+                analyticsData.actionHistory.shift();
+            }
+            
+            saveAnalyticsData();
+        }
+        
+        // Форматувати час для відображення
+        function formatTime(isoString) {
+            const date = new Date(isoString);
+            return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+        
+        // Функція для відкриття HTML-файлів конструктора
+        function openHtmlFile() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.html';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const content = e.target.result;
+                    processImportedHtml(content);
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+        
+        // Нова функція: Відкрити будь-який HTML-файл
+        function openAnyHtmlFile() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.html,.htm';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const content = e.target.result;
+                    processAnyHtmlFile(content);
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+        
+        // Обробка будь-якого HTML-файлу
+        function processAnyHtmlFile(htmlContent) {
+            try {
+                // Очистити редактор
+                canvasContent.innerHTML = '';
+                
+                // Створити контейнер для імпортованого контенту
+                const importedContent = document.createElement('div');
+                importedContent.className = 'canvas-element';
+                elementCounter++;
+                importedContent.id = `element-${elementCounter}`;
+                
+                // Додати попередження про безпеку
+                importedContent.innerHTML = `
+                    <div class="html-block">
+                        <div class="html-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            ${translate('htmlWarning')}
+                        </div>
+                        <div class="html-content">${escapeHtml(htmlContent)}</div>
+                    </div>
+                    <div class="element-controls">
+                        <button class="control-btn tooltip" data-tooltip="${translate('delete')}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <button class="control-btn tooltip" data-tooltip="${translate('duplicate')}">
+                            <i class="fas fa-clone"></i>
+                        </button>
+                        <button class="control-btn tooltip" data-tooltip="${translate('edit')}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </div>
+                `;
+                
+                // Додати обробники
+                importedContent.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    selectElement(importedContent);
+                });
+                
+                canvasContent.appendChild(importedContent);
+                selectElement(importedContent);
+                
+                // Оновлення статистики
+                analyticsData.elementCount++;
+                trackAction('actionAdded', 'html-block');
+                saveAnalyticsData();
+                
+                showNotification(translate('anyHtmlImported'));
+            } catch (error) {
+                console.error('Помилка імпорту:', error);
+                showNotification(translate('importAnyHtmlError') + ': ' + error.message);
+            }
+        }
+        
+        // Обробка імпортованого HTML конструктора
+        function processImportedHtml(htmlContent) {
+            // Перевіряємо, чи створений файл нашим конструктором
+            const clanDataMatch = htmlContent.match(/<!-- CLAN_BUILDER_DATA: ({.*?}) -->/);
+            if (!clanDataMatch) {
+                showNotification(translate('invalidHtml'));
+                return;
+            }
+            
+            try {
+                const metadata = JSON.parse(clanDataMatch[1]);
+                
+                // Оновлюємо налаштування редактора
+                if (metadata.theme) {
+                    currentTheme = metadata.theme;
+                    applyTheme(currentTheme);
+                }
+                if (metadata.language) {
+                    currentLanguage = metadata.language;
+                    languageSelector.value = currentLanguage;
+                    updateUI();
+                }
+                
+                // Витягуємо основний контент
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(htmlContent, 'text/html');
+                const container = doc.querySelector('.container');
+                
+                if (!container) {
+                    throw new Error('Контейнер не знайдено');
+                }
+                
+                // Конвертуємо HTML назад в елементи редактора
+                canvasContent.innerHTML = '';
+                convertHtmlToEditorElements(container);
+                
+                showNotification(translate('htmlImported'));
+            } catch (error) {
+                console.error('Помилка імпорту:', error);
+                showNotification(translate('importHtmlError') + ': ' + error.message);
+            }
+        }
+        
+        // Конвертація HTML в елементи редактора
+        function convertHtmlToEditorElements(container) {
+            // Видаляємо футер та інші службові елементи
+            const elementsToConvert = Array.from(container.children).filter(el => 
+                !el.classList.contains('footer')
+            );
+            
+            elementsToConvert.forEach(element => {
+                const editorElement = document.createElement('div');
+                editorElement.className = 'canvas-element';
+                elementCounter++;
+                editorElement.id = `element-${elementCounter}`;
+                
+                // Визначаємо тип елемента
+                if (element.tagName === 'H2') {
+                    editorElement.innerHTML = `
+                        <h2 class="heading-element">${element.innerHTML}</h2>
+                        <div class="element-controls">
+                            <button class="control-btn tooltip" data-tooltip="${translate('delete')}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            <button class="control-btn tooltip" data-tooltip="${translate('duplicate')}">
+                                <i class="fas fa-clone"></i>
+                            </button>
+                            <button class="control-btn tooltip" data-tooltip="${translate('edit')}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </div>
+                    `;
+                } 
+                else if (element.classList.contains('btn')) {
+                    editorElement.innerHTML = `
+                        <a href="${element.href}" class="button-element">${element.textContent}</a>
+                        <div class="element-controls">
+                            <button class="control-btn tooltip" data-tooltip="${translate('delete')}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            <button class="control-btn tooltip" data-tooltip="${translate('duplicate')}">
+                                <i class="fas fa-clone"></i>
+                            </button>
+                            <button class="control-btn tooltip" data-tooltip="${translate('edit')}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </div>
+                    `;
+                }
+                else if (element.classList.contains('image-container')) {
+                    const img = element.querySelector('img');
+                    if (img) {
+                        editorElement.innerHTML = `
+                            <div class="image-element">
+                                <img src="${img.src}" alt="${img.alt}" style="max-width: 100%;">
+                            </div>
+                            <div class="element-controls">
+                                <button class="control-btn tooltip" data-tooltip="${translate('delete')}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                                <button class="control-btn tooltip" data-tooltip="${translate('duplicate')}">
+                                    <i class="fas fa-clone"></i>
+                                </button>
+                                <button class="control-btn tooltip" data-tooltip="${translate('edit')}">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </div>
+                        `;
+                    }
+                }
+                // ... (інші типи елементів) ...
+                else {
+                    // Для невідомих елементів використовуємо загальний контейнер
+                    editorElement.innerHTML = `
+                        <div class="text-element">${element.innerHTML}</div>
+                        <div class="element-controls">
+                            <button class="control-btn tooltip" data-tooltip="${translate('delete')}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            <button class="control-btn tooltip" data-tooltip="${translate('duplicate')}">
+                                <i class="fas fa-clone"></i>
+                            </button>
+                            <button class="control-btn tooltip" data-tooltip="${translate('edit')}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </div>
+                    `;
+                }
+                
+                // Додаємо обробники
+                editorElement.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    selectElement(editorElement);
+                });
+                
+                canvasContent.appendChild(editorElement);
+            });
+            
+            // Оновлюємо статистику
+            analyticsData.elementCount = elementsToConvert.length;
+            trackAction('actionImported');
+            saveAnalyticsData();
+        }
+        
+        // Допоміжна функція для екранування HTML
+        function escapeHtml(unsafe) {
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+        
+        // Оновлюємо інтерфейс
+        function updateUI() {
+            document.querySelectorAll('[data-translate]').forEach(el => {
+                const key = el.getAttribute('data-translate');
+                el.textContent = translate(key);
+            });
+        }
+        
+        // Допоміжні функції
+        function translate(key) {
+            const langTranslations = translations[currentLanguage] || translations.uk;
+            return langTranslations[key] || key;
+        }
+        
         function showNotification(message) {
             notification.innerHTML = `<i class="fas fa-info-circle"></i> ${message}`;
             notification.classList.add('show');
@@ -2704,223 +3626,6 @@
                 notification.classList.remove('show');
             }, 3000);
         }
-        
-        // Перекласти текст
-        function translate(key) {
-            const langTranslations = translations[currentLanguage] || translations.uk;
-            return langTranslations[key] || key;
-        }
-        
-        // Оновити інтерфейс
-        function updateUI() {
-            // Оновлюємо тексти кнопок і заголовків
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                el.textContent = translate(key);
-            });
-            
-            // Оновлюємо підказки
-            document.querySelectorAll('[data-tooltip]').forEach(el => {
-                const key = el.getAttribute('data-tooltip');
-                el.setAttribute('data-tooltip', translate(key));
-            });
-            
-            // Оновлюємо атрибути placeholder
-            document.querySelectorAll('[data-placeholder]').forEach(el => {
-                const key = el.getAttribute('data-placeholder');
-                el.setAttribute('placeholder', translate(key));
-            });
-            
-            // Зберігаємо стан
-            saveSite();
-        }
-        
-        // Отримати назву теми
-        function getThemeName(theme) {
-            const names = {
-                thunderclan: translate('thunderclan'),
-                riverclan: translate('riverclan'),
-                windclan: translate('windclan'),
-                shadowclan: translate('shadowclan'),
-                skyclan: translate('skyclan')
-            };
-            return names[theme] || theme;
-        }
-        
-        // Додаткові тексти для локалізації
-        translations.uk = {
-            ...translations.uk,
-            delete: "Видалити",
-            duplicate: "Дублювати",
-            edit: "Редагувати",
-            sampleText: "Це приклад текстового блоку. Ви можете змінити цей текст на власний.",
-            addImage: "Натисніть, щоб додати зображення",
-            galleryTitle: "Галерея клану",
-            calendarTitle: "Календар подій",
-            rulesTitle: "Правила клану",
-            pollTitle: "Опитування: Кого виберіть наступним лідером?",
-            videoTitle: "Відео з життя клану",
-            mapTitle: "Мапа нашої території",
-            socialTitle: "Ми в соціальних мережах",
-            image1: "Табір клану",
-            image2: "Полювання",
-            image3: "Священне місце",
-            mon: "Пн",
-            tue: "Вт",
-            wed: "Ср",
-            thu: "Чт",
-            fri: "Пт",
-            sat: "Сб",
-            sun: "Нд",
-            eventDetails: "Збори клану",
-            eventDescription: "Обговорення нових територій та планів на наступний місяць.",
-            rule1: "Завжди захищай територію клану",
-            rule2: "Поважай старших воїнів",
-            rule3: "Не полюй на території інших кланів",
-            rule4: "Виховуй молодь згідно Кодексу Воїна",
-            rule5: "Завжди допомагай членам свого клану",
-            option1: "Білогрива",
-            option2: "Вогнехвіст",
-            option3: "Стрімкозір",
-            vote: "Голосувати",
-            camp: "Табір",
-            hunting: "Мисливські угіддя",
-            border: "Кордон",
-            clanImage: "Зображення клану",
-            imageUrl: "URL зображення",
-            altText: "Альтернативний текст",
-            imageDescription: "Опис зображення",
-            text: "Текст",
-            color: "Колір",
-            link: "Посилання",
-            style: "Стиль",
-            imageCount: "Кількість зображень",
-            question: "Питання",
-            options: "Варіанти відповідей",
-            onePerLine: "Один варіант на рядок",
-            startCreating: "Розпочни створення свого сайту!",
-            startDescription: "Вибери елементи з панелі інструментів та додай їх сюди.",
-            startTutorial: "Пройти навчання",
-            welcomeTitle: "Ласкаво просимо до нашого клану!",
-            welcomeText: "Ми - сильний та гордий клан, що живе за законами Кодексу Воїна.",
-            aboutTitle: "Про наш клан",
-            aboutText: "Наш клан має багату історію та славні традиції, які ми бережемо.",
-            ourValues: "Наші цінності:",
-            value1: "Відданість клану",
-            value2: "Хоробрість у битві",
-            value3: "Повага до старійшин",
-            value4: "Турбота про молодь",
-            contactTitle: "Зв'яжіться з нами",
-            contactText: "Маєте питання або хочете приєднатися? Напишіть нам!",
-            contactButton: "Написати листа",
-            historyTitle: "Історія нашого клану",
-            historyText1: "Наш клан був заснований багатьма місяцями тому великим ватажком.",
-            historyText2: "Ми пройшли через багато випробувань, але завжди залишалися вірними Кодексу Воїна.",
-            ourTerritory: "Наша територія",
-            membersTitle: "Наші воїни",
-            leader: "Бурокіт - ватажок",
-            deputy: "Срібнолис - наступник",
-            healer: "Травниця - цілитель",
-            warriors: "Бистраногий, Вогнегривий, Місяцесвіт - воїни",
-            templateAdded: "Шаблон додано!",
-            elementDuplicated: "Елемент дубльовано",
-            createdWith: "Створено за допомогою",
-            clanBuilder: "Конструктора Кланів",
-            disclaimer: "Цей матеріал створений фанатами. Clan Territory не відповідає за вміст.",
-            clanSite: "Сайт мого клану",
-            checkOutSite: "Перегляньте сайт мого клану!",
-            shareSuccess: "Дякуємо за поширення!",
-            shareError: "Помилка при спробі поділитися",
-            linkCopied: "Посилання скопійовано!",
-            loadSuccess: "Сайт завантажено!"
-        };
-        
-        translations.en = {
-            ...translations.en,
-            delete: "Delete",
-            duplicate: "Duplicate",
-            edit: "Edit",
-            sampleText: "This is a sample text block. You can change this text to your own.",
-            addImage: "Click to add an image",
-            galleryTitle: "Clan Gallery",
-            calendarTitle: "Event Calendar",
-            rulesTitle: "Clan Rules",
-            pollTitle: "Poll: Who should be the next leader?",
-            videoTitle: "Clan Life Video",
-            mapTitle: "Our Territory Map",
-            socialTitle: "Follow Us",
-            image1: "Clan Camp",
-            image2: "Hunting Grounds",
-            image3: "Sacred Place",
-            mon: "Mon",
-            tue: "Tue",
-            wed: "Wed",
-            thu: "Thu",
-            fri: "Fri",
-            sat: "Sat",
-            sun: "Sun",
-            eventDetails: "Clan Gathering",
-            eventDescription: "Discussion of new territories and plans for the next moon.",
-            rule1: "Always defend clan territory",
-            rule2: "Respect senior warriors",
-            rule3: "Do not hunt on other clans' territory",
-            rule4: "Train youth according to the Warrior Code",
-            rule5: "Always help your clanmates",
-            option1: "Whitestorm",
-            option2: "Fireheart",
-            option3: "Swiftstar",
-            vote: "Vote",
-            camp: "Camp",
-            hunting: "Hunting grounds",
-            border: "Border",
-            clanImage: "Clan image",
-            imageUrl: "Image URL",
-            altText: "Alt text",
-            imageDescription: "Image description",
-            text: "Text",
-            color: "Color",
-            link: "Link",
-            style: "Style",
-            imageCount: "Number of images",
-            question: "Question",
-            options: "Options",
-            onePerLine: "One per line",
-            startCreating: "Start creating your site!",
-            startDescription: "Choose elements from the toolbar and add them here.",
-            startTutorial: "Start Tutorial",
-            welcomeTitle: "Welcome to Our Clan!",
-            welcomeText: "We are a strong and proud clan living by the Warrior Code.",
-            aboutTitle: "About Our Clan",
-            aboutText: "Our clan has a rich history and glorious traditions that we cherish.",
-            ourValues: "Our Values:",
-            value1: "Loyalty to the clan",
-            value2: "Courage in battle",
-            value3: "Respect for elders",
-            value4: "Care for the youth",
-            contactTitle: "Contact Us",
-            contactText: "Have questions or want to join? Write to us!",
-            contactButton: "Send Message",
-            historyTitle: "Our Clan History",
-            historyText1: "Our clan was founded many moons ago by a great leader.",
-            historyText2: "We have faced many challenges but always remained true to the Warrior Code.",
-            ourTerritory: "Our Territory",
-            membersTitle: "Our Warriors",
-            leader: "Bluestar - Leader",
-            deputy: "Redtail - Deputy",
-            healer: "Yellowfang - Medicine Cat",
-            warriors: "Longtail, Darkstripe, Runningwind - Warriors",
-            templateAdded: "Template added!",
-            elementDuplicated: "Element duplicated",
-            createdWith: "Created with",
-            clanBuilder: "Clan Builder",
-            disclaimer: "This is a fan-made material. Clan Territory is not responsible for the content.",
-            clanSite: "My Clan Website",
-            checkOutSite: "Check out my clan's website!",
-            shareSuccess: "Thanks for sharing!",
-            shareError: "Error trying to share",
-            linkCopied: "Link copied!",
-            loadSuccess: "Site loaded successfully!"
-        };
     </script>
 </body>
 </html>
